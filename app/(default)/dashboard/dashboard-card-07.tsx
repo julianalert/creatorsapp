@@ -67,8 +67,8 @@ export default function DashboardCard07() {
               if (!item.taken_at) return false
               // Convert Unix timestamp to Date (taken_at is typically in seconds)
               const itemDate = new Date(item.taken_at * 1000)
-              const fromDate = dateRange.from
-              const toDate = dateRange.to
+              const fromDate = dateRange.from!
+              const toDate = dateRange.to!
               return itemDate >= fromDate && itemDate <= toDate
             })
           : items
