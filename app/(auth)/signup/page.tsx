@@ -28,7 +28,7 @@ export default function SignUp() {
         email,
         password,
         options: {
-          emailRedirectTo: getRedirectUrl('/auth/callback'),
+          emailRedirectTo: getRedirectUrl('/auth/callback?next=/onboarding-01'),
         },
       })
 
@@ -41,10 +41,10 @@ export default function SignUp() {
       setSuccess(true)
       setLoading(false)
       
-      // Optionally redirect to dashboard after successful signup
+      // Redirect to onboarding step 1 after successful signup
       // For email confirmation, you might want to show a message instead
       setTimeout(() => {
-        router.push('/dashboard')
+        router.push('/onboarding-01')
         router.refresh()
       }, 2000)
     } catch (err) {
