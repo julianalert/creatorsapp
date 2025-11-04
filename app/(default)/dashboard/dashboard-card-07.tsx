@@ -1,160 +1,265 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useAppProvider } from '@/app/app-provider'
+import { createClient } from '@/lib/supabase/client'
+import { HiVideoCamera } from 'react-icons/hi2'
+import Image from 'next/image'
+
+interface VideoItem {
+  id?: string
+  code?: string
+  caption?: string | object
+  like_count?: number
+  comment_count?: number
+  view_count?: number
+  video_view_count?: number
+  play_count?: number
+  taken_at?: number
+  image_versions2?: any
+  thumbnail_url?: string
+  display_url?: string
+  image_url?: string
+  carousel_media?: any[]
+}
+
 export default function DashboardCard07() {
+  const { selectedAccount } = useAppProvider()
+  const [topVideos, setTopVideos] = useState<VideoItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    if (!selectedAccount) {
+      setLoading(false)
+      return
+    }
+
+    const fetchTopVideos = async () => {
+      try {
+        const supabase = createClient()
+        
+        const { data, error } = await supabase
+          .from('account')
+          .select('postsdata')
+          .eq('id', selectedAccount.id)
+          .single()
+
+        if (error) {
+          console.error('Error fetching top videos:', error)
+          setLoading(false)
+          return
+        }
+
+        const postsData = data.postsdata || (data as any).postsData || null
+        
+        if (!postsData || !postsData.items || !Array.isArray(postsData.items)) {
+          setTopVideos([])
+          setLoading(false)
+          return
+        }
+
+        const items: VideoItem[] = postsData.items
+
+        // Filter for videos/reels (media_type 2 or 8, or items with views)
+        const videos = items
+          .filter(item => {
+            const views = item.view_count || item.video_view_count || item.play_count || 0
+            return views > 0
+          })
+          .map(item => ({
+            ...item,
+            views: item.view_count || item.video_view_count || item.play_count || 0,
+            likes: item.like_count || 0,
+            comments: item.comment_count || 0,
+            engagement: ((item.like_count || 0) + 3 * (item.comment_count || 0)) / 
+                       Math.max(item.view_count || item.video_view_count || item.play_count || 1, 1) * 100
+          }))
+          .sort((a, b) => (b as any).views - (a as any).views)
+          .slice(0, 5) // Top 5 videos
+
+        setTopVideos(videos)
+      } catch (error) {
+        console.error('Error calculating top videos:', error)
+        setTopVideos([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchTopVideos()
+  }, [selectedAccount])
+
+  const getVideoTitle = (video: VideoItem) => {
+    // Handle caption - it might be a string or an object
+    let captionText = ''
+    if (video.caption) {
+      if (typeof video.caption === 'string') {
+        captionText = video.caption
+      } else if (typeof video.caption === 'object' && video.caption !== null) {
+        // If caption is an object, try to get text property
+        captionText = (video.caption as any).text || (video.caption as any).node?.text || JSON.stringify(video.caption)
+      }
+    }
+    
+    if (captionText) {
+      // Clean up the text - remove any HTML or special characters if needed
+      const cleanText = captionText.replace(/\n/g, ' ').trim()
+      return cleanText.length > 40 ? cleanText.substring(0, 40) + '...' : cleanText
+    }
+    
+    return video.code || video.id || 'Video'
+  }
+
+  const getThumbnailUrl = (video: VideoItem): string | null => {
+    // Try different possible thumbnail URL fields
+    if (video.thumbnail_url) {
+      return typeof video.thumbnail_url === 'string' ? video.thumbnail_url : null
+    }
+    
+    if (video.display_url) {
+      return typeof video.display_url === 'string' ? video.display_url : null
+    }
+    
+    if (video.image_url) {
+      return typeof video.image_url === 'string' ? video.image_url : null
+    }
+    
+    // Try image_versions2 structure (Instagram format)
+    if (video.image_versions2 && video.image_versions2.candidates && Array.isArray(video.image_versions2.candidates)) {
+      const candidates = video.image_versions2.candidates
+      // Get the first candidate or one with reasonable size
+      if (candidates.length > 0 && candidates[0].url) {
+        return candidates[0].url
+      }
+    }
+    
+    // Try carousel_media (for carousel posts)
+    if (video.carousel_media && Array.isArray(video.carousel_media) && video.carousel_media.length > 0) {
+      const firstMedia = video.carousel_media[0]
+      if (firstMedia.image_versions2?.candidates?.[0]?.url) {
+        return firstMedia.image_versions2.candidates[0].url
+      }
+      if (firstMedia.thumbnail_url) {
+        return typeof firstMedia.thumbnail_url === 'string' ? firstMedia.thumbnail_url : null
+      }
+    }
+    
+    return null
+  }
+
+  if (loading) {
+    return (
+      <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+        <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+          <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Videos</h2>
+        </header>
+        <div className="p-3">
+          <div className="animate-pulse space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return(
     <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Channels</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Videos</h2>
       </header>
       <div className="p-3">
-
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full dark:text-gray-300">
-            {/* Table header */}
-            <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50 rounded-xs">
-              <tr>
-                <th className="p-2">
-                  <div className="font-semibold text-left">Source</div>
-                </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">Visitors</div>
-                </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">Revenues</div>
-                </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">Sales</div>
-                </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">Conversion</div>
-                </th>
-              </tr>
-            </thead>
-            {/* Table body */}
-            <tbody className="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#24292E" cx="18" cy="18" r="18" />
-                      <path d="M18 10.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V24c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z" fill="#FFF" />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Github.com</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">2.4K</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">$3,877</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">267</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">4.7%</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#1877F2" cx="18" cy="18" r="18" />
-                      <path d="M16.023 26 16 19h-3v-3h3v-2c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V16H23l-1 3h-2.72v7h-3.257Z" fill="#FFF" fillRule="nonzero" />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Facebook</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">2.2K</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">$3,426</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">249</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">4.4%</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#EA4335" cx="18" cy="18" r="18" />
-                      <path d="M18 17v2.4h4.1c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C21.6 11.7 20 11 18.1 11c-3.9 0-7 3.1-7 7s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H18z" fill="#FFF" fillRule="nonzero" />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Google (organic)</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">2.0K</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">$2,444</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">224</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">4.2%</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#4BC9FF" cx="18" cy="18" r="18" />
-                      <path d="M26 14.3c-.1 1.6-1.2 3.7-3.3 6.4-2.2 2.8-4 4.2-5.5 4.2-.9 0-1.7-.9-2.4-2.6C14 19.9 13.4 15 12 15c-.1 0-.5.3-1.2.8l-.8-1c.8-.7 3.5-3.4 4.7-3.5 1.2-.1 2 .7 2.3 2.5.3 2 .8 6.1 1.8 6.1.9 0 2.5-3.4 2.6-4 .1-.9-.3-1.9-2.3-1.1.8-2.6 2.3-3.8 4.5-3.8 1.7.1 2.5 1.2 2.4 3.3z" fill="#FFF" fillRule="nonzero" />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Vimeo.com</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">1.9K</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">$2,236</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">220</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">4.2%</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#0E2439" cx="18" cy="18" r="18" />
-                      <path d="M14.232 12.818V23H11.77V12.818h2.46zM15.772 23V12.818h2.462v4.087h4.012v-4.087h2.456V23h-2.456v-4.092h-4.012V23h-2.461z" fill="#E6ECF4" />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Indiehackers.com</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">1.7K</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">$2,034</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">204</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">3.9%</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
+        {topVideos.length === 0 ? (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            No videos found
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full dark:text-gray-300">
+              {/* Table header */}
+              <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50 rounded-xs">
+                <tr>
+                  <th className="p-2">
+                    <div className="font-semibold text-left">Video</div>
+                  </th>
+                  <th className="p-2">
+                    <div className="font-semibold text-center">Views</div>
+                  </th>
+                  <th className="p-2">
+                    <div className="font-semibold text-center">Likes</div>
+                  </th>
+                  <th className="p-2">
+                    <div className="font-semibold text-center">Comments</div>
+                  </th>
+                  <th className="p-2">
+                    <div className="font-semibold text-center">Engagement</div>
+                  </th>
+                </tr>
+              </thead>
+              {/* Table body */}
+              <tbody className="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
+                {topVideos.map((video, index) => {
+                  const views = Number(video.view_count || video.video_view_count || video.play_count || 0)
+                  const likes = Number(video.like_count || 0)
+                  const comments = Number(video.comment_count || 0)
+                  const engagement = views > 0 ? ((likes + 3 * comments) / views) * 100 : 0
+                  
+                  // Ensure key is always a string
+                  const videoKey = typeof video.id === 'string' ? video.id : 
+                                  typeof video.code === 'string' ? video.code : 
+                                  typeof video.id === 'number' ? String(video.id) :
+                                  typeof video.code === 'number' ? String(video.code) :
+                                  `video-${index}`
+                  
+                  return (
+                    <tr key={videoKey}>
+                      <td className="p-2">
+                        <div className="flex items-center">
+                          <div className="relative w-12 h-12 rounded overflow-hidden shrink-0 mr-2 sm:mr-3 bg-gray-100 dark:bg-gray-700">
+                            {getThumbnailUrl(video) && !failedImages.has(videoKey) ? (
+                              <Image
+                                src={getThumbnailUrl(video)!}
+                                alt={String(getVideoTitle(video))}
+                                fill
+                                className="object-cover"
+                                unoptimized
+                                onError={() => {
+                                  // Mark this image as failed
+                                  setFailedImages(prev => new Set(prev).add(videoKey))
+                                }}
+                              />
+                            ) : (
+                              <div className="absolute inset-0 flex items-center justify-center bg-violet-100 dark:bg-violet-900/20">
+                                <HiVideoCamera className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-gray-800 dark:text-gray-100 truncate max-w-xs">
+                            {String(getVideoTitle(video))}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-center">{views.toLocaleString()}</div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-center">{likes.toLocaleString()}</div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-center">{comments.toLocaleString()}</div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-center text-sky-500">{Number(engagement).toFixed(2)}%</div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )
