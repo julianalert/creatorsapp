@@ -1,0 +1,78 @@
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const handle = searchParams.get('handle')
+    const nextMaxId = searchParams.get('next_max_id')
+
+    if (!handle) {
+      return NextResponse.json(
+        { error: 'Instagram handle is required' },
+        { status: 400 }
+      )
+    }
+
+    const apiKey = process.env.SCRAPE_CREATORS_API_KEY
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: 'API key not configured' },
+        { status: 500 }
+      )
+    }
+
+    const apiUrl = new URL('https://api.scrapecreators.com/v2/instagram/user/posts')
+    apiUrl.searchParams.append('handle', handle)
+    apiUrl.searchParams.append('trim', 'true')
+    if (nextMaxId) {
+      apiUrl.searchParams.append('next_max_id', nextMaxId)
+    }
+
+    const apiResponse = await fetch(apiUrl.toString(), {
+      method: 'GET',
+      headers: {
+        'x-api-key': apiKey,
+      },
+    })
+
+    if (!apiResponse.ok) {
+      const errorData = await apiResponse.json().catch(() => ({}))
+      console.error('Posts API error response:', errorData)
+      return NextResponse.json(
+        { error: errorData.message || errorData.error || `API request failed: ${apiResponse.statusText}` },
+        { status: apiResponse.status }
+      )
+    }
+
+    const data = await apiResponse.json()
+    console.log('Posts API response received, status:', data.status, 'has items:', !!data.items)
+
+    // Check if response has status field (the API returns status: "ok" when successful)
+    if (data.status && data.status !== 'ok') {
+      console.error('Posts API status error:', data.status)
+      return NextResponse.json(
+        { error: `API returned status: ${data.status}` },
+        { status: 500 }
+      )
+    }
+
+    // Accept response if status is "ok" OR if it has items array (some API versions might not include status)
+    if (data.status === 'ok' || (data.items && Array.isArray(data.items))) {
+      return NextResponse.json({ success: true, data })
+    }
+
+    // If we get here, the response format is unexpected
+    console.error('Posts API unexpected response format:', JSON.stringify(data).substring(0, 500))
+    return NextResponse.json(
+      { error: 'Unexpected response format from Instagram posts API' },
+      { status: 500 }
+    )
+  } catch (error) {
+    console.error('Instagram Posts API error:', error)
+    return NextResponse.json(
+      { error: 'An unexpected error occurred while fetching Instagram posts data' },
+      { status: 500 }
+    )
+  }
+}
+

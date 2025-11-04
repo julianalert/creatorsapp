@@ -13,7 +13,7 @@ export default function OnboardingProgress({ step = 1 }: { step?: number}) {
           )}
           <ul className="relative flex justify-between w-full">
             <li>
-              <Link className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ${step >= 1 ? 'bg-violet-500 text-white' : 'bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400'}`} href="/onboarding-01">1</Link>
+              <Link className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ${step >= 1 ? 'bg-violet-500 text-white' : 'bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400'}`} href="/onboarding">1</Link>
             </li>
             <li>
               <Link className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400" href="/onboarding-02">🥳</Link>

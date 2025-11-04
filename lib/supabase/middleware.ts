@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
   const isAuthPage = pathname.startsWith('/signin') || 
                      pathname.startsWith('/signup') || 
                      pathname.startsWith('/reset-password')
-  const isOnboardingPage = pathname.startsWith('/onboarding-')
+  const isOnboardingPage = pathname.startsWith('/onboarding') || pathname.startsWith('/onboarding-')
   const isApiRoute = pathname.startsWith('/api/')
   const isAuthCallback = pathname.startsWith('/auth/')
 
@@ -69,7 +69,7 @@ export async function updateSession(request: NextRequest) {
     // If user is logged in but has no account, redirect to onboarding
     if (!account) {
       const url = request.nextUrl.clone()
-      url.pathname = '/onboarding-01'
+      url.pathname = '/onboarding'
       return NextResponse.redirect(url)
     }
   }
