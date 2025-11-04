@@ -58,19 +58,37 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Check if authenticated user has an account
-  if (user && !isAuthPage && !isOnboardingPage && !isApiRoute && !isAuthCallback && pathname !== '/') {
+  if (user && !isAuthPage && !isApiRoute && !isAuthCallback && pathname !== '/') {
     // Check if user has an account in the database
-    const { data: account } = await supabase
+    const { data: accounts, error: accountError } = await supabase
       .from('account')
       .select('id')
       .eq('user_id', user.id)
-      .maybeSingle()
+      .limit(1)
 
-    // If user is logged in but has no account, redirect to onboarding
-    if (!account) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/onboarding'
-      return NextResponse.redirect(url)
+    // Only redirect if we're certain about the account status
+    // If there's an error, don't redirect (fail open to avoid redirect loops)
+    if (!accountError && !isOnboardingPage) {
+      const hasAccount = accounts && accounts.length > 0
+
+      // If user is logged in but has no account, redirect to onboarding
+      if (!hasAccount) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/onboarding'
+        const redirectResponse = NextResponse.redirect(url)
+        // Copy cookies from supabaseResponse to maintain session
+        supabaseResponse.cookies.getAll().forEach((cookie) => {
+          redirectResponse.cookies.set({
+            name: cookie.name,
+            value: cookie.value,
+            ...cookie,
+          })
+        })
+        return redirectResponse
+      }
+    } else if (accountError) {
+      // Log error but don't redirect (fail open)
+      console.error('Account query error in middleware:', accountError)
     }
   }
 

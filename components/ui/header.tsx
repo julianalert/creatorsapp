@@ -8,6 +8,7 @@ import Notifications from '@/components/dropdown-notifications'
 import DropdownHelp from '@/components/dropdown-help'
 import ThemeToggle from '@/components/theme-toggle'
 import DropdownProfile from '@/components/dropdown-profile'
+import DropdownSwitchAccount from '@/components/dropdown-switch-account'
 
 export default function Header({
   variant = 'default',
@@ -24,7 +25,7 @@ export default function Header({
         <div className={`flex items-center justify-between h-16 ${variant === 'v2' || variant === 'v3' ? '' : 'lg:border-b border-gray-200 dark:border-gray-700/60'}`}>
 
           {/* Header: Left side */}
-          <div className="flex">
+          <div className="flex items-center space-x-3">
 
             {/* Hamburger button */}
             <button
@@ -40,6 +41,9 @@ export default function Header({
                 <rect x="4" y="17" width="16" height="2" />
               </svg>
             </button>
+
+            {/* Switch Account */}
+            <DropdownSwitchAccount align="left" />
 
           </div>
 
