@@ -2,6 +2,8 @@
 
 import { createContext, Dispatch, SetStateAction, useContext, useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { DateRange } from 'react-day-picker'
+import { addDays, startOfDay, endOfDay, subDays } from 'date-fns'
 
 interface Account {
   id: string
@@ -19,6 +21,8 @@ interface ContextProps {
   setSelectedAccount: Dispatch<SetStateAction<Account | null>>
   accounts: Account[]
   setAccounts: Dispatch<SetStateAction<Account[]>>
+  dateRange: DateRange | undefined
+  setDateRange: Dispatch<SetStateAction<DateRange | undefined>>
 }
 
 const AppContext = createContext<ContextProps>({
@@ -29,7 +33,9 @@ const AppContext = createContext<ContextProps>({
   selectedAccount: null,
   setSelectedAccount: (): void => {},
   accounts: [],
-  setAccounts: (): void => {}
+  setAccounts: (): void => {},
+  dateRange: undefined,
+  setDateRange: (): void => {}
 })
 
 export default function AppProvider({
@@ -41,6 +47,10 @@ export default function AppProvider({
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false)
   const [accounts, setAccounts] = useState<Account[]>([])
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: startOfDay(subDays(new Date(), 27)),
+    to: endOfDay(new Date()),
+  })
 
   useEffect(() => {
     fetchAccounts()
@@ -90,7 +100,9 @@ export default function AppProvider({
       selectedAccount,
       setSelectedAccount,
       accounts,
-      setAccounts
+      setAccounts,
+      dateRange,
+      setDateRange
     }}>
       {children}
     </AppContext.Provider>

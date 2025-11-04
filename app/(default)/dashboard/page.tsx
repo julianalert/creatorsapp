@@ -1,6 +1,5 @@
 'use client'
 
-import FilterButton from '@/components/dropdown-filter'
 import Datepicker from '@/components/datepicker'
 import DashboardCard01 from './dashboard-card-01'
 import DashboardCard02 from './dashboard-card-02'
@@ -11,8 +10,6 @@ import DashboardCard06 from './dashboard-card-06'
 import DashboardCard07 from './dashboard-card-07'
 import DashboardCard08 from './dashboard-card-08'
 import DashboardCard09 from './dashboard-card-09'
-import DashboardCard10 from './dashboard-card-10'
-import DashboardCard11 from './dashboard-card-11'
 
 export default function Dashboard() {
   return (
@@ -25,8 +22,6 @@ export default function Dashboard() {
         </div>
         {/* Right: Actions */}
         <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-          {/* Filter button */}        
-          <FilterButton align="right" />
           {/* Datepicker built with React Day Picker */}
           <Datepicker />
         </div>
@@ -53,10 +48,6 @@ export default function Dashboard() {
         <DashboardCard08 />
         {/* Stacked bar chart (Sales VS Refunds) */}
         <DashboardCard09 />
-        {/* Card (Recent Activity) */}
-        <DashboardCard10 />
-        {/* Card (Income/Expenses) */}
-        <DashboardCard11 />        
 
       </div>      
     </div>

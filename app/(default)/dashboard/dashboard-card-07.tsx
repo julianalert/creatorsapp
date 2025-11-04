@@ -24,7 +24,7 @@ interface VideoItem {
 }
 
 export default function DashboardCard07() {
-  const { selectedAccount } = useAppProvider()
+  const { selectedAccount, dateRange } = useAppProvider()
   const [topVideos, setTopVideos] = useState<VideoItem[]>([])
   const [loading, setLoading] = useState(true)
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
@@ -61,8 +61,20 @@ export default function DashboardCard07() {
 
         const items: VideoItem[] = postsData.items
 
+        // Filter items by date range if dateRange is set
+        const filteredItems = dateRange?.from && dateRange?.to
+          ? items.filter((item) => {
+              if (!item.taken_at) return false
+              // Convert Unix timestamp to Date (taken_at is typically in seconds)
+              const itemDate = new Date(item.taken_at * 1000)
+              const fromDate = dateRange.from
+              const toDate = dateRange.to
+              return itemDate >= fromDate && itemDate <= toDate
+            })
+          : items
+
         // Filter for videos/reels (media_type 2 or 8, or items with views)
-        const videos = items
+        const videos = filteredItems
           .filter(item => {
             const views = item.view_count || item.video_view_count || item.play_count || 0
             return views > 0
@@ -88,7 +100,7 @@ export default function DashboardCard07() {
     }
 
     fetchTopVideos()
-  }, [selectedAccount])
+  }, [selectedAccount, dateRange])
 
   const getVideoTitle = (video: VideoItem) => {
     // Handle caption - it might be a string or an object
@@ -150,7 +162,7 @@ export default function DashboardCard07() {
 
   if (loading) {
     return (
-      <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+      <div className="col-span-full bg-white dark:bg-gray-800 shadow-sm rounded-xl">
         <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
           <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Videos</h2>
         </header>
@@ -166,7 +178,7 @@ export default function DashboardCard07() {
   }
 
   return(
-    <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+    <div className="col-span-full bg-white dark:bg-gray-800 shadow-sm rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
         <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Videos</h2>
       </header>

@@ -29,7 +29,7 @@ interface PostItem {
 }
 
 export function useAccountMetrics() {
-  const { selectedAccount } = useAppProvider()
+  const { selectedAccount, dateRange } = useAppProvider()
   const [metrics, setMetrics] = useState<AccountMetrics | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -83,6 +83,18 @@ export function useAccountMetrics() {
 
         const items: PostItem[] = postsData.items
 
+        // Filter items by date range if dateRange is set
+        const filteredItems = dateRange?.from && dateRange?.to
+          ? items.filter((item) => {
+              if (!item.taken_at) return false
+              // Convert Unix timestamp to Date (taken_at is typically in seconds)
+              const itemDate = new Date(item.taken_at * 1000)
+              const fromDate = dateRange.from
+              const toDate = dateRange.to
+              return itemDate >= fromDate && itemDate <= toDate
+            })
+          : items
+
         // Calculate totals
         let totalReels = 0
         let totalViews = 0
@@ -93,7 +105,7 @@ export function useAccountMetrics() {
         const reels: PostItem[] = []
         const allPosts: PostItem[] = []
 
-        items.forEach((item) => {
+        filteredItems.forEach((item) => {
           // Count likes and comments for all posts
           totalLikes += item.like_count || 0
           totalComments += item.comment_count || 0
@@ -218,7 +230,7 @@ export function useAccountMetrics() {
     }
 
     fetchMetrics()
-  }, [selectedAccount])
+  }, [selectedAccount, dateRange])
 
   return { metrics, loading }
 }
