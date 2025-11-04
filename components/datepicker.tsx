@@ -112,9 +112,9 @@ export default function DatePickerWithRange({
       const periodRange = period.getRange()
       if (!periodRange.from || !periodRange.to) return false
       
-      // Compare dates (ignoring time)
-      const rangeFromStr = dateRange.from.toDateString()
-      const rangeToStr = dateRange.to.toDateString()
+      // Compare dates (ignoring time) - we've already checked dateRange.from and dateRange.to exist
+      const rangeFromStr = dateRange.from!.toDateString()
+      const rangeToStr = dateRange.to!.toDateString()
       const periodFromStr = periodRange.from.toDateString()
       const periodToStr = periodRange.to.toDateString()
       
