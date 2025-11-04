@@ -6,6 +6,7 @@ import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
+import Img2 from '@/public/images/img2.jpg'
 
 export default function SignIn() {
   const router = useRouter()
@@ -93,7 +94,7 @@ export default function SignIn() {
                   </div>
                   <button 
                     type="submit"
-                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white ml-3"
+                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white ml-3 cursor-pointer"
                     disabled={loading}
                   >
                     {loading ? 'Signing in...' : 'Sign In'}
@@ -112,7 +113,7 @@ export default function SignIn() {
                       <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
                     </svg>
                     <span className="text-sm">
-                      To support you during the pandemic super pro features are free until March 31st.
+                      Start for free, no credit card required.
                     </span>
                   </div>
                 </div>
@@ -122,7 +123,7 @@ export default function SignIn() {
           </div>
         </div>
 
-        <AuthImage />
+        <AuthImage imageSrc={Img2} />
 
       </div>
 

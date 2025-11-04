@@ -81,7 +81,7 @@ export default function ResetPassword() {
                 <div className="flex justify-end mt-6">
                   <button 
                     type="submit"
-                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white whitespace-nowrap"
+                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white whitespace-nowrap cursor-pointer"
                     disabled={loading || success}
                   >
                     {loading ? 'Sending...' : 'Send Reset Link'}

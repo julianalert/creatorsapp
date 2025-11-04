@@ -6,13 +6,13 @@ import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
+import Model1 from '@/public/images/model1.jpg'
 import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
 
 export default function SignUp() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -28,9 +28,6 @@ export default function SignUp() {
         email,
         password,
         options: {
-          data: {
-            full_name: fullName,
-          },
           emailRedirectTo: getRedirectUrl('/auth/callback'),
         },
       })
@@ -95,18 +92,6 @@ export default function SignUp() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="name">Full Name <span className="text-red-500">*</span></label>
-                    <input 
-                      id="name" 
-                      className="form-input w-full" 
-                      type="text" 
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                      disabled={loading}
-                    />
-                  </div>
-                  <div>
                     <label className="block text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-500">*</span></label>
                     <input 
                       id="password" 
@@ -123,14 +108,14 @@ export default function SignUp() {
                 </div>
                 <div className="flex items-center justify-between mt-6">
                   <div className="mr-1">
-                    <label className="flex items-center">
-                      <input type="checkbox" className="form-checkbox" disabled={loading} />
+                    <label className="flex items-center cursor-pointer">
+                      <input type="checkbox" className="form-checkbox cursor-pointer" disabled={loading} />
                       <span className="text-sm ml-2">Email me about product news.</span>
                     </label>
                   </div>
                   <button 
                     type="submit"
-                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white ml-3 whitespace-nowrap"
+                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white ml-3 whitespace-nowrap cursor-pointer"
                     disabled={loading}
                   >
                     {loading ? 'Signing up...' : 'Sign Up'}
@@ -148,7 +133,7 @@ export default function SignUp() {
           </div>
         </div>
 
-        <AuthImage />
+        <AuthImage imageSrc={Model1} />
 
       </div>
 
