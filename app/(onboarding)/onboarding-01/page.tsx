@@ -27,7 +27,7 @@ export default function Onboarding01() {
               </div>
               <div className="max-w-md w-full mx-auto">
 
-                
+              <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6 text-center">You're one step away 👀</h1>
                 {/* Form */}
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className="mb-8">

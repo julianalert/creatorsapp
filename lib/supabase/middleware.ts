@@ -35,17 +35,43 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  const pathname = request.nextUrl.pathname
+  const isAuthPage = pathname.startsWith('/signin') || 
+                     pathname.startsWith('/signup') || 
+                     pathname.startsWith('/reset-password')
+  const isOnboardingPage = pathname.startsWith('/onboarding-')
+  const isApiRoute = pathname.startsWith('/api/')
+  const isAuthCallback = pathname.startsWith('/auth/')
+
+  // Redirect unauthenticated users to signin (except auth pages and public routes)
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith('/signin') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    !request.nextUrl.pathname.startsWith('/reset-password') &&
-    request.nextUrl.pathname !== '/'
+    !isAuthPage &&
+    !isOnboardingPage &&
+    !isApiRoute &&
+    !isAuthCallback &&
+    pathname !== '/'
   ) {
-    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/signin'
     return NextResponse.redirect(url)
+  }
+
+  // Check if authenticated user has an account
+  if (user && !isAuthPage && !isOnboardingPage && !isApiRoute && !isAuthCallback && pathname !== '/') {
+    // Check if user has an account in the database
+    const { data: account } = await supabase
+      .from('account')
+      .select('id')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    // If user is logged in but has no account, redirect to onboarding
+    if (!account) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/onboarding-01'
+      return NextResponse.redirect(url)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
