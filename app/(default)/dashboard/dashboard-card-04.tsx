@@ -1,53 +1,37 @@
 'use client'
 
-import BarChart01 from '@/components/charts/bar-chart-01'
-
-// Import utilities
-import { getCssVariable } from '@/components/utils/utils'
+import { useAccountMetrics } from '@/components/utils/use-account-metrics'
+import { HiChatBubbleLeftRight } from 'react-icons/hi2'
 
 export default function DashboardCard04() {
+  const { metrics, loading } = useAccountMetrics()
 
-  const chartData = {
-    labels: [
-      '12-01-2022', '01-01-2023', '02-01-2023',
-      '03-01-2023', '04-01-2023', '05-01-2023',
-    ],
-    datasets: [
-      // Light blue bars
-      {
-        label: 'Direct',
-        data: [
-          800, 1600, 900, 1300, 1950, 1700,
-        ],
-        backgroundColor: getCssVariable('--color-sky-500'),
-        hoverBackgroundColor: getCssVariable('--color-sky-600'),
-        barPercentage: 0.7,
-        categoryPercentage: 0.7,
-        borderRadius: 4,
-      },
-      // Blue bars
-      {
-        label: 'Indirect',
-        data: [
-          4900, 2600, 5350, 4800, 5200, 4800,
-        ],
-        backgroundColor: getCssVariable('--color-violet-500'),
-        hoverBackgroundColor: getCssVariable('--color-violet-600'),
-        barPercentage: 0.7,
-        categoryPercentage: 0.7,
-        borderRadius: 4,
-      },
-    ],
+  if (loading || !metrics) {
+    return (
+      <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+        <div className="px-5 pt-5 pb-8">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2"></div>
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return(
-    <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-      <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Direct VS Indirect</h2>
-      </header>
-      {/* Chart built with Chart.js 3 */}
-      {/* Change the height attribute to adjust the chart height */}
-      <BarChart01 data={chartData} width={595} height={248} />
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+      <div className="px-5 pt-5 pb-5">
+        <div className="flex items-center">
+          <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/20 mr-4">
+            <HiChatBubbleLeftRight className="w-6 h-6 text-green-600 dark:text-green-400" />
+          </div>
+          <div className="flex-1">
+            <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Total comments</div>
+            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">{metrics.totalComments.toLocaleString()}</div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

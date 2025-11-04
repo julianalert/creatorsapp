@@ -1,7 +1,4 @@
-export const metadata = {
-  title: 'Dashboard - Mosaic',
-  description: 'Page description',
-}
+'use client'
 
 import FilterButton from '@/components/dropdown-filter'
 import Datepicker from '@/components/datepicker'
@@ -45,17 +42,17 @@ export default function Dashboard() {
       {/* Cards */}
       <div className="grid grid-cols-12 gap-6">
 
-        {/* Line chart (Acme Plus) */}
+        {/* Total Reels */}
         <DashboardCard01 />
-        {/* Line chart (Acme Advanced) */}
+        {/* Total Views */}
         <DashboardCard02 />
-        {/* Line chart (Acme Professional) */}
+        {/* Total Likes */}
         <DashboardCard03 />
-        {/* Bar chart (Direct vs Indirect) */}
+        {/* Total Comments */}
         <DashboardCard04 />
-        {/* Line chart (Real Time Value) */}
+        {/* Engagement Rate */}
         <DashboardCard05 />
-        {/* Doughnut chart (Top Countries) */}
+        {/* Profile Quality */}
         <DashboardCard06 />
         {/* Table (Top Channels) */}
         <DashboardCard07 />

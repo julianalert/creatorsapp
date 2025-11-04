@@ -1,113 +1,37 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Tooltip from '@/components/tooltip'
-import RealtimeChart from '@/components/charts/realtime-chart'
-import { chartAreaGradient } from '@/components/charts/chartjs-config'
-
-// Import utilities
-import { adjustColorOpacity, getCssVariable } from '@/components/utils/utils'
+import { useAccountMetrics } from '@/components/utils/use-account-metrics'
+import { HiChartBar } from 'react-icons/hi2'
 
 export default function DashboardCard05() {
+  const { metrics, loading } = useAccountMetrics()
 
-  // IMPORTANT:
-  // Code below is for demo purpose only, and it's not covered by support.
-  // If you need to replace dummy data with real data,
-  // refer to Chart.js documentation: https://www.chartjs.org/docs/latest
-
-  // Fake real-time data
-  const [counter, setCounter] = useState(0)
-  const [increment, setIncrement] = useState(0)
-  const [range, setRange] = useState(35)
-
-  // Dummy data to be looped
-  const data = [
-    57.81, 57.75, 55.48, 54.28, 53.14, 52.25, 51.04, 52.49, 55.49, 56.87,
-    53.73, 56.42, 58.06, 55.62, 58.16, 55.22, 58.67, 60.18, 61.31, 63.25,
-    65.91, 64.44, 65.97, 62.27, 60.96, 59.34, 55.07, 59.85, 53.79, 51.92,
-    50.95, 49.65, 48.09, 49.81, 47.85, 49.52, 50.21, 52.22, 54.42, 53.42,
-    50.91, 58.52, 53.37, 57.58, 59.09, 59.36, 58.71, 59.42, 55.93, 57.71,
-    50.62, 56.28, 57.37, 53.08, 55.94, 55.82, 53.94, 52.65, 50.25,
-  ]
-
-  const [slicedData, setSlicedData] = useState(data.slice(0, range))
-
-  // Generate fake dates from now to back in time
-  const generateDates = (): Date[] => {
-    const now: Date = new Date()
-    const dates: Date[] = []
-
-    data.forEach((v: any, i: number) => {
-      dates.push(new Date(now.getTime() - 2000 - i * 2000))
-    })
-
-    return dates
-  }
-
-  const [slicedLabels, setSlicedLabels] = useState(generateDates().slice(0, range).reverse())
-
-  // Fake update every 2 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter(counter + 1)
-    }, 2000)
-    return () => clearInterval(interval)
-  }, [counter])
-
-  // Loop through data array and update
-  useEffect(() => {
-    setIncrement(increment + 1)
-    if (increment + range < data.length) {
-      setSlicedData(([x, ...slicedData]) => [...slicedData, data[increment + range]])
-    } else {
-      setIncrement(0)
-      setRange(0)
-    }
-    setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()])
-    return () => setIncrement(0)
-  }, [counter])
-
-  const chartData = {
-    labels: slicedLabels,
-    datasets: [
-      // Indigo line
-      {
-        data: slicedData,
-        fill: true,
-        backgroundColor: function(context: any) {
-          const chart = context.chart;
-          const {ctx, chartArea} = chart;
-          const gradientOrColor = chartAreaGradient(ctx, chartArea, [
-            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
-            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
-          ]);
-          return gradientOrColor || 'transparent';
-        },     
-        borderColor: getCssVariable('--color-violet-500'),
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: getCssVariable('--color-violet-500'),
-        pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
-        clip: 20,
-        tension: 0.2,
-      },
-    ],
+  if (loading || !metrics) {
+    return (
+      <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+        <div className="px-5 pt-5 pb-8">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2"></div>
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return(
-    <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-      <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Real Time Value</h2>
-        <Tooltip className="ml-2">
-          <div className="text-xs text-center whitespace-nowrap">Built with <a className="underline" href="https://www.chartjs.org/" target="_blank" rel="noreferrer">Chart.js</a></div>
-        </Tooltip>
-      </header>
-      {/* Chart built with Chart.js 3 */}
-      {/* Change the height attribute to adjust the chart height */}
-      <RealtimeChart data={chartData} width={595} height={248} />
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+      <div className="px-5 pt-5 pb-5">
+        <div className="flex items-center">
+          <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/20 mr-4">
+            <HiChartBar className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+          </div>
+          <div className="flex-1">
+            <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Engagement rate</div>
+            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">{metrics.engagementRate.toFixed(2)}%</div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,43 +1,41 @@
 'use client'
 
-import DoughnutChart from '@/components/charts/doughnut-chart'
-
-// Import utilities
-import { getCssVariable } from '@/components/utils/utils'
+import { useAccountMetrics } from '@/components/utils/use-account-metrics'
+import { HiStar } from 'react-icons/hi2'
 
 export default function DashboardCard06() {
+  const { metrics, loading } = useAccountMetrics()
 
-  const chartData = {
-    labels: ['United States', 'Italy', 'Other'],
-    datasets: [
-      {
-        label: 'Top Countries',
-        data: [
-          35, 30, 35,
-        ],
-        backgroundColor: [
-          getCssVariable('--color-violet-500'),
-          getCssVariable('--color-sky-500'),
-          getCssVariable('--color-violet-800'),
-        ],
-        hoverBackgroundColor: [
-          getCssVariable('--color-violet-600'),
-          getCssVariable('--color-sky-600'),
-          getCssVariable('--color-violet-900'),
-        ],
-        borderWidth: 0,
-      },
-    ],
+  if (loading || !metrics) {
+    return (
+      <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+        <div className="px-5 pt-5 pb-8">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2"></div>
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return(
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-      <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Countries</h2>
-      </header>
-      {/* Chart built with Chart.js 3 */}
-      {/* Change the height attribute to adjust the chart height */}
-      <DoughnutChart data={chartData} width={389} height={260} />
+      <div className="px-5 pt-5 pb-5">
+        <div className="flex items-center">
+          <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/20 mr-4">
+            <HiStar className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+          </div>
+          <div className="flex-1">
+            <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Profile quality</div>
+            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+              {metrics.qualityScore !== null && metrics.qualityScore !== undefined 
+                ? metrics.qualityScore.toLocaleString() 
+                : 'N/A'}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

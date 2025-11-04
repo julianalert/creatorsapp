@@ -1,8 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react'
-import { createClient } from '@/lib/supabase/client'
+import { useAppProvider } from '@/app/app-provider'
 
 interface Account {
   id: string
@@ -14,54 +13,7 @@ interface Account {
 export default function DropdownSwitchAccount({ align }: {
   align?: 'left' | 'right'
 }) {
-  const [accounts, setAccounts] = useState<Account[]>([])
-  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchAccounts()
-  }, [])
-
-  const fetchAccounts = async () => {
-    try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (!user) {
-        setLoading(false)
-        return
-      }
-
-      const { data, error } = await supabase
-        .from('account')
-        .select('id, platform, url, profiledata')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Error fetching accounts:', error)
-        setLoading(false)
-        return
-      }
-
-      const fetchedAccounts = data || []
-      setAccounts(fetchedAccounts)
-      
-      // If no account is selected, select the first one
-      if (fetchedAccounts.length > 0) {
-        const savedAccountId = localStorage.getItem('selectedAccountId')
-        const accountToSelect = savedAccountId 
-          ? fetchedAccounts.find(acc => acc.id === savedAccountId) || fetchedAccounts[0]
-          : fetchedAccounts[0]
-        setSelectedAccount(accountToSelect)
-        localStorage.setItem('selectedAccountId', accountToSelect.id)
-      }
-    } catch (error) {
-      console.error('Error fetching accounts:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { accounts, selectedAccount, setSelectedAccount } = useAppProvider()
 
   const handleSelectAccount = (account: Account) => {
     setSelectedAccount(account)
@@ -95,7 +47,7 @@ export default function DropdownSwitchAccount({ align }: {
     return null
   }
 
-  if (loading || accounts.length === 0) {
+  if (accounts.length === 0) {
     return null
   }
 
