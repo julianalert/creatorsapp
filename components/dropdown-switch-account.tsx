@@ -87,7 +87,12 @@ export default function DropdownSwitchAccount({ align }: {
   }
 
   const getAccountAvatar = (account: Account): string | null => {
-    return account.profiledata?.user?.profile_pic_url || null
+    const avatarUrl = account.profiledata?.user?.profile_pic_url || account.profiledata?.user?.profile_pic_url_hd || null
+    if (avatarUrl) {
+      // Use image proxy to bypass CORS issues
+      return `/api/image-proxy?url=${encodeURIComponent(avatarUrl)}`
+    }
+    return null
   }
 
   if (loading || accounts.length === 0) {
@@ -104,7 +109,8 @@ export default function DropdownSwitchAccount({ align }: {
                 <img 
                   src={getAccountAvatar(selectedAccount)!} 
                   alt={getAccountDisplayName(selectedAccount)}
-                  className="w-8 h-8 rounded-full mr-2"
+                  className="w-8 h-8 rounded-full mr-2 object-cover"
+                  referrerPolicy="no-referrer"
                 />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-2">
@@ -150,7 +156,8 @@ export default function DropdownSwitchAccount({ align }: {
                     <img 
                       src={getAccountAvatar(account)!} 
                       alt={getAccountDisplayName(account)}
-                      className="w-8 h-8 rounded-full mr-3"
+                      className="w-8 h-8 rounded-full mr-3 object-cover"
+                      referrerPolicy="no-referrer"
                     />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-3">
