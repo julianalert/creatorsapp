@@ -1,13 +1,24 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react'
+import { createClient } from '@/lib/supabase/client'
 import UserAvatar from '@/public/images/user-avatar-32.png'
 
 export default function DropdownProfile({ align }: {
   align?: 'left' | 'right'
 }) {
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/signin')
+    router.refresh()
+  }
+
   return (
     <Menu as="div" className="relative inline-flex">
       <MenuButton className="inline-flex justify-center items-center group">
@@ -41,9 +52,12 @@ export default function DropdownProfile({ align }: {
               </Link>
           </MenuItem>
           <MenuItem as="li">
-            <Link className="font-medium text-sm flex items-center py-1 px-3 text-violet-500" href="#0">
+            <button 
+              onClick={handleSignOut}
+              className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 w-full text-left"
+            >
               Sign Out
-            </Link>
+            </button>
           </MenuItem>
         </MenuItems>
       </Transition>
