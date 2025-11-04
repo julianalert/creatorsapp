@@ -101,7 +101,7 @@ export default function DropdownSwitchAccount({ align }: {
 
   return (
     <Menu as="div" className="relative inline-flex">
-      <MenuButton className="inline-flex justify-center items-center group">
+      <MenuButton className="inline-flex justify-center items-center group cursor-pointer">
         <div className="flex items-center truncate">
           {selectedAccount && (
             <>
@@ -148,7 +148,7 @@ export default function DropdownSwitchAccount({ align }: {
               {({ active }) => (
                 <button
                   onClick={() => handleSelectAccount(account)}
-                  className={`w-full flex items-center py-2 px-4 ${
+                  className={`w-full flex items-center py-2 px-4 cursor-pointer ${
                     active && 'bg-gray-50 dark:bg-gray-700/20'
                   } ${selectedAccount?.id === account.id ? 'bg-violet-50 dark:bg-violet-900/20' : ''}`}
                 >
