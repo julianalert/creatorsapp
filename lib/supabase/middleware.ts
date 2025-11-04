@@ -78,11 +78,7 @@ export async function updateSession(request: NextRequest) {
         const redirectResponse = NextResponse.redirect(url)
         // Copy cookies from supabaseResponse to maintain session
         supabaseResponse.cookies.getAll().forEach((cookie) => {
-          redirectResponse.cookies.set({
-            name: cookie.name,
-            value: cookie.value,
-            ...cookie,
-          })
+          redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
         })
         return redirectResponse
       }
