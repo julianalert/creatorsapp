@@ -1,6 +1,7 @@
 'use client'
 
 import { useAppProvider } from '@/app/app-provider'
+import Link from 'next/link'
 
 import ThemeToggle from '@/components/theme-toggle'
 import DropdownSwitchAccount from '@/components/dropdown-switch-account'
@@ -44,6 +45,13 @@ export default function Header({
           {/* Header: Right side */}
           <div className="flex items-center space-x-3">
             <ThemeToggle />
+            {/* Add Account button */}
+            <Link
+              href="/onboarding"
+              className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300 cursor-pointer"
+            >
+              Add account
+            </Link>
           </div>
 
         </div>
