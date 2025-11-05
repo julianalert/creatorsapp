@@ -1,370 +1,225 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import ModalBasic from '@/components/modal-basic'
+import { useRouter } from 'next/navigation'
+
+interface Account {
+  id: string
+  platform: 'instagram' | 'tiktok' | 'youtube'
+  url: string | null
+  profiledata: {
+    user?: {
+      username?: string
+      full_name?: string
+      profile_pic_url?: string
+      profile_pic_url_hd?: string
+      biography?: string
+      [key: string]: any
+    }
+    [key: string]: any
+  } | null
+  created_at: string
+}
+
 export default function AppsPanel() {
+  const router = useRouter()
+  const [accounts, setAccounts] = useState<Account[]>([])
+  const [loading, setLoading] = useState(true)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [accountToDelete, setAccountToDelete] = useState<Account | null>(null)
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        const { data, error } = await supabase
+          .from('account')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+
+        if (error) {
+          console.error('Error fetching accounts:', error)
+        } else {
+          setAccounts(data || [])
+        }
+      }
+      setLoading(false)
+    }
+    fetchAccounts()
+  }, [])
+
+  const handleDeleteClick = (account: Account) => {
+    setAccountToDelete(account)
+    setDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!accountToDelete) return
+
+    setDeleting(true)
+    const supabase = createClient()
+    
+    const { error } = await supabase
+      .from('account')
+      .delete()
+      .eq('id', accountToDelete.id)
+
+    if (error) {
+      console.error('Error deleting account:', error)
+      alert('Failed to delete account. Please try again.')
+    } else {
+      // Remove the account from the list
+      setAccounts(accounts.filter(acc => acc.id !== accountToDelete.id))
+      setDeleteModalOpen(false)
+      setAccountToDelete(null)
+      router.refresh()
+    }
+    setDeleting(false)
+  }
+
+  const getAccountName = (account: Account): string => {
+    if (account.profiledata?.user?.username) {
+      return `@${account.profiledata.user.username}`
+    }
+    if (account.profiledata?.user?.full_name) {
+      return account.profiledata.user.full_name
+    }
+    if (account.url) {
+      try {
+        const url = new URL(account.url)
+        const pathParts = url.pathname.split('/').filter(Boolean)
+        return pathParts[pathParts.length - 1] || account.platform
+      } catch {
+        return account.platform
+      }
+    }
+    return account.platform
+  }
+
+  const getAccountBio = (account: Account): string => {
+    if (account.profiledata?.user?.biography) {
+      return account.profiledata.user.biography
+    }
+    return 'No bio available'
+  }
+
+  const getAccountProfilePicture = (account: Account): string => {
+    const avatarUrl = account.profiledata?.user?.profile_pic_url_hd || account.profiledata?.user?.profile_pic_url
+    if (avatarUrl) {
+      // Use image proxy to bypass CORS issues (same as dropdown)
+      return `/api/image-proxy?url=${encodeURIComponent(avatarUrl)}`
+    }
+    // Default placeholder
+    return '/images/user-avatar-80.png'
+  }
+
+
   return (
     <div className="grow">
-
       {/* Panel body */}
       <div className="p-6">
-        <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-5">Connected Apps</h2>
+        <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-5">My accounts</h2>
 
-        {/* General */}
-        <div className="mb-6">
-          {/* Filters */}
-          <div className="mb-4 border-b border-gray-200 dark:border-gray-700/60">
-            <ul className="text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
-              <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                <a className="text-violet-500 whitespace-nowrap" href="#0">View All</a>
-              </li>
-              <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                <a className="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 whitespace-nowrap" href="#0">Utility</a>
-              </li>
-              <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                <a className="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 whitespace-nowrap" href="#0">Marketing</a>
-              </li>
-              <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                <a className="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 whitespace-nowrap" href="#0">Development</a>
-              </li>
-            </ul>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-gray-500 dark:text-gray-400">Loading accounts...</div>
           </div>
-        </div>
-
-        {/* Connected Apps cards */}
-        <section className="pb-6 border-b border-gray-200 dark:border-gray-700/60">
-          <div className="grid grid-cols-12 gap-6">
-            {/* Card 1 */}
-            <div className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full shrink-0 bg-violet-500 mr-3">
-                      <svg className="w-10 h-10 fill-current text-white" viewBox="0 0 40 40">
-                        <path d="M26.946 18.005a.583.583 0 00-.53-.34h-6.252l.985-3.942a.583.583 0 00-1.008-.52l-7 8.167a.583.583 0 00.442.962h6.252l-.984 3.943a.583.583 0 001.008.52l7-8.167a.583.583 0 00.087-.623z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">MaterialStack</h3>
-                  </header>
-                  <div className="text-sm">Lorem ipsum dolor sit amet eiusmod sed do eiusmod tempor.</div>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-4">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="flex space-x-3">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M14.14 9.585a2.5 2.5 0 00-3.522 3.194c-.845.63-1.87.97-2.924.971a4.979 4.979 0 01-1.113-.135 4.436 4.436 0 01-1.343 1.682 6.91 6.91 0 006.9-1.165 2.5 2.5 0 002-4.547h.002zM10.125 2.188a2.5 2.5 0 10-.4 2.014 5.027 5.027 0 012.723 3.078c.148-.018.297-.028.446-.03a4.5 4.5 0 011.7.334 7.023 7.023 0 00-4.469-5.396zM4.663 10.5a2.49 2.49 0 00-1.932-1.234 4.624 4.624 0 01-.037-.516 4.97 4.97 0 011.348-3.391 4.456 4.456 0 01-.788-2.016A6.989 6.989 0 00.694 8.75c.004.391.04.781.11 1.166a2.5 2.5 0 103.86.584z" />
-                        </svg>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">4K+</div>
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z" />
-                        </svg>
-                        <div className="text-sm text-yellow-600">4.7</div>
-                      </div>
-                    </div>
-                    {/* Right side */}
-                    <button className="btn-sm border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm flex items-center">
-                      <svg className="w-3 h-3 shrink-0 fill-current text-green-500 mr-2" viewBox="0 0 12 12">
-                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
-                      </svg>
-                      <span>Connected</span>
-                    </button>
-                  </div>
-                </footer>
-              </div>
-            </div>
-            {/* Card 2 */}
-            <div className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full shrink-0 bg-green-500 mr-3">
-                      <svg className="w-10 h-10 fill-current text-white" viewBox="0 0 40 40">
-                        <path d="M26.946 18.005a.583.583 0 00-.53-.34h-6.252l.985-3.942a.583.583 0 00-1.008-.52l-7 8.167a.583.583 0 00.442.962h6.252l-.984 3.943a.583.583 0 001.008.52l7-8.167a.583.583 0 00.087-.623z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">MaterialStack</h3>
-                  </header>
-                  <div className="text-sm">Lorem ipsum dolor sit amet eiusmod sed do eiusmod tempor.</div>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-4">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="flex space-x-3">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M14.14 9.585a2.5 2.5 0 00-3.522 3.194c-.845.63-1.87.97-2.924.971a4.979 4.979 0 01-1.113-.135 4.436 4.436 0 01-1.343 1.682 6.91 6.91 0 006.9-1.165 2.5 2.5 0 002-4.547h.002zM10.125 2.188a2.5 2.5 0 10-.4 2.014 5.027 5.027 0 012.723 3.078c.148-.018.297-.028.446-.03a4.5 4.5 0 011.7.334 7.023 7.023 0 00-4.469-5.396zM4.663 10.5a2.49 2.49 0 00-1.932-1.234 4.624 4.624 0 01-.037-.516 4.97 4.97 0 011.348-3.391 4.456 4.456 0 01-.788-2.016A6.989 6.989 0 00.694 8.75c.004.391.04.781.11 1.166a2.5 2.5 0 103.86.584z" />
-                        </svg>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">4K+</div>
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z" />
-                        </svg>
-                        <div className="text-sm text-yellow-600">4.7</div>
-                      </div>
-                    </div>
-                    {/* Right side */}
-                    <button className="btn-sm border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm flex items-center">
-                      <svg className="w-3 h-3 shrink-0 fill-current text-green-500 mr-2" viewBox="0 0 12 12">
-                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
-                      </svg>
-                      <span>Connected</span>
-                    </button>
-                  </div>
-                </footer>
-              </div>
-            </div>
-            {/* Card 3 */}
-            <div className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full shrink-0 bg-sky-500 mr-3">
-                      <svg className="w-10 h-10 fill-current text-white" viewBox="0 0 40 40">
-                        <path d="M26.946 18.005a.583.583 0 00-.53-.34h-6.252l.985-3.942a.583.583 0 00-1.008-.52l-7 8.167a.583.583 0 00.442.962h6.252l-.984 3.943a.583.583 0 001.008.52l7-8.167a.583.583 0 00.087-.623z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">MaterialStack</h3>
-                  </header>
-                  <div className="text-sm">Lorem ipsum dolor sit amet eiusmod sed do eiusmod tempor.</div>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-4">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="flex space-x-3">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M14.14 9.585a2.5 2.5 0 00-3.522 3.194c-.845.63-1.87.97-2.924.971a4.979 4.979 0 01-1.113-.135 4.436 4.436 0 01-1.343 1.682 6.91 6.91 0 006.9-1.165 2.5 2.5 0 002-4.547h.002zM10.125 2.188a2.5 2.5 0 10-.4 2.014 5.027 5.027 0 012.723 3.078c.148-.018.297-.028.446-.03a4.5 4.5 0 011.7.334 7.023 7.023 0 00-4.469-5.396zM4.663 10.5a2.49 2.49 0 00-1.932-1.234 4.624 4.624 0 01-.037-.516 4.97 4.97 0 011.348-3.391 4.456 4.456 0 01-.788-2.016A6.989 6.989 0 00.694 8.75c.004.391.04.781.11 1.166a2.5 2.5 0 103.86.584z" />
-                        </svg>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">4K+</div>
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z" />
-                        </svg>
-                        <div className="text-sm text-yellow-600">4.7</div>
-                      </div>
-                    </div>
-                    {/* Right side */}
-                    <button className="btn-sm border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm flex items-center">
-                      <svg className="w-3 h-3 shrink-0 fill-current text-green-500 mr-2" viewBox="0 0 12 12">
-                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
-                      </svg>
-                      <span>Connected</span>
-                    </button>
-                  </div>
-                </footer>
-              </div>
-            </div>
-            {/* Card 4 */}
-            <div className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full shrink-0 bg-red-500 mr-3">
-                      <svg className="w-10 h-10 fill-current text-white" viewBox="0 0 40 40">
-                        <path d="M26.946 18.005a.583.583 0 00-.53-.34h-6.252l.985-3.942a.583.583 0 00-1.008-.52l-7 8.167a.583.583 0 00.442.962h6.252l-.984 3.943a.583.583 0 001.008.52l7-8.167a.583.583 0 00.087-.623z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">MaterialStack</h3>
-                  </header>
-                  <div className="text-sm">Lorem ipsum dolor sit amet eiusmod sed do eiusmod tempor.</div>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-4">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="flex space-x-3">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M14.14 9.585a2.5 2.5 0 00-3.522 3.194c-.845.63-1.87.97-2.924.971a4.979 4.979 0 01-1.113-.135 4.436 4.436 0 01-1.343 1.682 6.91 6.91 0 006.9-1.165 2.5 2.5 0 002-4.547h.002zM10.125 2.188a2.5 2.5 0 10-.4 2.014 5.027 5.027 0 012.723 3.078c.148-.018.297-.028.446-.03a4.5 4.5 0 011.7.334 7.023 7.023 0 00-4.469-5.396zM4.663 10.5a2.49 2.49 0 00-1.932-1.234 4.624 4.624 0 01-.037-.516 4.97 4.97 0 011.348-3.391 4.456 4.456 0 01-.788-2.016A6.989 6.989 0 00.694 8.75c.004.391.04.781.11 1.166a2.5 2.5 0 103.86.584z" />
-                        </svg>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">4K+</div>
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z" />
-                        </svg>
-                        <div className="text-sm text-yellow-600">4.7</div>
-                      </div>
-                    </div>
-                    {/* Right side */}
-                    <button className="btn-sm border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm flex items-center">
-                      <svg className="w-3 h-3 shrink-0 fill-current text-green-500 mr-2" viewBox="0 0 12 12">
-                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
-                      </svg>
-                      <span>Connected</span>
-                    </button>
-                  </div>
-                </footer>
-              </div>
-            </div>
-            {/* Card 5 */}
-            <div className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full shrink-0 bg-yellow-500 mr-3">
-                      <svg className="w-10 h-10 fill-current text-white" viewBox="0 0 40 40">
-                        <path d="M26.946 18.005a.583.583 0 00-.53-.34h-6.252l.985-3.942a.583.583 0 00-1.008-.52l-7 8.167a.583.583 0 00.442.962h6.252l-.984 3.943a.583.583 0 001.008.52l7-8.167a.583.583 0 00.087-.623z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">MaterialStack</h3>
-                  </header>
-                  <div className="text-sm">Lorem ipsum dolor sit amet eiusmod sed do eiusmod tempor.</div>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-4">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="flex space-x-3">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M14.14 9.585a2.5 2.5 0 00-3.522 3.194c-.845.63-1.87.97-2.924.971a4.979 4.979 0 01-1.113-.135 4.436 4.436 0 01-1.343 1.682 6.91 6.91 0 006.9-1.165 2.5 2.5 0 002-4.547h.002zM10.125 2.188a2.5 2.5 0 10-.4 2.014 5.027 5.027 0 012.723 3.078c.148-.018.297-.028.446-.03a4.5 4.5 0 011.7.334 7.023 7.023 0 00-4.469-5.396zM4.663 10.5a2.49 2.49 0 00-1.932-1.234 4.624 4.624 0 01-.037-.516 4.97 4.97 0 011.348-3.391 4.456 4.456 0 01-.788-2.016A6.989 6.989 0 00.694 8.75c.004.391.04.781.11 1.166a2.5 2.5 0 103.86.584z" />
-                        </svg>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">4K+</div>
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z" />
-                        </svg>
-                        <div className="text-sm text-yellow-600">4.7</div>
-                      </div>
-                    </div>
-                    {/* Right side */}
-                    <button className="btn-sm border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm flex items-center">
-                      <svg className="w-3 h-3 shrink-0 fill-current text-green-500 mr-2" viewBox="0 0 12 12">
-                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
-                      </svg>
-                      <span>Connected</span>
-                    </button>
-                  </div>
-                </footer>
-              </div>
-            </div>
-            {/* Card 6 */}
-            <div className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full shrink-0 bg-gray-400 mr-3">
-                      <svg className="w-10 h-10 fill-current text-white" viewBox="0 0 40 40">
-                        <path d="M26.946 18.005a.583.583 0 00-.53-.34h-6.252l.985-3.942a.583.583 0 00-1.008-.52l-7 8.167a.583.583 0 00.442.962h6.252l-.984 3.943a.583.583 0 001.008.52l7-8.167a.583.583 0 00.087-.623z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">MaterialStack</h3>
-                  </header>
-                  <div className="text-sm">Lorem ipsum dolor sit amet eiusmod sed do eiusmod tempor.</div>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-4">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="flex space-x-3">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M14.14 9.585a2.5 2.5 0 00-3.522 3.194c-.845.63-1.87.97-2.924.971a4.979 4.979 0 01-1.113-.135 4.436 4.436 0 01-1.343 1.682 6.91 6.91 0 006.9-1.165 2.5 2.5 0 002-4.547h.002zM10.125 2.188a2.5 2.5 0 10-.4 2.014 5.027 5.027 0 012.723 3.078c.148-.018.297-.028.446-.03a4.5 4.5 0 011.7.334 7.023 7.023 0 00-4.469-5.396zM4.663 10.5a2.49 2.49 0 00-1.932-1.234 4.624 4.624 0 01-.037-.516 4.97 4.97 0 011.348-3.391 4.456 4.456 0 01-.788-2.016A6.989 6.989 0 00.694 8.75c.004.391.04.781.11 1.166a2.5 2.5 0 103.86.584z" />
-                        </svg>
-                        <div className="text-sm text-gray-500 dark:text-gray-300">4K+</div>
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <svg className="shrink-0 fill-current mr-1.5" width="16" height="16" viewBox="0 0 16 16">
-                          <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z" />
-                        </svg>
-                        <div className="text-sm text-yellow-600">4.7</div>
-                      </div>
-                    </div>
-                    {/* Right side */}
-                    <button className="btn-sm border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm flex items-center">
-                      <svg className="w-3 h-3 shrink-0 fill-current text-green-500 mr-2" viewBox="0 0 12 12">
-                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z" />
-                      </svg>
-                      <span>Connected</span>
-                    </button>
-                  </div>
-                </footer>
-              </div>
-            </div>
+        ) : accounts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="text-gray-500 dark:text-gray-400 mb-4">No accounts found</div>
+            <div className="text-sm text-gray-400 dark:text-gray-500">Add an account to get started</div>
           </div>
-        </section>
-
-        {/* Trending Categories cards */}
-        <section>
-          <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold mt-6 mb-5">Trending Categories</h3>
-          <div className="grid grid-cols-12 gap-6">
-            {/* Card 1 */}
-            <div className="col-span-full xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold mb-1">Programming</h3>
-                  </header>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-2">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="text-sm text-gray-500 dark:text-gray-400 italic">400+ Apps</div>
-                    {/* Right side */}
-                    <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Explore -&gt;</a>
+        ) : (
+          <section className="pb-6">
+            <div className="grid grid-cols-12 gap-6">
+              {accounts.map((account) => {
+                const profilePicture = getAccountProfilePicture(account)
+                
+                return (
+                  <div
+                    key={account.id}
+                    className="col-span-full xl:col-span-6 2xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg"
+                  >
+                    {/* Card content */}
+                    <div className="flex flex-col h-full p-5">
+                      <div className="grow">
+                        <header className="flex items-center mb-4">
+                          <div className="w-10 h-10 rounded-full shrink-0 mr-3 overflow-hidden bg-gray-200 dark:bg-gray-700">
+                            <img
+                              className="w-10 h-10 rounded-full object-cover"
+                              src={profilePicture}
+                              alt={getAccountName(account)}
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                e.currentTarget.src = '/images/user-avatar-80.png'
+                              }}
+                            />
+                          </div>
+                          <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold">
+                            {getAccountName(account)}
+                          </h3>
+                        </header>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          {getAccountBio(account)}
+                        </div>
+                      </div>
+                      {/* Card footer */}
+                      <footer className="mt-4">
+                        <div className="flex justify-end">
+                          <button
+                            onClick={() => handleDeleteClick(account)}
+                            className="btn-sm bg-red-500 hover:bg-red-600 text-white"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </footer>
+                    </div>
                   </div>
-                </footer>
-              </div>
+                )
+              })}
             </div>
-            {/* Card 2 */}
-            <div className="col-span-full xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold mb-1">Digital Marketing</h3>
-                  </header>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-2">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="text-sm text-gray-500 dark:text-gray-400 italic">320+ Apps</div>
-                    {/* Right side */}
-                    <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Explore -&gt;</a>
-                  </div>
-                </footer>
-              </div>
-            </div>
-            {/* Card 3 */}
-            <div className="col-span-full xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-lg">
-              {/* Card content */}
-              <div className="flex flex-col h-full p-5">
-                <div className="grow">
-                  <header>
-                    <h3 className="text-lg text-gray-800 dark:text-gray-100 font-semibold mb-1">Music & Audio</h3>
-                  </header>
-                </div>
-                {/* Card footer */}
-                <footer className="mt-2">
-                  <div className="flex flex-wrap justify-between items-center">
-                    {/* Left side */}
-                    <div className="text-sm text-gray-500 dark:text-gray-400 italic">270+ Apps</div>
-                    {/* Right side */}
-                    <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Explore -&gt;</a>
-                  </div>
-                </footer>
-              </div>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
       </div>
 
+      {/* Delete Confirmation Modal */}
+      <ModalBasic
+        title="Remove Account"
+        isOpen={deleteModalOpen}
+        setIsOpen={setDeleteModalOpen}
+      >
+        <div className="px-5 py-4">
+          <div className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            Are you sure you want to remove this account? This action cannot be undone.
+          </div>
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={() => {
+                setDeleteModalOpen(false)
+                setAccountToDelete(null)
+              }}
+              className="btn dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300"
+              disabled={deleting}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmDelete}
+              className="btn bg-red-500 hover:bg-red-600 text-white"
+              disabled={deleting}
+            >
+              {deleting ? 'Removing...' : 'Remove'}
+            </button>
+          </div>
+        </div>
+      </ModalBasic>
     </div>
   )
 }
