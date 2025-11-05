@@ -250,13 +250,6 @@ export default function Sidebar({
                             </SidebarLink>
                           </li>
                           <li className="mb-1 last:mb-0">
-                            <SidebarLink href="/utility/changelog">
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Changelog
-                              </span>
-                            </SidebarLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
                             <button
                               onClick={handleSignOut}
                               className="block text-red-500 dark:text-red-400 transition truncate hover:text-red-600 dark:hover:text-red-300 w-full text-left cursor-pointer"

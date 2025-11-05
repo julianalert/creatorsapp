@@ -32,7 +32,7 @@ export default function Roadmap() {
       </div>
 
       <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] mx-auto">
-        <div className="max-w-3xl m-auto">
+        <div className="max-w-4xl">
 
           {/* Filters */}
           <div className="xl:pl-32 xl:-translate-x-16 mb-2">
@@ -61,18 +61,18 @@ export default function Roadmap() {
             <article className="pt-6">
               <div className="xl:flex">
                 <div className="w-32 shrink-0">
-                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">8 July, 2024</div>
+                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">December 15, 2024</div>
                 </div>
                 <div className="grow pb-6 border-b border-gray-200 dark:border-gray-700/60">
                   <header>
-                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Released version 2.0</h2>
+                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Multi-Account Management Released 🎉</h2>
                     <div className="flex flex-nowrap items-center space-x-2 mb-4">
                       <div className="flex items-center">
                         <a className="block mr-2 shrink-0" href="#0">
                           <Image className="rounded-full border-2 border-white dark:border-gray-800 box-content" src={User07} width={32} height={32} alt="User 04" />
                         </a>
                         <a className="block text-sm font-semibold text-gray-800 dark:text-gray-100" href="#0">
-                          Simona Lürwer
+                          Alex Thompson
                         </a>
                       </div>
                       <div className="text-gray-400 dark:text-gray-600">·</div>
@@ -82,75 +82,13 @@ export default function Roadmap() {
                     </div>
                   </header>
                   <div className="space-y-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
-                  </div>
-                </div>
-              </div>
-            </article>
-            {/* Post */}
-            <article className="pt-6">
-              <div className="xl:flex">
-                <div className="w-32 shrink-0">
-                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">6 July, 2024</div>
-                </div>
-                <div className="grow pb-6 border-b border-gray-200 dark:border-gray-700/60">
-                  <header>
-                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Feature Name is now public 🎉</h2>
-                    <div className="flex flex-nowrap items-center space-x-2 mb-4">
-                      <div className="flex items-center">
-                        <a className="block mr-2 shrink-0" href="#0">
-                          <Image className="rounded-full border-2 border-white dark:border-gray-800 box-content" src={User02} width={32} height={32} alt="User 04" />
-                        </a>
-                        <a className="block text-sm font-semibold text-gray-800 dark:text-gray-100" href="#0">
-                          Danielle Cohen
-                        </a>
-                      </div>
-                      <div className="text-gray-400 dark:text-gray-600">·</div>
-                      <div>
-                        <div className="text-xs inline-flex font-medium bg-yellow-500/20 text-yellow-700 rounded-full text-center px-2.5 py-1">Announcement</div>
-                      </div>
-                    </div>
-                  </header>
-                  <div className="space-y-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
-                  </div>
-                </div>
-              </div>
-            </article>
-            {/* Post */}
-            <article className="pt-6">
-              <div className="xl:flex">
-                <div className="w-32 shrink-0">
-                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">4 July, 2024</div>
-                </div>
-                <div className="grow pb-6 border-b border-gray-200 dark:border-gray-700/60">
-                  <header>
-                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Bugs fixed, issues, and more</h2>
-                    <div className="flex flex-nowrap items-center space-x-2 mb-4">
-                      <div className="flex items-center">
-                        <a className="block mr-2 shrink-0" href="#0">
-                          <Image className="rounded-full border-2 border-white dark:border-gray-800 box-content" src={User01} width={32} height={32} alt="User 04" />
-                        </a>
-                        <a className="block text-sm font-semibold text-gray-800 dark:text-gray-100" href="#0">
-                          Patrick Kumar
-                        </a>
-                      </div>
-                      <div className="text-gray-400 dark:text-gray-600">·</div>
-                      <div>
-                        <div className="text-xs inline-flex font-medium bg-red-500/20 text-red-700 rounded-full text-center px-2.5 py-1">Bug Fix</div>
-                      </div>
-                    </div>
-                  </header>
-                  <div className="space-y-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
+                    <p>We're excited to announce the launch of multi-account management! You can now connect and manage multiple social media accounts (Instagram, TikTok, YouTube) from a single dashboard.</p>
+                    <p>This release includes seamless account switching, unified account overview, and the ability to manage all your social media accounts in one place.</p>
                     <ul className="list-disc list-inside space-y-1">
-                      <li>E-commerce: Better lorem ipsum generator.</li>
-                      <li>Booking: Lorem ipsum post generator.</li>
-                      <li>Retail: Better lorem ipsum generator.</li>
-                      <li>Services: Better lorem ipsum generator.</li>
+                      <li>Connect multiple accounts across different platforms</li>
+                      <li>Quick account switcher in the navigation bar</li>
+                      <li>View all connected accounts in Settings → My accounts</li>
+                      <li>Easy account removal with confirmation dialogs</li>
                     </ul>
                   </div>
                 </div>
@@ -160,18 +98,93 @@ export default function Roadmap() {
             <article className="pt-6">
               <div className="xl:flex">
                 <div className="w-32 shrink-0">
-                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">2 July, 2024</div>
+                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">December 10, 2024</div>
                 </div>
                 <div className="grow pb-6 border-b border-gray-200 dark:border-gray-700/60">
                   <header>
-                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Thanks, everyone 🙌</h2>
+                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Enhanced Account Settings & Security 🔒</h2>
                     <div className="flex flex-nowrap items-center space-x-2 mb-4">
                       <div className="flex items-center">
                         <a className="block mr-2 shrink-0" href="#0">
                           <Image className="rounded-full border-2 border-white dark:border-gray-800 box-content" src={User02} width={32} height={32} alt="User 04" />
                         </a>
                         <a className="block text-sm font-semibold text-gray-800 dark:text-gray-100" href="#0">
-                          Danielle Cohen
+                          Sarah Chen
+                        </a>
+                      </div>
+                      <div className="text-gray-400 dark:text-gray-600">·</div>
+                      <div>
+                        <div className="text-xs inline-flex font-medium bg-blue-500/20 text-blue-700 rounded-full text-center px-2.5 py-1">Security</div>
+                      </div>
+                    </div>
+                  </header>
+                  <div className="space-y-3">
+                    <p>We've completely redesigned the account settings section to provide better security and a more streamlined user experience.</p>
+                    <p>New features include improved profile picture display, better account management, and enhanced security measures for your connected accounts.</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>Streamlined General settings with email and password management</li>
+                      <li>Secure account removal with confirmation dialogs</li>
+                      <li>Improved profile picture rendering from connected accounts</li>
+                      <li>Better error handling throughout the settings pages</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {/* Post */}
+            <article className="pt-6">
+              <div className="xl:flex">
+                <div className="w-32 shrink-0">
+                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">December 5, 2024</div>
+                </div>
+                <div className="grow pb-6 border-b border-gray-200 dark:border-gray-700/60">
+                  <header>
+                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">New Feedback System & Bug Fixes 🐛</h2>
+                    <div className="flex flex-nowrap items-center space-x-2 mb-4">
+                      <div className="flex items-center">
+                        <a className="block mr-2 shrink-0" href="#0">
+                          <Image className="rounded-full border-2 border-white dark:border-gray-800 box-content" src={User01} width={32} height={32} alt="User 04" />
+                        </a>
+                        <a className="block text-sm font-semibold text-gray-800 dark:text-gray-100" href="#0">
+                          Marcus Johnson
+                        </a>
+                      </div>
+                      <div className="text-gray-400 dark:text-gray-600">·</div>
+                      <div>
+                        <div className="text-xs inline-flex font-medium bg-red-500/20 text-red-700 rounded-full text-center px-2.5 py-1">Bug Fix</div>
+                      </div>
+                    </div>
+                  </header>
+                  <div className="space-y-3">
+                    <p>We've introduced a new feedback system and fixed several bugs reported by our users.</p>
+                    <p>You can now easily share your feedback and help us improve the platform. All feedback is securely stored and helps us prioritize future improvements.</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>New feedback form with rating system (1-5 scale)</li>
+                      <li>Fixed account profile picture display issues</li>
+                      <li>Improved sidebar navigation responsiveness</li>
+                      <li>Enhanced FAQ section with better readability</li>
+                      <li>Fixed logout functionality in sidebar</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {/* Post */}
+            <article className="pt-6">
+              <div className="xl:flex">
+                <div className="w-32 shrink-0">
+                  <div className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 xl:leading-8">November 20, 2024</div>
+                </div>
+                <div className="grow pb-6 border-b border-gray-200 dark:border-gray-700/60">
+                  <header>
+                    <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-3">Instagram Integration Launched! 🚀</h2>
+                    <div className="flex flex-nowrap items-center space-x-2 mb-4">
+                      <div className="flex items-center">
+                        <a className="block mr-2 shrink-0" href="#0">
+                          <Image className="rounded-full border-2 border-white dark:border-gray-800 box-content" src={User02} width={32} height={32} alt="User 04" />
+                        </a>
+                        <a className="block text-sm font-semibold text-gray-800 dark:text-gray-100" href="#0">
+                          Emma Rodriguez
                         </a>
                       </div>
                       <div className="text-gray-400 dark:text-gray-600">·</div>
@@ -181,8 +194,14 @@ export default function Roadmap() {
                     </div>
                   </header>
                   <div className="space-y-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
+                    <p>We're thrilled to announce Instagram integration! You can now connect your Instagram account and manage it alongside your other social media accounts.</p>
+                    <p>This integration allows you to view your Instagram profile information, account details, and manage your Instagram account from our unified dashboard.</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>Seamless Instagram account connection</li>
+                      <li>Display profile pictures and bios</li>
+                      <li>Secure authentication with Instagram API</li>
+                      <li>Account switching between platforms</li>
+                    </ul>
                   </div>
                 </div>
               </div>
