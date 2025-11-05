@@ -54,6 +54,30 @@ export default function AppProvider({
 
   useEffect(() => {
     fetchAccounts()
+    
+    // Set sidebar expanded based on screen size on mount
+    const checkScreenSize = () => {
+      if (typeof window !== 'undefined') {
+        const isLargeScreen = window.innerWidth >= 1024 // lg breakpoint
+        setSidebarExpanded(isLargeScreen)
+      }
+    }
+    
+    checkScreenSize()
+  }, [])
+
+  useEffect(() => {
+    // Listen for resize events to update sidebar state on large screens
+    const handleResize = () => {
+      const isLargeScreen = window.innerWidth >= 1024
+      // Auto-expand on large screens when window is resized to large size
+      if (isLargeScreen) {
+        setSidebarExpanded(true)
+      }
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const fetchAccounts = async () => {
