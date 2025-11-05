@@ -174,7 +174,7 @@ export default function AppsPanel() {
                         <div className="flex justify-end">
                           <button
                             onClick={() => handleDeleteClick(account)}
-                            className="btn-sm bg-red-500 hover:bg-red-600 text-white"
+                            className="btn-sm bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                           >
                             Remove
                           </button>
