@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useAppProvider } from '@/app/app-provider'
-import { useSelectedLayoutSegments } from 'next/navigation'
+import { useSelectedLayoutSegments, useRouter } from 'next/navigation'
 import { useWindowWidth } from '@/components/utils/use-window-width'
 import SidebarLinkGroup from './sidebar-link-group'
 import SidebarLink from './sidebar-link'
 import Logo from './logo'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Sidebar({
   variant = 'default',
@@ -18,6 +19,15 @@ export default function Sidebar({
   const segments = useSelectedLayoutSegments()  
   const breakpoint = useWindowWidth();
   const expandOnly = !sidebarExpanded && breakpoint && (breakpoint >= 1024 && breakpoint < 1536)
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    setSidebarOpen(false)
+    router.push('/signin')
+    router.refresh()
+  }
 
   // close on click outside
   useEffect(() => {
@@ -182,13 +192,6 @@ export default function Sidebar({
                               </span>
                             </SidebarLink>
                           </li>
-                          <li className="mb-1 last:mb-0">
-                            <SidebarLink href="/settings/feedback">
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Give Feedback
-                              </span>
-                            </SidebarLink>
-                          </li>
                         </ul>
                       </div>
                     </>
@@ -233,20 +236,6 @@ export default function Sidebar({
                       <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
                         <ul className={`pl-8 mt-1 ${!open && 'hidden'}`}>
                           <li className="mb-1 last:mb-0">
-                            <SidebarLink href="/utility/changelog">
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Changelog
-                              </span>
-                            </SidebarLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <SidebarLink href="/utility/roadmap">
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Roadmap
-                              </span>
-                            </SidebarLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
                             <SidebarLink href="/utility/faqs">
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 FAQs
@@ -254,18 +243,28 @@ export default function Sidebar({
                             </SidebarLink>
                           </li>
                           <li className="mb-1 last:mb-0">
-                            <SidebarLink href="/utility/empty-state">
+                            <SidebarLink href="/utility/feedback">
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Empty State
+                                Share feedback
                               </span>
                             </SidebarLink>
                           </li>
                           <li className="mb-1 last:mb-0">
-                            <SidebarLink href="/utility/404">
+                            <SidebarLink href="/utility/changelog">
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                404
+                                Changelog
                               </span>
                             </SidebarLink>
+                          </li>
+                          <li className="mb-1 last:mb-0">
+                            <button
+                              onClick={handleSignOut}
+                              className="block text-red-500 dark:text-red-400 transition truncate hover:text-red-600 dark:hover:text-red-300 w-full text-left cursor-pointer"
+                            >
+                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                Log out
+                              </span>
+                            </button>
                           </li>
                         </ul>
                       </div>
