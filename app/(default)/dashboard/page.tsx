@@ -10,6 +10,7 @@ import DashboardCard06 from './dashboard-card-06'
 import DashboardCard07 from './dashboard-card-07'
 import DashboardCard08 from './dashboard-card-08'
 import DashboardCard09 from './dashboard-card-09'
+import DashboardCard10 from './dashboard-card-10'
 
 export default function Dashboard() {
   return (
@@ -48,6 +49,8 @@ export default function Dashboard() {
         <DashboardCard08 />
         {/* Stacked bar chart (Sales VS Refunds) */}
         <DashboardCard09 />
+        {/* Posting activity chart */}
+        <DashboardCard10 />
 
       </div>      
     </div>
