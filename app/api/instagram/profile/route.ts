@@ -1,13 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/supabase/api-auth'
+
+/**
+ * Validates Instagram handle format
+ * Instagram handles: 1-30 characters, alphanumeric, underscores, periods
+ */
+function isValidInstagramHandle(handle: string): boolean {
+  if (!handle || handle.length < 1 || handle.length > 30) {
+    return false
+  }
+  // Instagram handles can contain letters, numbers, underscores, and periods
+  return /^[a-zA-Z0-9._]+$/.test(handle)
+}
 
 export async function GET(request: NextRequest) {
   try {
+    // Require authentication
+    const { user, error: authError } = await requireAuth(request)
+    if (!user || authError) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const searchParams = request.nextUrl.searchParams
     const handle = searchParams.get('handle')
 
     if (!handle) {
       return NextResponse.json(
         { error: 'Instagram handle is required' },
+        { status: 400 }
+      )
+    }
+
+    // Validate handle format
+    if (!isValidInstagramHandle(handle)) {
+      return NextResponse.json(
+        { error: 'Invalid Instagram handle format' },
         { status: 400 }
       )
     }

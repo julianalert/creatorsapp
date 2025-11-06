@@ -41,7 +41,7 @@ export default function MailItem({ mail }: { mail: Mail }) {
       </header>
       {/* Body */}
       {open &&
-        <div className="text-sm text-gray-800 dark:text-gray-100 mt-4 space-y-2" dangerouslySetInnerHTML={{ __html: mail.message }}></div>
+        <div className="text-sm text-gray-800 dark:text-gray-100 mt-4 space-y-2 whitespace-pre-wrap">{mail.message}</div>
       }
     </div>
   )

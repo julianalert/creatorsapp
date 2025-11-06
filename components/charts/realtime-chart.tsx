@@ -120,7 +120,7 @@ export default function RealtimeChart({
       const currentValue = data.datasets[0].data[data.datasets[0].data.length - 1] || 0
       const previousValue = data.datasets[0].data[data.datasets[0].data.length - 2] || 0
       const diff = ((+currentValue - +previousValue) / +previousValue) * 100
-      chartValue.current.innerHTML = currentValue.toString()
+      chartValue.current.textContent = currentValue.toString()
       if (diff < 0) {
         chartDeviation.current.style.backgroundColor = adjustColorOpacity(getCssVariable('--color-red-500'), 0.2)
         chartDeviation.current.style.color = getCssVariable('--color-red-700')
@@ -128,7 +128,7 @@ export default function RealtimeChart({
         chartDeviation.current.style.backgroundColor = adjustColorOpacity(getCssVariable('--color-green-500'), 0.2)
         chartDeviation.current.style.color = getCssVariable('--color-green-700')
       }
-      chartDeviation.current.innerHTML = `${diff > 0 ? '+' : ''}${diff.toFixed(2)}%`
+      chartDeviation.current.textContent = `${diff > 0 ? '+' : ''}${diff.toFixed(2)}%`
     }
   }, [data])
   

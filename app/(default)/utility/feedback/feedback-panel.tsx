@@ -43,12 +43,15 @@ export default function FeedbackPanel() {
         return
       }
 
+      // Server-side validation: ensure feedback text doesn't exceed max length
+      const sanitizedFeedbackText = feedbackText.trim().slice(0, 5000) || null
+
       const { error: insertError } = await supabase
         .from('feedback')
         .insert({
           user_id: user.id,
           rating: rating,
-          feedback_text: feedbackText || null,
+          feedback_text: sanitizedFeedbackText,
         })
 
       if (insertError) {
@@ -138,8 +141,20 @@ export default function FeedbackPanel() {
             rows={4}
             placeholder="I really enjoy…"
             value={feedbackText}
-            onChange={(e) => setFeedbackText(e.target.value)}
+            onChange={(e) => {
+              // Limit input to 5000 characters
+              const value = e.target.value
+              if (value.length <= 5000) {
+                setFeedbackText(value)
+              }
+            }}
+            maxLength={5000}
           />
+          {feedbackText.length > 4500 && (
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {feedbackText.length}/5000 characters
+            </div>
+          )}
         </section>
       </div>
 
