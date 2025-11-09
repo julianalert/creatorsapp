@@ -22,7 +22,7 @@ export default function MeetupsPosts() {
       {/* Item 1 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb01}
@@ -44,7 +44,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Mon 27 Dec, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">Silicon Valley Bootstrapper Breakfast Online for 2024</h3>
             </Link>
             <div className="text-sm">
@@ -94,7 +94,7 @@ export default function MeetupsPosts() {
       {/* Item 2 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb02}
@@ -116,7 +116,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Mon 27 Dec, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">New York &amp; New Jersey Virtual Retreat 2024</h3>
             </Link>
             <div className="text-sm">
@@ -166,7 +166,7 @@ export default function MeetupsPosts() {
       {/* Item 3 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb03}
@@ -188,7 +188,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Wed 29 Dec, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">The World of AI and Machine Learning — Open Chat</h3>
             </Link>
             <div className="text-sm">
@@ -238,7 +238,7 @@ export default function MeetupsPosts() {
       {/* Item 4 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb04}
@@ -260,7 +260,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Wed 29 Dec, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">NYC Code &amp; Coffee 2.0 @ Freehold Brooklyn</h3>
             </Link>
             <div className="text-sm">
@@ -303,7 +303,7 @@ export default function MeetupsPosts() {
       {/* Item 5 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb05}
@@ -325,7 +325,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Mon 3 Jan, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">Acme Inc. London Meetup: Women in Tech Night</h3>
             </Link>
             <div className="text-sm">
@@ -368,7 +368,7 @@ export default function MeetupsPosts() {
       {/* Item 6 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb06}
@@ -390,7 +390,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Thu 6 Jan, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">Founder Worldwide - First Meetup of 2022!</h3>
             </Link>
             <div className="text-sm">
@@ -440,7 +440,7 @@ export default function MeetupsPosts() {
       {/* Item 7 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb07}
@@ -462,7 +462,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Thu 6 Jan, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">NYC Blockchain Network - Monthly 3rd Thursday Meetup</h3>
             </Link>
             <div className="text-sm">
@@ -505,7 +505,7 @@ export default function MeetupsPosts() {
       {/* Item 8 */}
       <article className="flex bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden">
         {/* Image */}
-        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/community/meetups/post">
+        <Link className="relative block w-24 sm:w-[14rem] xl:sidebar-expanded:w-40 2xl:sidebar-expanded:w-[14rem] shrink-0" href="/creators/meetups/post">
           <Image
             className="absolute object-cover object-center w-full h-full"
             src={MeetupsThumb08}
@@ -527,7 +527,7 @@ export default function MeetupsPosts() {
         <div className="grow p-5 flex flex-col">
           <div className="grow">
             <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Fri 7 Jan, 2024</div>
-            <Link className="inline-flex mb-2" href="/community/meetups/post">
+            <Link className="inline-flex mb-2" href="/creators/meetups/post">
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">Build a Personal Brand and Boost Your Career in AI!</h3>
             </Link>
             <div className="text-sm">

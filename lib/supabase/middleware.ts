@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
   const isAuthPage = pathname.startsWith('/signin') || 
                      pathname.startsWith('/signup') || 
                      pathname.startsWith('/reset-password')
-  const isOnboardingPage = pathname.startsWith('/onboarding') || pathname.startsWith('/onboarding-')
+  const isNewPage = pathname.startsWith('/new')
   const isApiRoute = pathname.startsWith('/api/')
   const isAuthCallback = pathname.startsWith('/auth/')
 
@@ -47,7 +47,6 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     !isAuthPage &&
-    !isOnboardingPage &&
     !isApiRoute &&
     !isAuthCallback &&
     pathname !== '/'
@@ -57,24 +56,24 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Check if authenticated user has an account
+  // Check if authenticated user has submitted a website
   if (user && !isAuthPage && !isApiRoute && !isAuthCallback && pathname !== '/') {
-    // Check if user has an account in the database
-    const { data: accounts, error: accountError } = await supabase
-      .from('account')
-      .select('id')
+    // Check if user has a website in the database
+    const { data: websites, error: websiteError } = await supabase
+      .from('website')
+      .select('id, url')
       .eq('user_id', user.id)
       .limit(1)
 
-    // Only redirect if we're certain about the account status
+    // Only redirect if we're certain about the website status
     // If there's an error, don't redirect (fail open to avoid redirect loops)
-    if (!accountError && !isOnboardingPage) {
-      const hasAccount = accounts && accounts.length > 0
+    if (!websiteError && !isNewPage) {
+      const hasWebsite = Boolean(websites && websites.length > 0 && websites[0]?.url)
 
-      // If user is logged in but has no account, redirect to onboarding
-      if (!hasAccount) {
+      // If user is logged in but has no website, redirect to the new flow
+      if (!hasWebsite) {
         const url = request.nextUrl.clone()
-        url.pathname = '/onboarding'
+        url.pathname = '/new'
         const redirectResponse = NextResponse.redirect(url)
         // Copy cookies from supabaseResponse to maintain session
         supabaseResponse.cookies.getAll().forEach((cookie) => {
@@ -82,9 +81,9 @@ export async function updateSession(request: NextRequest) {
         })
         return redirectResponse
       }
-    } else if (accountError) {
+    } else if (websiteError) {
       // Log error but don't redirect (fail open)
-      console.error('Account query error in middleware:', accountError)
+      console.error('Website query error in middleware:', websiteError)
     }
   }
 

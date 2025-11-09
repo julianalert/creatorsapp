@@ -3,51 +3,38 @@
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react'
 import { useAppProvider } from '@/app/app-provider'
 
-interface Account {
+interface Website {
   id: string
-  platform: string
-  url: string | null
-  profiledata: any
+  url: string
 }
 
 export default function DropdownSwitchAccount({ align }: {
   align?: 'left' | 'right'
 }) {
-  const { accounts, selectedAccount, setSelectedAccount } = useAppProvider()
+  const { websites, selectedWebsite, setSelectedWebsite } = useAppProvider()
 
-  const handleSelectAccount = (account: Account) => {
-    setSelectedAccount(account)
-    localStorage.setItem('selectedAccountId', account.id)
-    // Trigger a custom event so other components can react to account changes
-    window.dispatchEvent(new CustomEvent('accountChanged', { detail: account }))
+  const handleSelectWebsite = (website: Website) => {
+    setSelectedWebsite(website)
+    localStorage.setItem('selectedWebsiteId', website.id)
+    // Trigger a custom event so other components can react to website changes
+    window.dispatchEvent(new CustomEvent('websiteChanged', { detail: website }))
   }
 
-  const getAccountDisplayName = (account: Account): string => {
-    if (account.profiledata?.user?.username) {
-      return `@${account.profiledata.user.username}`
+  const getWebsiteDisplayName = (website: Website): string => {
+    try {
+      const parsedUrl = new URL(website.url)
+      return parsedUrl.hostname
+    } catch {
+      return website.url
     }
-    if (account.url) {
-      try {
-        const url = new URL(account.url)
-        const pathParts = url.pathname.split('/').filter(Boolean)
-        return pathParts[pathParts.length - 1] || account.platform
-      } catch {
-        return account.platform
-      }
-    }
-    return account.platform
   }
 
-  const getAccountAvatar = (account: Account): string | null => {
-    const avatarUrl = account.profiledata?.user?.profile_pic_url || account.profiledata?.user?.profile_pic_url_hd || null
-    if (avatarUrl) {
-      // Use image proxy to bypass CORS issues
-      return `/api/image-proxy?url=${encodeURIComponent(avatarUrl)}`
-    }
-    return null
+  const getWebsiteInitial = (website: Website): string => {
+    const display = getWebsiteDisplayName(website)
+    return display.charAt(0).toUpperCase()
   }
 
-  if (accounts.length === 0) {
+  if (websites.length === 0) {
     return null
   }
 
@@ -55,24 +42,15 @@ export default function DropdownSwitchAccount({ align }: {
     <Menu as="div" className="relative inline-flex">
       <MenuButton className="inline-flex justify-center items-center group cursor-pointer">
         <div className="flex items-center truncate">
-          {selectedAccount && (
+          {selectedWebsite && (
             <>
-              {getAccountAvatar(selectedAccount) ? (
-                <img 
-                  src={getAccountAvatar(selectedAccount)!} 
-                  alt={getAccountDisplayName(selectedAccount)}
-                  className="w-8 h-8 rounded-full mr-2 object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-2">
-                  <span className="text-white text-xs font-semibold">
-                    {selectedAccount.platform.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              )}
+              <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-2">
+                <span className="text-white text-xs font-semibold">
+                  {getWebsiteInitial(selectedWebsite)}
+                </span>
+              </div>
               <span className="truncate text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-800 dark:group-hover:text-white">
-                {getAccountDisplayName(selectedAccount)}
+                {getWebsiteDisplayName(selectedWebsite)}
               </span>
               <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500" viewBox="0 0 12 12">
                 <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
@@ -93,40 +71,31 @@ export default function DropdownSwitchAccount({ align }: {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase pt-1.5 pb-2 px-4">Switch Account</div>
+        <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase pt-1.5 pb-2 px-4">Switch Website</div>
         <MenuItems as="ul" className="focus:outline-hidden max-h-64 overflow-y-auto">
-          {accounts.map((account) => (
-            <MenuItem key={account.id} as="li">
+          {websites.map((website) => (
+            <MenuItem key={website.id} as="li">
               {({ active }) => (
                 <button
-                  onClick={() => handleSelectAccount(account)}
+                  onClick={() => handleSelectWebsite(website)}
                   className={`w-full flex items-center py-2 px-4 cursor-pointer ${
                     active && 'bg-gray-50 dark:bg-gray-700/20'
-                  } ${selectedAccount?.id === account.id ? 'bg-violet-50 dark:bg-violet-900/20' : ''}`}
+                  } ${selectedWebsite?.id === website.id ? 'bg-violet-50 dark:bg-violet-900/20' : ''}`}
                 >
-                  {getAccountAvatar(account) ? (
-                    <img 
-                      src={getAccountAvatar(account)!} 
-                      alt={getAccountDisplayName(account)}
-                      className="w-8 h-8 rounded-full mr-3 object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-3">
-                      <span className="text-white text-xs font-semibold">
-                        {account.platform.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
+                  <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-3">
+                    <span className="text-white text-xs font-semibold">
+                      {getWebsiteInitial(website)}
+                    </span>
+                  </div>
                   <div className="flex-1 text-left">
                     <div className="text-sm font-medium text-gray-800 dark:text-gray-100">
-                      {getAccountDisplayName(account)}
+                      {getWebsiteDisplayName(website)}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                      {account.platform}
+                    <div className="text-xs text-gray-500 dark:text-gray-400 break-all">
+                      {website.url}
                     </div>
                   </div>
-                  {selectedAccount?.id === account.id && (
+                  {selectedWebsite?.id === website.id && (
                     <svg className="w-4 h-4 fill-current text-violet-500" viewBox="0 0 12 12">
                       <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>

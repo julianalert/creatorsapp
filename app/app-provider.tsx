@@ -3,13 +3,19 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { DateRange } from 'react-day-picker'
-import { addDays, startOfDay, endOfDay, subDays } from 'date-fns'
+import { startOfDay, endOfDay, subDays } from 'date-fns'
 
 interface Account {
   id: string
   platform: string
   url: string | null
   profiledata: any
+}
+
+interface Website {
+  id: string
+  url: string
+  status?: string | null
 }
 
 interface ContextProps {
@@ -21,6 +27,10 @@ interface ContextProps {
   setSelectedAccount: Dispatch<SetStateAction<Account | null>>
   accounts: Account[]
   setAccounts: Dispatch<SetStateAction<Account[]>>
+  selectedWebsite: Website | null
+  setSelectedWebsite: Dispatch<SetStateAction<Website | null>>
+  websites: Website[]
+  setWebsites: Dispatch<SetStateAction<Website[]>>
   dateRange: DateRange | undefined
   setDateRange: Dispatch<SetStateAction<DateRange | undefined>>
 }
@@ -34,6 +44,10 @@ const AppContext = createContext<ContextProps>({
   setSelectedAccount: (): void => {},
   accounts: [],
   setAccounts: (): void => {},
+  selectedWebsite: null,
+  setSelectedWebsite: (): void => {},
+  websites: [],
+  setWebsites: (): void => {},
   dateRange: undefined,
   setDateRange: (): void => {}
 })
@@ -47,6 +61,8 @@ export default function AppProvider({
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false)
   const [accounts, setAccounts] = useState<Account[]>([])
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
+  const [websites, setWebsites] = useState<Website[]>([])
+  const [selectedWebsite, setSelectedWebsite] = useState<Website | null>(null)
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: startOfDay(subDays(new Date(), 27)),
     to: endOfDay(new Date()),
@@ -54,6 +70,7 @@ export default function AppProvider({
 
   useEffect(() => {
     fetchAccounts()
+    fetchWebsites()
     
     // Set sidebar expanded based on screen size on mount
     const checkScreenSize = () => {
@@ -109,9 +126,49 @@ export default function AppProvider({
           : fetchedAccounts[0]
         setSelectedAccount(accountToSelect)
         localStorage.setItem('selectedAccountId', accountToSelect.id)
+      } else {
+        setSelectedAccount(null)
+        localStorage.removeItem('selectedAccountId')
       }
     } catch (error) {
       console.error('Error fetching accounts:', error)
+    }
+  }
+
+  const fetchWebsites = async () => {
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from('website')
+        .select('id, url, status')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching websites:', error)
+        return
+      }
+
+      const fetchedWebsites = data || []
+      setWebsites(fetchedWebsites)
+
+      if (fetchedWebsites.length > 0) {
+        const savedWebsiteId = localStorage.getItem('selectedWebsiteId')
+        const websiteToSelect = savedWebsiteId
+          ? fetchedWebsites.find(site => site.id === savedWebsiteId) || fetchedWebsites[0]
+          : fetchedWebsites[0]
+        setSelectedWebsite(websiteToSelect)
+        localStorage.setItem('selectedWebsiteId', websiteToSelect.id)
+      } else {
+        setSelectedWebsite(null)
+        localStorage.removeItem('selectedWebsiteId')
+      }
+    } catch (error) {
+      console.error('Error fetching websites:', error)
     }
   }
 
@@ -125,6 +182,10 @@ export default function AppProvider({
       setSelectedAccount,
       accounts,
       setAccounts,
+      selectedWebsite,
+      setSelectedWebsite,
+      websites,
+      setWebsites,
       dateRange,
       setDateRange
     }}>

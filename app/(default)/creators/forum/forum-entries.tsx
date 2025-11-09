@@ -24,7 +24,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">Share Your Startup - December 2024 - Upvote This For Maximum Visibility!</Link>
+              <Link href="/creators/forum/post">Share Your Startup - December 2024 - Upvote This For Maximum Visibility!</Link>
             </h2>
             {/* Footer */}
             <footer className="flex flex-wrap text-sm">
@@ -69,7 +69,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">Failed for the past 12 years as a tech entrepreneur. My key takeaways.</Link>
+              <Link href="/creators/forum/post">Failed for the past 12 years as a tech entrepreneur. My key takeaways.</Link>
             </h2>
             {/* Footer */}
             <footer className="flex flex-wrap text-sm">
@@ -109,7 +109,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">Besides Product Hunt, where else should I promote my new project? 🤔</Link>
+              <Link href="/creators/forum/post">Besides Product Hunt, where else should I promote my new project? 🤔</Link>
             </h2>
             {/* Footer */}
             <footer className="flex flex-wrap text-sm">
@@ -149,7 +149,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">
+              <Link href="/creators/forum/post">
                 I built and sold 2 small SaaS products and quit my job in the last two years — AMA.
               </Link>
             </h2>
@@ -191,7 +191,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">
+              <Link href="/creators/forum/post">
                 Had a full-time job, bootstrapped a side project to 7 digit ARR, now building another side project—AMA
               </Link>
             </h2>
@@ -233,7 +233,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">
+              <Link href="/creators/forum/post">
                 💸 Trade crypto, fiat, and stablecoins with Crypto.io. Low fees and incredible performance!
               </Link>
             </h2>
@@ -263,7 +263,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">Which are the main channels you use to drive traffic to your website? 📈</Link>
+              <Link href="/creators/forum/post">Which are the main channels you use to drive traffic to your website? 📈</Link>
             </h2>
             {/* Footer */}
             <footer className="flex flex-wrap text-sm">
@@ -303,7 +303,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">
+              <Link href="/creators/forum/post">
                 How to build a following on Twitter as a founder - A guide to growing your audience 🚀
               </Link>
             </h2>
@@ -345,7 +345,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">What's the best way to get started building web 3 social products?</Link>
+              <Link href="/creators/forum/post">What's the best way to get started building web 3 social products?</Link>
             </h2>
             {/* Footer */}
             <footer className="flex flex-wrap text-sm">
@@ -385,7 +385,7 @@ export default function ForumEntries() {
           <div className="grow">
             {/* Title */}
             <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              <Link href="/community/forum/post">How important is customer feedback for the improvement of a product?</Link>
+              <Link href="/creators/forum/post">How important is customer feedback for the improvement of a product?</Link>
             </h2>
             {/* Footer */}
             <footer className="flex flex-wrap text-sm">

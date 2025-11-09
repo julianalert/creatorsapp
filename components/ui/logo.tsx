@@ -5,7 +5,7 @@ export default function Logo() {
   return (
     <Link className="block cursor-pointer" href="/">
       <Image
-        src="/images/logosvg.svg"
+        src="/images/logo.svg"
         alt="Logo"
         width={32}
         height={32}

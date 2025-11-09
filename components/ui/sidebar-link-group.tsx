@@ -9,7 +9,7 @@ export default function SidebarLinkGroup({
   children,
   open = false
 }: SidebarLinkGroupProps) {
-  const [openGroup, setOpenGroup] = useState<boolean>(open)
+  const [openGroup, setOpenGroup] = useState<boolean>(true)
 
   const handleClick = () => {
     setOpenGroup(!openGroup);

@@ -30,7 +30,7 @@ export default function MeetupPost() {
         {/* Content */}
         <div>
           <div className="mb-6">
-            <Link className="btn-sm px-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300" href="/community/meetups">
+            <Link className="btn-sm px-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300" href="/creators/meetups">
               <svg className="fill-current text-gray-400 dark:text-gray-500 mr-2" width="7" height="12" viewBox="0 0 7 12">
                 <path d="M5.4.6 6.8 2l-4 4 4 4-1.4 1.4L0 6z" />
               </svg>

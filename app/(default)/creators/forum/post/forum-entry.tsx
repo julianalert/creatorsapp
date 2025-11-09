@@ -14,7 +14,7 @@ export default function ForumEntry() {
       <div className="mb-2">
         <ul className="inline-flex flex-wrap text-sm font-medium">
           <li className="flex items-center">
-            <Link className="text-gray-500 dark:text-gray-400 hover:text-violet-500 dark:hover:text-violet-500" href="/community/forum">
+            <Link className="text-gray-500 dark:text-gray-400 hover:text-violet-500 dark:hover:text-violet-500" href="/creators/forum">
               Home
             </Link>
             <svg className="fill-current text-gray-400 dark:text-gray-500 mx-2" width="16" height="16" viewBox="0 0 16 16">

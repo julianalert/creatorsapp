@@ -13,14 +13,6 @@ export default function SettingsSidebar() {
         <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-3">Business settings</div>
         <ul className="flex flex-nowrap md:block mr-3 md:mr-0">
           <li className="mr-0.5 md:mr-0 md:mb-0.5">
-            <Link href="/settings/account" className={`flex items-center px-2.5 py-2 rounded-lg whitespace-nowrap ${pathname.includes('/settings/account') && 'bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]'}`}>
-              <svg className={`shrink-0 fill-current mr-2 ${pathname.includes('/settings/account') ? 'text-violet-500 dark:text-violet-400' : 'text-gray-400 dark:text-gray-500'}`} width="16" height="16" viewBox="0 0 16 16">
-                <path d="M8 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-5.143 7.91a1 1 0 1 1-1.714-1.033A7.996 7.996 0 0 1 8 10a7.996 7.996 0 0 1 6.857 3.877 1 1 0 1 1-1.714 1.032A5.996 5.996 0 0 0 8 12a5.996 5.996 0 0 0-5.143 2.91Z" />
-              </svg>
-              <span className={`text-sm font-medium ${pathname.includes('/settings/account') ? 'text-violet-500 dark:text-violet-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200'}`}>My Account</span>
-            </Link>
-          </li>
-          <li className="mr-0.5 md:mr-0 md:mb-0.5">
             <Link href="/settings/notifications" className={`flex items-center px-2.5 py-2 rounded-lg whitespace-nowrap ${pathname.includes('/settings/notifications') && 'bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]'}`}>
               <svg className={`shrink-0 fill-current mr-2 ${pathname.includes('/settings/notifications') ? 'text-violet-500 dark:text-violet-400' : 'text-gray-400 dark:text-gray-500'}`} width="16" height="16" viewBox="0 0 16 16">
                 <path d="m9 12.614 4.806 1.374a.15.15 0 0 0 .174-.21L8.133 2.082a.15.15 0 0 0-.268 0L2.02 13.777a.149.149 0 0 0 .174.21L7 12.614V9a1 1 0 1 1 2 0v3.614Zm-1 1.794-5.257 1.503c-1.798.514-3.35-1.355-2.513-3.028L6.076 1.188c.791-1.584 3.052-1.584 3.845 0l5.848 11.695c.836 1.672-.714 3.54-2.512 3.028L8 14.408Z" />
@@ -34,6 +26,14 @@ export default function SettingsSidebar() {
                 <path d="M8 3.414V6a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1h5a1 1 0 0 1 0 2H9.414l6.293 6.293a1 1 0 1 1-1.414 1.414L8 3.414Zm0 9.172V10a1 1 0 1 1 2 0v5a1 1 0 0 1-1 1H4a1 1 0 0 1 0-2h2.586L.293 7.707a1 1 0 0 1 1.414-1.414L8 12.586Z" />
               </svg>
               <span className={`text-sm font-medium ${pathname.includes('/settings/apps') ? 'text-violet-500 dark:text-violet-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200'}`}>Connected Apps</span>
+            </Link>
+          </li>
+          <li className="mr-0.5 md:mr-0 md:mb-0.5">
+            <Link href="/settings/websites" className={`flex items-center px-2.5 py-2 rounded-lg whitespace-nowrap ${pathname.includes('/settings/websites') && 'bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]'}`}>
+              <svg className={`shrink-0 fill-current mr-2 ${pathname.includes('/settings/websites') ? 'text-violet-500 dark:text-violet-400' : 'text-gray-400 dark:text-gray-500'}`} width="16" height="16" viewBox="0 0 16 16">
+                <path d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm12 0a5 5 0 1 0-8.536 3.536c.056-.152.12-.303.189-.452A3.536 3.536 0 0 1 8 9.5a3.536 3.536 0 0 1 3.347 2.338c.069.148.133.3.189.45A4.98 4.98 0 0 0 13 8Zm-7 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm5.708 5.042a1 1 0 1 1 1.884.684A6.973 6.973 0 0 1 8 15a6.973 6.973 0 0 1-5.592-2.274 1 1 0 0 1 1.884-.684C4.884 13.502 6.303 14 8 14c1.697 0 3.116-.498 3.708-.958Z" />
+              </svg>
+              <span className={`text-sm font-medium ${pathname.includes('/settings/websites') ? 'text-violet-500 dark:text-violet-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200'}`}>My Websites</span>
             </Link>
           </li>
           <li className="mr-0.5 md:mr-0 md:mb-0.5">
