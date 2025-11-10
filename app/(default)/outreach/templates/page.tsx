@@ -4,8 +4,9 @@ export const metadata = {
 }
 
 import SearchForm from '@/components/search-form'
-import MeetupsPosts from '@/app/(default)/creators/meetups/meetups-posts'
 import PaginationNumeric from '@/components/pagination-numeric'
+import TemplateCards from './template-cards'
+import { outreachTemplates, outreachTemplateCount } from './template-data'
 
 export default function Templates() {
   return (
@@ -73,10 +74,10 @@ export default function Templates() {
           </li>
         </ul>
       </div>
-      <div className="text-sm text-gray-500 dark:text-gray-400 italic mb-4">128 Templates</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400 italic mb-4">{outreachTemplateCount} Templates</div>
 
       {/* Content */}
-      <MeetupsPosts />
+      <TemplateCards templates={outreachTemplates} />
 
       {/* Pagination */}
       <div className="mt-8">
