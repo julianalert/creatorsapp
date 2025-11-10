@@ -65,7 +65,10 @@ export default function SignUp() {
             <AuthHeader />
 
             <div className="max-w-sm mx-auto w-full px-4 py-8">
-              <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6">Create your Account</h1>
+              <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">Create your Account</h1>
+              <div className="text-sm mb-6">
+                  Sign up to get viral creators for your brand.
+                </div>
               {/* Form */}
               <form onSubmit={handleSignUp}>
                 {error && (
@@ -110,7 +113,7 @@ export default function SignUp() {
                   <div className="mr-1">
                     <label className="flex items-center cursor-pointer">
                       <input type="checkbox" className="form-checkbox cursor-pointer" disabled={loading} />
-                      <span className="text-sm ml-2">Email me about product news.</span>
+                      <span className="text-sm ml-2">I accept terms & conditions.</span>
                     </label>
                   </div>
                   <button 
