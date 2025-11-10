@@ -254,3 +254,7 @@ export const getTemplateBySlug = (slug: string) => outreachTemplateMap[slug]
 export const getRelatedTemplates = (slug: string, limit = 2) =>
   outreachTemplates.filter((template) => template.slug !== slug).slice(0, limit)
 
+export const outreachTemplateCategories = Array.from(
+  new Set(outreachTemplates.map((template) => template.category))
+)
+

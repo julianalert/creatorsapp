@@ -112,7 +112,7 @@ export default function SignUp() {
                 <div className="flex items-center justify-between mt-6">
                   <div className="mr-1">
                     <label className="flex items-center cursor-pointer">
-                      <input type="checkbox" className="form-checkbox cursor-pointer" disabled={loading} />
+                      <input type="checkbox" className="form-checkbox cursor-pointer" disabled={loading} defaultChecked />
                       <span className="text-sm ml-2">I accept terms & conditions.</span>
                     </label>
                   </div>

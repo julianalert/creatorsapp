@@ -36,15 +36,10 @@ export default function TemplateCards({ templates }: TemplateCardsProps) {
                 <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">{template.title}</h3>
               </Link>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{template.summary}</p>
-              <div className="text-xs inline-flex items-center font-medium border border-gray-200 dark:border-gray-700/60 text-gray-600 dark:text-gray-400 rounded-full text-center px-2.5 py-1">
-                <svg className="w-4 h-3 fill-gray-400 dark:fill-gray-500 mr-2" viewBox="0 0 16 12">
-                  <path d="m16 2-4 2.4V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7.6l4 2.4V2ZM2 10V2h8v8H2Z" />
-                </svg>
-                <span>{template.useCase}</span>
-              </div>
+              
             </div>
             <div className="flex items-center justify-between mt-4">
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400">{template.persona}</div>
+              <div className="text-xs font-medium text-gray-500 dark:text-gray-400"></div>
               <Link
                 className="text-sm font-semibold text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300"
                 href={`/outreach/templates/${template.slug}`}
