@@ -12,9 +12,9 @@ import {
 } from '../template-data'
 
 type TemplateDetailPageProps = {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export const dynamicParams = false
@@ -26,7 +26,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: TemplateDetailPageProps): Promise<Metadata> {
-  const template = getTemplateBySlug(params.slug)
+  const { slug } = await params
+  const template = getTemplateBySlug(slug)
 
   if (!template) {
     return {
@@ -44,8 +45,9 @@ export async function generateMetadata({ params }: TemplateDetailPageProps): Pro
   }
 }
 
-export default function TemplateDetailPage({ params }: TemplateDetailPageProps) {
-  const template = getTemplateBySlug(params.slug)
+export default async function TemplateDetailPage({ params }: TemplateDetailPageProps) {
+  const { slug } = await params
+  const template = getTemplateBySlug(slug)
 
   if (!template) {
     notFound()
