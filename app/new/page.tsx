@@ -4,6 +4,25 @@ import { useState, type FormEvent } from 'react'
 import NewHeader from './new-header'
 import NewProgress from './new-progress'
 
+type BrandProfile = {
+  industry: string
+  niche: string
+  tone: string
+  audience: string
+  regions: string[]
+  price_positioning: string
+  keywords: string[]
+  heuristics?: {
+    currency_regions?: Array<{
+      symbol: string
+      region: string
+      reasoning?: string
+    }>
+    niche_tags?: string[]
+    notes?: string
+  }
+}
+
 type ScrapeResult = {
   status: number
   finalUrl: string
@@ -11,6 +30,8 @@ type ScrapeResult = {
   body: string
   websiteId: string | null
   markdown: string | null
+  brandProfile: BrandProfile | null
+  brandProfileError: string | null
 }
 
 export default function NewPage() {
@@ -55,6 +76,8 @@ export default function NewPage() {
         body: data?.body ?? '',
         websiteId: data?.websiteId ?? null,
         markdown: data?.markdown ?? null,
+        brandProfile: data?.brandProfile ?? null,
+        brandProfileError: data?.brandProfileError ?? null,
       })
     } catch (err) {
       const message =
@@ -138,16 +161,164 @@ export default function NewPage() {
                                   </p>
                                 )}
                               </div>
-                              <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
-                                {result.markdown ? (
-                                  <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-100">
-                                    {result.markdown}
-                                  </pre>
-                                ) : (
-                                  <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-100">
-                                    {result.body || 'No content returned.'}
-                                  </pre>
+                              <div className="space-y-4">
+                                {result.brandProfileError && (
+                                  <div className="rounded-lg border border-yellow-200 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-900/10 px-4 py-3 text-yellow-800 dark:text-yellow-200">
+                                    {result.brandProfileError}
+                                  </div>
                                 )}
+
+                                {result.brandProfile && (
+                                  <div className="rounded-lg border border-violet-200 dark:border-violet-900/40 bg-violet-50/60 dark:bg-violet-900/20 p-4 space-y-4">
+                                    <div>
+                                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                                        Brand profile
+                                      </h3>
+                                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Generated automatically from the scraped website content.
+                                      </p>
+                                    </div>
+                                    <dl className="grid gap-3 sm:grid-cols-2 text-sm">
+                                      <div>
+                                        <dt className="font-medium text-gray-700 dark:text-gray-300">
+                                          Industry
+                                        </dt>
+                                        <dd className="text-gray-800 dark:text-gray-100">
+                                          {result.brandProfile.industry}
+                                        </dd>
+                                      </div>
+                                      <div>
+                                        <dt className="font-medium text-gray-700 dark:text-gray-300">
+                                          Niche
+                                        </dt>
+                                        <dd className="text-gray-800 dark:text-gray-100">
+                                          {result.brandProfile.niche}
+                                        </dd>
+                                      </div>
+                                      <div>
+                                        <dt className="font-medium text-gray-700 dark:text-gray-300">
+                                          Tone
+                                        </dt>
+                                        <dd className="text-gray-800 dark:text-gray-100">
+                                          {result.brandProfile.tone}
+                                        </dd>
+                                      </div>
+                                      <div>
+                                        <dt className="font-medium text-gray-700 dark:text-gray-300">
+                                          Audience
+                                        </dt>
+                                        <dd className="text-gray-800 dark:text-gray-100">
+                                          {result.brandProfile.audience}
+                                        </dd>
+                                      </div>
+                                      <div>
+                                        <dt className="font-medium text-gray-700 dark:text-gray-300">
+                                          Regions
+                                        </dt>
+                                        <dd className="text-gray-800 dark:text-gray-100">
+                                          {Array.isArray(result.brandProfile.regions) &&
+                                          result.brandProfile.regions.length > 0
+                                            ? result.brandProfile.regions.join(', ')
+                                            : '—'}
+                                        </dd>
+                                      </div>
+                                      <div>
+                                        <dt className="font-medium text-gray-700 dark:text-gray-300">
+                                          Price positioning
+                                        </dt>
+                                        <dd className="text-gray-800 dark:text-gray-100">
+                                          {result.brandProfile.price_positioning}
+                                        </dd>
+                                      </div>
+                                    </dl>
+                                    <div className="space-y-2">
+                                      <h4 className="text-sm font-medium uppercase tracking-wide text-gray-600 dark:text-gray-400">
+                                        Keywords
+                                      </h4>
+                                      {Array.isArray(result.brandProfile.keywords) &&
+                                      result.brandProfile.keywords.length > 0 ? (
+                                        <div className="flex flex-wrap gap-2">
+                                          {result.brandProfile.keywords.map((keyword) => (
+                                            <span
+                                              key={keyword}
+                                              className="inline-flex items-center rounded-full bg-white dark:bg-gray-900 border border-violet-200 dark:border-violet-800 px-3 py-1 text-xs font-medium text-violet-700 dark:text-violet-300"
+                                            >
+                                              {keyword}
+                                            </span>
+                                          ))}
+                                        </div>
+                                      ) : (
+                                        <p className="text-sm text-gray-700 dark:text-gray-200">—</p>
+                                      )}
+                                    </div>
+                                    {result.brandProfile.heuristics && (
+                                      <div className="space-y-3">
+                                        <h4 className="text-sm font-medium uppercase tracking-wide text-gray-600 dark:text-gray-400">
+                                          Heuristics
+                                        </h4>
+                                        <div className="space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                                          {Array.isArray(result.brandProfile.heuristics.currency_regions) &&
+                                            result.brandProfile.heuristics.currency_regions.length > 0 && (
+                                              <div>
+                                                <p className="font-medium text-gray-700 dark:text-gray-300">
+                                                  Currency regions
+                                                </p>
+                                                <ul className="mt-1 space-y-1 text-gray-700 dark:text-gray-200">
+                                                  {result.brandProfile.heuristics.currency_regions.map(
+                                                    (entry, index) => (
+                                                      <li key={`${entry.symbol}-${entry.region}-${index}`}>
+                                                        <span className="font-semibold">{entry.symbol}</span>{' '}
+                                                        &rarr; {entry.region}
+                                                        {entry.reasoning ? ` — ${entry.reasoning}` : ''}
+                                                      </li>
+                                                    )
+                                                  )}
+                                                </ul>
+                                              </div>
+                                            )}
+                                          {Array.isArray(result.brandProfile.heuristics.niche_tags) &&
+                                            result.brandProfile.heuristics.niche_tags.length > 0 && (
+                                              <div>
+                                                <p className="font-medium text-gray-700 dark:text-gray-300">
+                                                  Niche tags
+                                                </p>
+                                                <div className="flex flex-wrap gap-2 mt-1">
+                                                  {result.brandProfile.heuristics.niche_tags.map((tag) => (
+                                                    <span
+                                                      key={tag}
+                                                      className="inline-flex items-center rounded-full border border-gray-300 dark:border-gray-700 px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-200"
+                                                    >
+                                                      {tag}
+                                                    </span>
+                                                  ))}
+                                                </div>
+                                              </div>
+                                            )}
+                                          {result.brandProfile.heuristics.notes && (
+                                            <div>
+                                              <p className="font-medium text-gray-700 dark:text-gray-300">Notes</p>
+                                              <p className="mt-1 text-gray-700 dark:text-gray-200">
+                                                {result.brandProfile.heuristics.notes}
+                                              </p>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+
+                                <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+                                  {result.markdown ? (
+                                    <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-100">
+                                      {result.markdown}
+                                    </pre>
+                                  ) : (
+                                    <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-100">
+                                      {result.body || 'No content returned.'}
+                                    </pre>
+                                  )}
+                                </div>
                               </div>
                             </>
                           ) : (
