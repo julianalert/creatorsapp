@@ -118,7 +118,7 @@ export default function SignUp() {
                   </div>
                   <button 
                     type="submit"
-                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white ml-3 whitespace-nowrap cursor-pointer"
+                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3 whitespace-nowrap cursor-pointer"
                     disabled={loading}
                   >
                     {loading ? 'Signing up...' : 'Sign Up'}

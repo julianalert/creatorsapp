@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
+import Model1 from '@/public/images/model1.jpg'
 import { createClient } from '@/lib/supabase/client'
 import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
 
@@ -81,7 +82,7 @@ export default function ResetPassword() {
                 <div className="flex justify-end mt-6">
                   <button 
                     type="submit"
-                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:text-white whitespace-nowrap cursor-pointer"
+                    className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white whitespace-nowrap cursor-pointer"
                     disabled={loading || success}
                   >
                     {loading ? 'Sending...' : 'Send Reset Link'}
@@ -98,7 +99,7 @@ export default function ResetPassword() {
           </div>
         </div>
 
-        <AuthImage />
+        <AuthImage imageSrc={Model1} />
 
       </div>
 

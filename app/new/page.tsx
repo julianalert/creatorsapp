@@ -176,7 +176,7 @@ export default function NewPage() {
                   </div>
                   <div className="max-w-md w-full mx-auto">
                     <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6 text-center">
-                      New search
+                      You're one step away 👀
                     </h1>
                     {/* Form */}
                     <form onSubmit={handleSubmit}>
