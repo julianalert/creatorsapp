@@ -71,33 +71,20 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
     )
   }
 
-  // Paid Ads Campaign Optimizer
-  if (slug === 'paid-ads-campaign-optimizer') {
+  // Blog Post Writer
+  if (slug === 'blog-post-writer') {
     return (
       <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
         <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
         <div className="space-y-4">
-          {renderStep(1, 'Campaign Data', 'Connect ad accounts or upload performance data including ad platform, campaign metrics, target ROAS/CPA goals, budget constraints, audience segments, and time period.')}
-          {renderStep(2, 'Performance Analysis', 'Agent analyzes ad performance across all dimensions including creative performance, keyword efficiency, audience targeting, landing page conversions, bid strategy, day/time patterns, and device/location performance.')}
-          {renderStep(3, 'Action Plan', 'Receive prioritized recommendations with pause/promote suggestions, bid adjustments, audience expansion opportunities, creative refresh recommendations, budget reallocation plan, A/B test hypotheses, and expected improvements.')}
+          {renderStep(1, 'Content Brief', 'Provide topic, audience, and requirements including blog post topic or title, target audience, tone and style preferences, desired word count, key points to cover, and SEO keywords.')}
+          {renderStep(2, 'Content Generation', 'Agent writes the blog post with SEO optimization, creating engaging introduction, structured content with headings, relevant examples and data, and compelling conclusion.')}
+          {renderStep(3, 'Final Output', 'Receive complete blog post ready to publish including SEO-optimized title and meta description, proper formatting with headings, internal linking suggestions, call-to-action recommendations, and ready-to-publish format.')}
         </div>
       </div>
     )
   }
 
-  // Creator Outreach Assistant
-  if (slug === 'creator-outreach-assistant') {
-    return (
-      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
-        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
-        <div className="space-y-4">
-          {renderStep(1, 'Creator Criteria', 'Define your ideal creator profile including niche/topics, follower range, engagement rate minimum, audience demographics, content style preferences, and platform focus.')}
-          {renderStep(2, 'Discovery & Analysis', 'Agent finds and analyzes potential creators by searching and filtering by criteria, analyzing engagement rates and authenticity, reviewing content quality and brand fit, checking demographics, and scoring creators by fit.')}
-          {renderStep(3, 'Outreach Campaign', 'Receive personalized messages and campaign plan including ranked creator list with scores, personalized outreach messages, follow-up sequence templates, campaign tracking spreadsheet, response rate predictions, and partnership proposal templates.')}
-        </div>
-      </div>
-    )
-  }
 
   // Default for other agents
   return (

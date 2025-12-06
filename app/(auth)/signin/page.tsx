@@ -33,7 +33,7 @@ export default function SignIn() {
         return
       }
 
-      router.push('/agents')
+      router.push('/')
       router.refresh()
     } catch (err) {
       setError('An unexpected error occurred')

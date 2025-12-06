@@ -18,6 +18,15 @@ export default function TemplatesBrowser({ templates, categories }: TemplatesBro
   const [activeCategory, setActiveCategory] = useState<string>(VIEW_ALL)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
+  // Count templates per category
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    templates.forEach((template) => {
+      counts[template.category] = (counts[template.category] || 0) + 1
+    })
+    return counts
+  }, [templates])
+
   const filteredTemplates = useMemo(() => {
     if (activeCategory === VIEW_ALL) {
       return templates
@@ -49,6 +58,7 @@ export default function TemplatesBrowser({ templates, categories }: TemplatesBro
         <ul className="flex flex-wrap -m-1">
           {categoryOptions.map((category) => {
             const isActive = category === activeCategory
+            const count = category === VIEW_ALL ? templates.length : categoryCounts[category] || 0
 
             return (
               <li key={category} className="m-1">
@@ -62,6 +72,15 @@ export default function TemplatesBrowser({ templates, categories }: TemplatesBro
                   type="button"
                 >
                   {category}
+                  {count > 0 && (
+                    <span className={`ml-1.5 px-1.5 py-0.5 rounded-full text-xs ${
+                      isActive
+                        ? 'bg-white/20 dark:bg-gray-800/20'
+                        : 'bg-gray-100 dark:bg-gray-700/60'
+                    }`}>
+                      {count}
+                    </span>
+                  )}
                 </button>
               </li>
             )

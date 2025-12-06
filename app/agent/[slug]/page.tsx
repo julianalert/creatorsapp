@@ -65,7 +65,7 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
           <div className="mb-6">
             <Link
               className="btn-sm px-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300"
-              href="/agents"
+              href="/"
             >
               <svg className="fill-current text-gray-400 dark:text-gray-500 mr-2" width="7" height="12" viewBox="0 0 7 12">
                 <path d="M5.4.6 6.8 2l-4 4 4 4-1.4 1.4L0 6z" />
@@ -172,7 +172,7 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
                 <h2 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">Related agents</h2>
                 <Link
                   className="text-sm font-semibold text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300"
-                  href="/agents"
+                  href="/"
                 >
                   View all {outreachTemplateCount}
                 </Link>

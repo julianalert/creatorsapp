@@ -43,7 +43,6 @@ export async function updateSession(request: NextRequest) {
   const isApiRoute = pathname.startsWith('/api/')
   const isAuthCallback = pathname.startsWith('/auth/')
   const isPublicPage = pathname === '/' || 
-                       pathname === '/agents' || 
                        pathname.startsWith('/agent/') ||
                        pathname.startsWith('/outreach/templates')
 

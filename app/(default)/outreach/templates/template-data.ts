@@ -297,128 +297,66 @@ export const outreachTemplates: OutreachTemplate[] = [
     tags: ['Content Marketing', 'Editorial Planning', 'SEO', 'Strategy'],
   },
   {
-    slug: 'paid-ads-campaign-optimizer',
-    title: 'Paid Ads Campaign Optimizer',
+    slug: 'blog-post-writer',
+    title: 'Blog Post Writer',
     summary:
-      'AI agent that analyzes ad performance, identifies optimization opportunities, and provides recommendations to improve ROAS and lower acquisition costs.',
-    category: 'Paid Ads',
-    useCase: 'Use when campaigns are underperforming, scaling successful campaigns, or optimizing ad spend allocation.',
-    persona: 'PPC Manager · Performance Marketer · Growth Hacker',
-    thumbnail: TemplateThumb2,
-    heroImage: TemplateHero2,
+      'AI agent that generates high-quality, SEO-optimized blog posts based on your topic, audience, and requirements. Creates engaging content ready to publish.',
+    category: 'Content Marketing',
+    useCase: 'Use when you need to create blog content quickly, maintain consistent quality, or scale content production without sacrificing quality.',
+    persona: 'Content Writer · Blog Manager · Marketing Manager',
+    thumbnail: TemplateThumb1,
+    heroImage: TemplateHero1,
     stats: [
-      { label: 'Campaigns analyzed', value: 'Unlimited' },
-      { label: 'Metrics tracked', value: '15+ KPIs' },
-      { label: 'Optimization areas', value: '10+ factors' },
+      { label: 'Posts generated', value: 'Unlimited' },
+      { label: 'Time saved', value: '2-4 hours per post' },
+      { label: 'Word count', value: '500-3000 words' },
     ],
     sequence: [
       {
-        step: 'Step 1 · Campaign Data',
+        step: 'Step 1 · Content Brief',
         channel: 'Agent Interface',
-        timing: 'Connect ad accounts or upload performance data.',
-        objective: 'Provide campaign context for analysis.',
+        timing: 'Provide topic, audience, and requirements.',
+        objective: 'Define the blog post parameters.',
         copy:
-          'Input:\n• Ad platform (Google Ads, Meta, LinkedIn, etc.)\n• Campaign performance data\n• Target ROAS/CPA goals\n• Budget constraints\n• Audience segments\n• Time period for analysis',
+          'Input:\n• Blog post topic or title\n• Target audience\n• Tone and style preferences\n• Desired word count\n• Key points to cover\n• SEO keywords (optional)',
       },
       {
-        step: 'Step 2 · Performance Analysis',
+        step: 'Step 2 · Content Generation',
         channel: 'AI Processing',
-        timing: 'Agent analyzes ad performance across all dimensions.',
-        objective: 'Identify optimization opportunities.',
+        timing: 'Agent writes the blog post with SEO optimization.',
+        objective: 'Generate high-quality, engaging content.',
         copy:
-          'The agent examines:\n• Ad creative performance (CTR, engagement)\n• Keyword/ad group efficiency\n• Audience targeting effectiveness\n• Landing page conversion rates\n• Bid strategy optimization\n• Day/time performance patterns\n• Device and location performance',
+          'The agent will:\n• Research the topic and gather information\n• Create an engaging introduction\n• Structure content with headings and subheadings\n• Write SEO-optimized content\n• Include relevant examples and data\n• Add a compelling conclusion\n• Optimize for readability and engagement',
       },
       {
-        step: 'Step 3 · Action Plan',
-        channel: 'Optimization Report',
-        timing: 'Receive prioritized recommendations.',
-        objective: 'Get clear steps to improve campaign performance.',
+        step: 'Step 3 · Final Output',
+        channel: 'Blog Post',
+        timing: 'Receive complete blog post ready to publish.',
+        objective: 'Get publication-ready content.',
         copy:
-          'Your report includes:\n• Pause/promote recommendations\n• Bid adjustment suggestions\n• Audience expansion opportunities\n• Creative refresh recommendations\n• Budget reallocation plan\n• A/B test hypotheses\n• Expected performance improvements',
+          'You\'ll receive:\n• Complete blog post with proper formatting\n• SEO-optimized title and meta description\n• Headings and subheadings (H2, H3)\n• Engaging introduction and conclusion\n• Internal linking suggestions\n• Call-to-action recommendations\n• Ready-to-publish format',
       },
     ],
     samples: [
       {
-        label: 'Sample Recommendation',
-        subject: 'High-Impact: Pause Underperforming Ad Groups',
+        label: 'Sample Output',
+        subject: 'Blog Post: "10 Project Management Tools for Remote Teams"',
         body:
-          'Finding: 3 ad groups have 0 conversions in last 30 days.\nImpact: High - Freeing up $2,400/month budget.\nAction: Pause these ad groups and reallocate budget to top performers.\nExpected Result: +18% overall ROAS improvement.\nRisk: Low - These ad groups show no signs of improvement.',
+          '# 10 Project Management Tools for Remote Teams\n\nRemote work has become the new normal, and having the right project management tools is crucial for team success...\n\n## 1. Asana\n\nAsana is a powerful project management platform that helps teams organize and track their work...\n\n[Full blog post content continues...]',
       },
     ],
     insights: [
       {
         label: 'Why it works',
         description:
-          'Systematically identifies underperforming elements and optimization opportunities that can significantly impact ROAS with minimal effort.',
+          'Combines AI-powered writing with SEO best practices to create content that both engages readers and ranks well in search engines.',
       },
       {
-        label: 'Data-driven decisions',
-        description: 'Removes guesswork from campaign optimization by providing clear, prioritized recommendations based on performance data.',
+        label: 'Quality focus',
+        description: 'Generates well-researched, structured content that maintains your brand voice while saving hours of writing time.',
       },
     ],
-    tags: ['Paid Ads', 'PPC', 'ROAS Optimization', 'Performance Marketing'],
-  },
-  {
-    slug: 'creator-outreach-assistant',
-    title: 'Creator Outreach Assistant',
-    summary:
-      'AI agent that identifies ideal creators, personalizes outreach messages, and manages follow-ups to build authentic creator partnerships at scale.',
-    category: 'Creator Marketing',
-    useCase: 'Use when launching creator campaigns, building brand awareness, or scaling influencer partnerships.',
-    persona: 'Creator Manager · Brand Marketer · Partnership Lead',
-    thumbnail: TemplateThumb3,
-    heroImage: TemplateHero3,
-    stats: [
-      { label: 'Creators identified', value: '100+ per search' },
-      { label: 'Outreach personalized', value: '100%' },
-      { label: 'Response rate', value: '35-45%' },
-    ],
-    sequence: [
-      {
-        step: 'Step 1 · Creator Criteria',
-        channel: 'Agent Interface',
-        timing: 'Define your ideal creator profile.',
-        objective: 'Set parameters for creator discovery.',
-        copy:
-          'Input:\n• Niche/topics of interest\n• Follower range (micro, macro, mega)\n• Engagement rate minimum\n• Audience demographics\n• Content style preferences\n• Platform focus (Instagram, TikTok, YouTube)',
-      },
-      {
-        step: 'Step 2 · Discovery & Analysis',
-        channel: 'AI Processing',
-        timing: 'Agent finds and analyzes potential creators.',
-        objective: 'Generate qualified creator list.',
-        copy:
-          'The agent will:\n• Search and filter creators by criteria\n• Analyze engagement rates and authenticity\n• Review content quality and brand fit\n• Check audience demographics\n• Identify contact information\n• Score creators by fit (1-10)',
-      },
-      {
-        step: 'Step 3 · Outreach Campaign',
-        channel: 'Outreach Dashboard',
-        timing: 'Receive personalized messages and campaign plan.',
-        objective: 'Launch effective creator outreach.',
-        copy:
-          'You\'ll receive:\n• Ranked creator list with scores\n• Personalized outreach messages\n• Follow-up sequence templates\n• Campaign tracking spreadsheet\n• Response rate predictions\n• Partnership proposal templates',
-      },
-    ],
-    samples: [
-      {
-        label: 'Sample Outreach Message',
-        subject: 'Personalized Creator Outreach',
-        body:
-          'Hi {{creator_name}},\n\nLoved your recent post about {{topic}} - your take on {{specific_point}} really resonated with our team.\n\nWe\'re {{brand_name}}, and we help {{target_audience}} with {{value_prop}}. We think your audience would love what we\'re building.\n\nWould you be open to a quick 15-min call to explore a potential partnership? We\'d love to share what we\'re working on and see if there\'s a fit.\n\nBest,\n{{sender_name}}',
-      },
-    ],
-    insights: [
-      {
-        label: 'Why it works',
-        description:
-          'Combines data-driven creator discovery with personalized outreach, ensuring you connect with the right creators in an authentic way.',
-      },
-      {
-        label: 'Scale with quality',
-        description: 'Enables you to reach out to many creators while maintaining personalization that drives higher response rates.',
-      },
-    ],
-    tags: ['Creator Marketing', 'Influencer Outreach', 'Partnerships', 'Automation'],
+    tags: ['Content Marketing', 'Blog Writing', 'SEO', 'Content Creation'],
   },
 ]
 
