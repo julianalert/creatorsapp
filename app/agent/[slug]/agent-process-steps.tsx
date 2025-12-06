@@ -21,7 +21,7 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
       <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
         <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
         <div className="space-y-4">
-          {renderStep(1, 'Input', 'Enter your topic, industry, or competitor URL along with target audience demographics, geographic focus, and content type.')}
+          {renderStep(1, 'Input', 'Enter your topic, industry, or competitor URL along with target audience demographics, geographic focus, and content type')}
           {renderStep(2, 'Analysis', 'Agent analyzes search volume, competition, and intent to generate comprehensive keyword insights including long-tail opportunities and competitor comparisons.')}
           {renderStep(3, 'Output', 'Receive organized keyword clusters with top 50-100 recommendations, search intent classification, competition analysis, content gap opportunities, and priority scoring.')}
         </div>
