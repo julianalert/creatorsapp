@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
-import Model1 from '@/public/images/model1.jpg'
+import Model1 from '@/public/images/yuzuuBg4.png'
 import { createClient } from '@/lib/supabase/client'
 import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
 

@@ -49,196 +49,376 @@ export type OutreachTemplate = {
 
 export const outreachTemplates: OutreachTemplate[] = [
   {
-    slug: 'warm-partnership-intro',
-    title: 'Warm Partnership Introduction Sequence',
+    slug: 'keyword-research',
+    title: 'Keyword Research',
     summary:
-      'Leverage a mutual connection to open a partnership conversation with a mid-market brand manager. Includes email, LinkedIn DM, and follow-up checklist.',
-    category: 'Warm outreach',
-    useCase: 'Use when a partner intro is offered or you already engage with their content.',
-    persona: 'Brand Marketing Manager · Mid-market SaaS',
+      'AI-powered keyword research agent that identifies high-value keywords, analyzes search intent, and provides competitive insights to boost your SEO strategy.',
+    category: 'SEO',
+    useCase: 'Use when starting a new content campaign, optimizing existing pages, or expanding into new topic areas.',
+    persona: 'SEO Specialist · Content Marketer · Marketing Manager',
     thumbnail: TemplateThumb1,
     heroImage: TemplateHero1,
     stats: [
-      { label: 'Avg. reply rate', value: '48%' },
-      { label: 'Time to complete', value: '3 days' },
-      { label: 'Channels', value: 'Email + LinkedIn' },
+      { label: 'Keywords analyzed', value: '500+ per run' },
+      { label: 'Time saved', value: '4-6 hours' },
+      { label: 'Output format', value: 'CSV + Report' },
     ],
     sequence: [
       {
-        step: 'Step 1 · Day 0',
-        channel: 'Email',
-        timing: 'Send immediately after warm intro lands in inbox.',
-        objective: 'Anchor your credibility and articulate the win-win.',
+        step: 'Step 1 · Input',
+        channel: 'Agent Interface',
+        timing: 'Enter your topic, industry, or competitor URL.',
+        objective: 'Define the research scope and target audience.',
         copy:
-          'Hi {{first_name}},\n\nAppreciate {{connector_name}} looping us in—{{connector_pronoun}} knows how obsessed we are with building creator partnerships that feel co-owned.\n\nIn 2024 we helped {{example_partner}} activate 37 creators without adding headcount. Could we trade notes on what your Q1 pipeline looks like?\n\nIf next Tuesday afternoon works, I’ll send a calendar hold.\n\n– {{sender_name}}',
+          'Input your research parameters:\n• Primary topic or niche\n• Target audience demographics\n• Competitor URLs (optional)\n• Geographic focus\n• Content type (blog, product page, etc.)',
       },
       {
-        step: 'Step 2 · Day 2',
-        channel: 'LinkedIn DM',
-        timing: 'Use once the email has been opened but not answered.',
-        objective: 'Keep momentum with a low-friction ask.',
+        step: 'Step 2 · Analysis',
+        channel: 'AI Processing',
+        timing: 'Agent analyzes search volume, competition, and intent.',
+        objective: 'Generate comprehensive keyword insights.',
         copy:
-          'Hey {{first_name}} — just dropped you a note via email after {{connector_name}}’s intro. TL;DR we can stand up curated creator campaigns fast (example attached in the email). Worth a quick sync?',
+          'The agent will:\n• Extract seed keywords from your input\n• Analyze search volume and difficulty\n• Identify long-tail opportunities\n• Map search intent (informational, commercial, transactional)\n• Compare with competitor keywords',
       },
       {
-        step: 'Step 3 · Day 4',
-        channel: 'Email follow-up',
-        timing: 'Reply to original thread with resource.',
-        objective: 'Reinforce value with a tangible next step.',
+        step: 'Step 3 · Output',
+        channel: 'Results Dashboard',
+        timing: 'Receive organized keyword clusters and recommendations.',
+        objective: 'Get actionable keyword strategy.',
         copy:
-          'Quick follow-up in case the timing is tight.\n\nSharing a dashboard preview that shows how we score-match creators (1-min loom). Would a 20-min audit of your current brief help?\n\nIf not, happy to circle back when your next launch is closer.',
+          'You\'ll receive:\n• Top 50-100 keyword recommendations\n• Keyword clusters by topic\n• Search intent classification\n• Competition analysis\n• Content gap opportunities\n• Priority scoring (high/medium/low)',
       },
     ],
     samples: [
       {
-        label: 'Calendar hold blurb',
-        subject: 'Creator pipeline audit — {{brand_name}}',
+        label: 'Sample Output',
+        subject: 'Keyword Research Report: SaaS Project Management',
         body:
-          'Agenda:\n• Review current creator mix and upcoming pushes\n• See how we qualify and score-match creators\n• Outline pilot in <30 days\n\nLet me know if you’d like anyone else looped in.',
+          'Primary Keywords:\n• project management software (12K/mo, Medium difficulty)\n• team collaboration tools (8K/mo, Low difficulty)\n• task management app (6K/mo, Medium difficulty)\n\nLong-tail Opportunities:\n• best project management software for small teams (1.2K/mo, Low difficulty)\n• free project management tools comparison (800/mo, Low difficulty)',
       },
     ],
     insights: [
       {
         label: 'Why it works',
         description:
-          'Warm intros collapse trust-building time. Pair them with a concrete outcome (audit, preview, playbook) so the next step feels obvious.',
+          'Automates the time-consuming process of keyword research while providing data-driven insights that align with search intent and business goals.',
       },
       {
-        label: 'Proof to mention',
-        description: 'Reference a recent activation that mirrors their ICP—number of creators, timeline, and headline result.',
+        label: 'Best practices',
+        description: 'Focus on keywords with medium competition and clear search intent. Prioritize long-tail keywords for faster wins.',
       },
     ],
-    tags: ['Partnerships', 'Email', 'LinkedIn', 'B2B'],
+    tags: ['SEO', 'Keyword Research', 'Content Strategy', 'Automation'],
   },
   {
-    slug: 'cold-creator-activation',
-    title: 'Cold Creator Activation Sprint',
+    slug: 'on-page-seo-audit',
+    title: 'On-Page SEO Audit',
     summary:
-      'Three-touch cold sequence to recruit emerging creators for product trials. Works well for marketplaces and consumer apps with social proof assets.',
-    category: 'Cold outreach',
-    useCase: 'Use when you have zero relationship but can offer early access or meaningful perks.',
-    persona: 'Lifestyle Creator · 10K-50K followers',
+      'Comprehensive on-page SEO audit agent that analyzes technical SEO, content optimization, and provides actionable recommendations to improve search rankings.',
+    category: 'SEO',
+    useCase: 'Use before launching new pages, optimizing existing content, or conducting regular SEO health checks.',
+    persona: 'SEO Manager · Web Developer · Content Manager',
     thumbnail: TemplateThumb2,
     heroImage: TemplateHero2,
     stats: [
-      { label: 'Avg. opt-in rate', value: '32%' },
-      { label: 'Time to complete', value: '5 days' },
-      { label: 'Channels', value: 'Email-first + IG DM' },
+      { label: 'Pages audited', value: 'Unlimited' },
+      { label: 'Checks performed', value: '50+ factors' },
+      { label: 'Report time', value: '2-5 minutes' },
     ],
     sequence: [
       {
-        step: 'Step 1 · Day 0',
-        channel: 'Email',
-        timing: 'Send in the morning mid-week.',
-        objective: 'Spark curiosity with personalized proof point.',
+        step: 'Step 1 · URL Input',
+        channel: 'Agent Interface',
+        timing: 'Enter the URL(s) you want to audit.',
+        objective: 'Define the audit scope.',
         copy:
-          'Subject: {{creator_handle}} × {{brand_name}}\n\nHey {{first_name}}, saw your recent series on {{topic}}—our team is curating 15 creators for a beta of {{product}} that pays in both $$ and exclusive collabs.\n\nYou’d get:\n• $750 creator stipend\n• Early access before public launch\n• Studio support for your first drop\n\nWorth sending the 2-min brief?',
+          'Provide:\n• Single URL or bulk list\n• Target keywords (optional)\n• Competitor URLs (optional)\n• Focus areas (technical, content, links)',
       },
       {
-        step: 'Step 2 · Day 2',
-        channel: 'Instagram DM',
-        timing: 'Nudge once email goes unopened.',
-        objective: 'Surface in creator’s daily workflow.',
+        step: 'Step 2 · Deep Analysis',
+        channel: 'AI Processing',
+        timing: 'Agent crawls and analyzes all on-page elements.',
+        objective: 'Identify SEO issues and opportunities.',
         copy:
-          '👋 {{first_name}}! Sent details via email about the {{brand_name}} beta collab—slots are going fast but I think your audience would vibe. Want me to resend here?',
+          'The agent checks:\n• Title tags and meta descriptions\n• Header structure (H1-H6)\n• Image alt text and optimization\n• Internal linking structure\n• Page speed and Core Web Vitals\n• Mobile responsiveness\n• Schema markup\n• Content quality and keyword usage',
       },
       {
-        step: 'Step 3 · Day 5',
-        channel: 'Email follow-up',
-        timing: 'Reply-all with social proof.',
-        objective: 'Handle common objections (time, trust, compensation).',
+        step: 'Step 3 · Action Plan',
+        channel: 'Audit Report',
+        timing: 'Receive prioritized recommendations.',
+        objective: 'Get clear next steps to improve SEO.',
         copy:
-          'Looping back with a quick snapshot of the first creators live in the beta (attached). We handle product shipping, briefing, and posting timeline—it’s a low lift.\n\nIf timing is off, would love to keep you posted on the next cohort.',
+          'Your report includes:\n• Critical issues (fix immediately)\n• Important improvements (high priority)\n• Nice-to-have optimizations\n• Before/after comparisons\n• Estimated impact scores\n• Implementation checklist',
       },
     ],
     samples: [
       {
-        label: 'Creator brief teaser',
-        subject: 'The 2-min beta rundown',
+        label: 'Sample Finding',
+        subject: 'Critical Issue: Missing H1 Tag',
         body:
-          'Inside:\n• Compensation structure\n• Timeline + creative guardrails\n• How we measure success (+ what we promote)\n\nLet me know if you want the full doc here or via email.',
+          'Issue: Page lacks a primary H1 heading.\nImpact: High - Search engines rely on H1 for page topic understanding.\nFix: Add an H1 tag with your primary keyword within the first 100 words.\nExample: <h1>Best Project Management Software for Teams</h1>',
       },
     ],
     insights: [
       {
-        label: 'Lead with value',
-        description: 'Explicitly list compensation and perks to overcome cold outreach friction.',
+        label: 'Why it works',
+        description:
+          'Systematically identifies SEO issues that are easy to miss, providing a comprehensive view of on-page optimization opportunities.',
       },
       {
-        label: 'Keep the ask tiny',
-        description: 'First decision should only be “yes, send me the brief”—not signing a contract.',
+        label: 'ROI focus',
+        description: 'Prioritizes fixes by potential impact, helping you focus on changes that will move the needle fastest.',
       },
     ],
-    tags: ['Creator recruitment', 'Email', 'Instagram DM', 'Consumer'],
+    tags: ['SEO', 'Technical SEO', 'Content Optimization', 'Audit'],
   },
   {
-    slug: 'product-launch-nurture',
-    title: 'Product Launch Nurture Playbook',
+    slug: 'conversion-rate-optimizer',
+    title: 'Conversion Rate Optimizer',
     summary:
-      'Four-part drip that turns waitlist subscribers into launch advocates. Includes announcements, education touchpoints, and conversion booster.',
-    category: 'Drip sequence',
-    useCase: 'Use for major feature or product launches with at least two weeks runway.',
-    persona: 'Waitlist Subscriber · SaaS power user',
+      'AI agent that analyzes user behavior, identifies conversion barriers, and provides data-driven recommendations to improve conversion rates across your funnel.',
+    category: 'Business/Strategy',
+    useCase: 'Use when conversion rates are below industry benchmarks, launching new landing pages, or optimizing existing funnels.',
+    persona: 'Growth Marketer · Product Manager · CRO Specialist',
     thumbnail: TemplateThumb3,
     heroImage: TemplateHero3,
     stats: [
-      { label: 'Avg. open rate', value: '62%' },
-      { label: 'Time to complete', value: '10 days' },
-      { label: 'Channels', value: 'Email-only' },
+      { label: 'Funnel analyzed', value: 'End-to-end' },
+      { label: 'Optimization areas', value: '20+ factors' },
+      { label: 'Expected lift', value: '15-30%' },
     ],
     sequence: [
       {
-        step: 'Step 1 · Day 0',
-        channel: 'Email',
-        timing: 'Immediately after launch teaser goes live.',
-        objective: 'Announce availability and set expectations.',
+        step: 'Step 1 · Funnel Mapping',
+        channel: 'Agent Interface',
+        timing: 'Define your conversion funnel and goals.',
+        objective: 'Establish the optimization framework.',
         copy:
-          'Subject: It’s live — {{product_name}} is ready for you 🎉\n\n{{first_name}}, the wait is over.\n\nInside your dashboard:\n1. Activate the new {{feature}}\n2. Join the private walkthrough (spots limited)\n3. Earn 25% off annual when you launch this week\n\nHit reply with questions, or grab a spot in the live session here → {{meeting_link}}',
+          'Input:\n• Conversion goal (signup, purchase, download)\n• Funnel steps (awareness → consideration → decision)\n• Current conversion rates per step\n• Traffic sources\n• User segments',
       },
       {
-        step: 'Step 2 · Day 3',
-        channel: 'Email',
-        timing: 'After first cohort attends the walkthrough.',
-        objective: 'Share proof and overcome objections.',
+        step: 'Step 2 · Behavior Analysis',
+        channel: 'AI Processing',
+        timing: 'Agent analyzes user paths and drop-off points.',
+        objective: 'Identify conversion barriers.',
         copy:
-          'Subject: How teams shipped in 48 hours\n\nQuick recap of what early users built:\n• {{customer_1}} automated creator sourcing in a day\n• {{customer_2}} cut outreach prep time by 68%\n\nWe recorded the workflow—watch here. If you’re debating priority, reply with your current stack and we’ll send a tailored setup plan.',
+          'The agent examines:\n• Drop-off rates at each funnel stage\n• Time spent on key pages\n• Click patterns and heatmaps\n• Form abandonment points\n• Mobile vs desktop behavior\n• A/B test results (if available)',
       },
       {
-        step: 'Step 3 · Day 7',
-        channel: 'Email',
-        timing: 'Send to subscribers who clicked but didn’t activate.',
-        objective: 'Introduce incentive and urgency.',
+        step: 'Step 3 · Optimization Plan',
+        channel: 'CRO Report',
+        timing: 'Receive prioritized optimization recommendations.',
+        objective: 'Get actionable steps to improve conversions.',
         copy:
-          'Subject: Last call for the launch bonus 🚀\n\nReminder: activate {{product_name}} before {{deadline}} to unlock:\n• Concierge onboarding\n• First campaign strategy session\n• 25% annual credit\n\nNeed more time? Tap the button below so we can hold the bonus for you.',
-      },
-      {
-        step: 'Step 4 · Day 10',
-        channel: 'Email',
-        timing: 'Final touch to remaining waitlist.',
-        objective: 'Provide alternative action for non-converters.',
-        copy:
-          'Subject: Keep me posted instead\n\nIf now’s not ideal, pick an update cadence that works:\n• Monthly changelog\n• Launch recap + replay\n• Creator marketplace drops\n\nYou can always activate later—no hard feelings!',
+          'Your plan includes:\n• High-impact quick wins\n• UX improvements\n• Copy and messaging optimizations\n• Trust signals and social proof\n• Form simplification suggestions\n• Mobile optimization fixes\n• A/B test hypotheses',
       },
     ],
     samples: [
       {
-        label: 'Launch landing CTA',
-        subject: '{{product_name}} is live — secure your bonus',
+        label: 'Sample Recommendation',
+        subject: 'Quick Win: Add Trust Badge',
         body:
-          'Primary CTA: “Start activation”\nSecondary CTA: “Save my spot” (for those who need more time)\nFooter: direct line to PM or success lead for credibility.',
+          'Issue: Checkout page lacks trust signals.\nImpact: Medium-High - 23% of users abandon at checkout.\nRecommendation: Add security badges, customer count, and money-back guarantee.\nExpected Lift: +8-12% conversion rate.\nImplementation: 15 minutes',
       },
     ],
     insights: [
       {
-        label: 'Use narrative arcs',
-        description: 'Each email tells a progression story: announcement → social proof → incentive → graceful exit.',
+        label: 'Why it works',
+        description:
+          'Takes a holistic view of the conversion funnel, identifying both obvious and subtle barriers that impact user decision-making.',
       },
       {
-        label: 'Segment by intent',
-        description: 'Trigger steps 3-4 only for subscribers who clicked but didn’t activate to avoid fatigue.',
+        label: 'Data-driven approach',
+        description: 'Prioritizes recommendations based on potential impact and implementation effort, maximizing ROI on optimization work.',
       },
     ],
-    tags: ['Lifecycle', 'Email', 'Product launch', 'Retention'],
+    tags: ['CRO', 'Conversion Optimization', 'UX', 'Growth'],
+  },
+  {
+    slug: 'blog-content-plan-generator',
+    title: 'Blog Content Plan Generator',
+    summary:
+      'AI agent that generates comprehensive content plans, topic clusters, and editorial calendars to drive organic traffic and engage your target audience.',
+    category: 'Content Marketing',
+    useCase: 'Use when planning quarterly content strategy, launching a new blog, or expanding content production.',
+    persona: 'Content Manager · Marketing Director · SEO Specialist',
+    thumbnail: TemplateThumb1,
+    heroImage: TemplateHero1,
+    stats: [
+      { label: 'Topics generated', value: '50-100 per plan' },
+      { label: 'Planning time', value: '30-60 minutes' },
+      { label: 'Calendar format', value: 'Quarterly' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Strategy Input',
+        channel: 'Agent Interface',
+        timing: 'Define your content goals and audience.',
+        objective: 'Set the foundation for content planning.',
+        copy:
+          'Provide:\n• Target audience personas\n• Content goals (traffic, leads, engagement)\n• Industry/niche focus\n• Competitor blogs to analyze\n• Existing content inventory\n• Publishing frequency',
+      },
+      {
+        step: 'Step 2 · Topic Generation',
+        channel: 'AI Processing',
+        timing: 'Agent generates topic clusters and content ideas.',
+        objective: 'Create a comprehensive content roadmap.',
+        copy:
+          'The agent will:\n• Generate pillar topics and supporting content\n• Identify content gaps vs competitors\n• Map topics to buyer journey stages\n• Suggest seasonal and trending topics\n• Calculate SEO potential for each topic\n• Create topic clusters for authority building',
+      },
+      {
+        step: 'Step 3 · Editorial Calendar',
+        channel: 'Content Plan',
+        timing: 'Receive organized content calendar and briefs.',
+        objective: 'Get ready-to-execute content plan.',
+        copy:
+          'Your plan includes:\n• 3-month editorial calendar\n• Topic priorities and SEO scores\n• Content briefs with key points\n• Suggested publishing dates\n• Internal linking opportunities\n• Content repurposing ideas',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Content Brief',
+        subject: 'Topic: "10 Project Management Tools for Remote Teams"',
+        body:
+          'Target Keyword: project management tools remote teams (2.4K/mo)\nSEO Score: 8/10\nBuyer Stage: Consideration\n\nKey Points:\n• Compare top 10 tools with pros/cons\n• Include pricing comparison table\n• Add use case recommendations\n• Link to free trial pages\n\nInternal Links:\n• Link to "Remote Team Collaboration Guide"\n• Link to "Productivity Tips for Remote Work"',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Creates a strategic content plan that balances SEO opportunities with audience needs, ensuring every piece serves a purpose.',
+      },
+      {
+        label: 'Cluster approach',
+        description: 'Organizes content into topic clusters to build topical authority and improve overall domain ranking.',
+      },
+    ],
+    tags: ['Content Marketing', 'Editorial Planning', 'SEO', 'Strategy'],
+  },
+  {
+    slug: 'paid-ads-campaign-optimizer',
+    title: 'Paid Ads Campaign Optimizer',
+    summary:
+      'AI agent that analyzes ad performance, identifies optimization opportunities, and provides recommendations to improve ROAS and lower acquisition costs.',
+    category: 'Paid Ads',
+    useCase: 'Use when campaigns are underperforming, scaling successful campaigns, or optimizing ad spend allocation.',
+    persona: 'PPC Manager · Performance Marketer · Growth Hacker',
+    thumbnail: TemplateThumb2,
+    heroImage: TemplateHero2,
+    stats: [
+      { label: 'Campaigns analyzed', value: 'Unlimited' },
+      { label: 'Metrics tracked', value: '15+ KPIs' },
+      { label: 'Optimization areas', value: '10+ factors' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Campaign Data',
+        channel: 'Agent Interface',
+        timing: 'Connect ad accounts or upload performance data.',
+        objective: 'Provide campaign context for analysis.',
+        copy:
+          'Input:\n• Ad platform (Google Ads, Meta, LinkedIn, etc.)\n• Campaign performance data\n• Target ROAS/CPA goals\n• Budget constraints\n• Audience segments\n• Time period for analysis',
+      },
+      {
+        step: 'Step 2 · Performance Analysis',
+        channel: 'AI Processing',
+        timing: 'Agent analyzes ad performance across all dimensions.',
+        objective: 'Identify optimization opportunities.',
+        copy:
+          'The agent examines:\n• Ad creative performance (CTR, engagement)\n• Keyword/ad group efficiency\n• Audience targeting effectiveness\n• Landing page conversion rates\n• Bid strategy optimization\n• Day/time performance patterns\n• Device and location performance',
+      },
+      {
+        step: 'Step 3 · Action Plan',
+        channel: 'Optimization Report',
+        timing: 'Receive prioritized recommendations.',
+        objective: 'Get clear steps to improve campaign performance.',
+        copy:
+          'Your report includes:\n• Pause/promote recommendations\n• Bid adjustment suggestions\n• Audience expansion opportunities\n• Creative refresh recommendations\n• Budget reallocation plan\n• A/B test hypotheses\n• Expected performance improvements',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Recommendation',
+        subject: 'High-Impact: Pause Underperforming Ad Groups',
+        body:
+          'Finding: 3 ad groups have 0 conversions in last 30 days.\nImpact: High - Freeing up $2,400/month budget.\nAction: Pause these ad groups and reallocate budget to top performers.\nExpected Result: +18% overall ROAS improvement.\nRisk: Low - These ad groups show no signs of improvement.',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Systematically identifies underperforming elements and optimization opportunities that can significantly impact ROAS with minimal effort.',
+      },
+      {
+        label: 'Data-driven decisions',
+        description: 'Removes guesswork from campaign optimization by providing clear, prioritized recommendations based on performance data.',
+      },
+    ],
+    tags: ['Paid Ads', 'PPC', 'ROAS Optimization', 'Performance Marketing'],
+  },
+  {
+    slug: 'creator-outreach-assistant',
+    title: 'Creator Outreach Assistant',
+    summary:
+      'AI agent that identifies ideal creators, personalizes outreach messages, and manages follow-ups to build authentic creator partnerships at scale.',
+    category: 'Creator Marketing',
+    useCase: 'Use when launching creator campaigns, building brand awareness, or scaling influencer partnerships.',
+    persona: 'Creator Manager · Brand Marketer · Partnership Lead',
+    thumbnail: TemplateThumb3,
+    heroImage: TemplateHero3,
+    stats: [
+      { label: 'Creators identified', value: '100+ per search' },
+      { label: 'Outreach personalized', value: '100%' },
+      { label: 'Response rate', value: '35-45%' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Creator Criteria',
+        channel: 'Agent Interface',
+        timing: 'Define your ideal creator profile.',
+        objective: 'Set parameters for creator discovery.',
+        copy:
+          'Input:\n• Niche/topics of interest\n• Follower range (micro, macro, mega)\n• Engagement rate minimum\n• Audience demographics\n• Content style preferences\n• Platform focus (Instagram, TikTok, YouTube)',
+      },
+      {
+        step: 'Step 2 · Discovery & Analysis',
+        channel: 'AI Processing',
+        timing: 'Agent finds and analyzes potential creators.',
+        objective: 'Generate qualified creator list.',
+        copy:
+          'The agent will:\n• Search and filter creators by criteria\n• Analyze engagement rates and authenticity\n• Review content quality and brand fit\n• Check audience demographics\n• Identify contact information\n• Score creators by fit (1-10)',
+      },
+      {
+        step: 'Step 3 · Outreach Campaign',
+        channel: 'Outreach Dashboard',
+        timing: 'Receive personalized messages and campaign plan.',
+        objective: 'Launch effective creator outreach.',
+        copy:
+          'You\'ll receive:\n• Ranked creator list with scores\n• Personalized outreach messages\n• Follow-up sequence templates\n• Campaign tracking spreadsheet\n• Response rate predictions\n• Partnership proposal templates',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Outreach Message',
+        subject: 'Personalized Creator Outreach',
+        body:
+          'Hi {{creator_name}},\n\nLoved your recent post about {{topic}} - your take on {{specific_point}} really resonated with our team.\n\nWe\'re {{brand_name}}, and we help {{target_audience}} with {{value_prop}}. We think your audience would love what we\'re building.\n\nWould you be open to a quick 15-min call to explore a potential partnership? We\'d love to share what we\'re working on and see if there\'s a fit.\n\nBest,\n{{sender_name}}',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Combines data-driven creator discovery with personalized outreach, ensuring you connect with the right creators in an authentic way.',
+      },
+      {
+        label: 'Scale with quality',
+        description: 'Enables you to reach out to many creators while maintaining personalization that drives higher response rates.',
+      },
+    ],
+    tags: ['Creator Marketing', 'Influencer Outreach', 'Partnerships', 'Automation'],
   },
 ]
 

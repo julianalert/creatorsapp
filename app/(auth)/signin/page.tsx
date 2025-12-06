@@ -6,7 +6,7 @@ import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
-import Img2 from '@/public/images/img2.jpg'
+import Img2 from '@/public/images/yuzuuBg.png'
 
 export default function SignIn() {
   const router = useRouter()
@@ -33,7 +33,7 @@ export default function SignIn() {
         return
       }
 
-      router.push('/creators/matches')
+      router.push('/agents')
       router.refresh()
     } catch (err) {
       setError('An unexpected error occurred')

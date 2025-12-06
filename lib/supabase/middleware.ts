@@ -42,6 +42,10 @@ export async function updateSession(request: NextRequest) {
   const isNewPage = pathname.startsWith('/new')
   const isApiRoute = pathname.startsWith('/api/')
   const isAuthCallback = pathname.startsWith('/auth/')
+  const isPublicPage = pathname === '/' || 
+                       pathname === '/agents' || 
+                       pathname.startsWith('/agent/') ||
+                       pathname.startsWith('/outreach/templates')
 
   // Redirect unauthenticated users to signin (except auth pages and public routes)
   if (
@@ -49,7 +53,7 @@ export async function updateSession(request: NextRequest) {
     !isAuthPage &&
     !isApiRoute &&
     !isAuthCallback &&
-    pathname !== '/'
+    !isPublicPage
   ) {
     const url = request.nextUrl.clone()
     url.pathname = '/signin'
@@ -57,7 +61,9 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Check if authenticated user has submitted a website
-  if (user && !isAuthPage && !isApiRoute && !isAuthCallback && pathname !== '/') {
+  const isOutreachTemplates = pathname.startsWith('/outreach/templates')
+  const isAgentPage = pathname.startsWith('/agent/')
+  if (user && !isAuthPage && !isApiRoute && !isAuthCallback && pathname !== '/' && !isPublicPage && !isOutreachTemplates && !isAgentPage) {
     // Check if user has a website in the database
     const { data: websites, error: websiteError } = await supabase
       .from('website')

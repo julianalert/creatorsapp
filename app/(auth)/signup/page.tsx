@@ -6,7 +6,7 @@ import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
-import Model1 from '@/public/images/model1.jpg'
+import Model1 from '@/public/images/yuzuuBg2.png'
 import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
 
 export default function SignUp() {
@@ -67,7 +67,7 @@ export default function SignUp() {
             <div className="max-w-sm mx-auto w-full px-4 py-8">
               <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">Create your Account</h1>
               <div className="text-sm mb-6">
-                  Sign up to get viral creators for your brand.
+                  Sign up to put your marketing on steroids.
                 </div>
               {/* Form */}
               <form onSubmit={handleSignUp}>

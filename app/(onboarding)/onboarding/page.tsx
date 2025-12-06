@@ -103,8 +103,8 @@ export default function Onboarding01() {
         return
       }
 
-      // Redirect to matches on success
-      router.push('/creators/matches')
+      // Redirect to agents on success
+      router.push('/agents')
       router.refresh()
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred'

@@ -162,6 +162,10 @@ export default function NewPage() {
                                 )}
                               </div>
                               <div className="space-y-4">
+                                <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/60 p-4 text-sm text-gray-600 dark:text-gray-300">
+                                  Creator recommendations are coming soon.
+                                </div>
+
                                 {result.brandProfileError && (
                                   <div className="rounded-lg border border-yellow-200 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-900/10 px-4 py-3 text-yellow-800 dark:text-yellow-200">
                                     {result.brandProfileError}
@@ -347,18 +351,18 @@ export default function NewPage() {
                   </div>
                   <div className="max-w-md w-full mx-auto">
                     <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6 text-center">
-                      You're one step away 👀
+                      Set up your project
                     </h1>
                     {/* Form */}
                     <form onSubmit={handleSubmit}>
                       <div className="mb-8">
-                        <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="instagram-url">
-                          Enter your website URL
+                        <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300 text-center" htmlFor="instagram-url">
+                          Enter your website URL, <br />our engine will create a brand profile for your project
                         </label>
                         <input 
                           id="instagram-url"
                           type="url"
-                          placeholder="https://www.creatooors.com"
+                          placeholder="https://www.yuzuu.co"
                           value={url}
                           onChange={(event) => setUrl(event.target.value)}
                           className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
@@ -370,7 +374,7 @@ export default function NewPage() {
                           type="submit"
                           className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer"
                         >
-                          Find creators
+                          Set up my project
                         </button>
                       </div>
                     </form>

@@ -21,7 +21,7 @@ export default function DropdownProfile({ align }: {
 
   return (
     <Menu as="div" className="relative inline-flex">
-      <MenuButton className="inline-flex justify-center items-center group">
+      <MenuButton className="inline-flex justify-center items-center group cursor-pointer">
         <Image className="w-8 h-8 rounded-full" src={UserAvatar} width={32} height={32} alt="User" />
         <div className="flex items-center truncate">
           <span className="truncate ml-2 text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-800 dark:group-hover:text-white">Acme Inc.</span>
@@ -47,14 +47,19 @@ export default function DropdownProfile({ align }: {
         </div>
         <MenuItems as="ul" className="focus:outline-hidden">
           <MenuItem as="li">
-              <Link className="font-medium text-sm flex items-center py-1 px-3 text-violet-500" href="/settings/account">
+              <Link className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 cursor-pointer" href="/settings/account">
                 Settings
+              </Link>
+          </MenuItem>
+          <MenuItem as="li">
+              <Link className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 cursor-pointer" href="/settings/websites">
+                My brands
               </Link>
           </MenuItem>
           <MenuItem as="li">
             <button 
               onClick={handleSignOut}
-              className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 w-full text-left"
+              className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 w-full text-left cursor-pointer"
             >
               Sign Out
             </button>
