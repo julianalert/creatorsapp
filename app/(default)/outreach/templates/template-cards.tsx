@@ -33,7 +33,7 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
             <div className="flex items-center justify-between mt-4">
               <CategoryBadge category={template.category} />
               <Link
-                className="text-sm font-semibold text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300"
+                className="text-sm font-semibold text-gray-900 hover:text-gray-800 dark:text-gray-100 dark:hover:text-white"
                 href={`/agent/${template.slug}`}
               >
                 Use agent →

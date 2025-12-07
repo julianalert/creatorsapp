@@ -52,7 +52,7 @@ export const outreachTemplates: OutreachTemplate[] = [
     slug: 'keyword-research',
     title: 'Keyword Research',
     summary:
-      'AI-powered keyword research agent that identifies high-value keywords, analyzes search intent, and provides competitive insights to boost your SEO strategy.',
+      'Identifies high-value keywords, analyzes search intent, and provides competitive insights for SEO.',
     category: 'SEO',
     useCase: 'Use when starting a new content campaign, optimizing existing pages, or expanding into new topic areas.',
     persona: 'SEO Specialist · Content Marketer · Marketing Manager',
@@ -114,7 +114,7 @@ export const outreachTemplates: OutreachTemplate[] = [
     slug: 'on-page-seo-audit',
     title: 'On-Page SEO Audit',
     summary:
-      'Comprehensive on-page SEO audit agent that analyzes technical SEO, content optimization, and provides actionable recommendations to improve search rankings.',
+      'Analyzes technical SEO and content optimization, providing actionable recommendations to improve rankings.',
     category: 'SEO',
     useCase: 'Use before launching new pages, optimizing existing content, or conducting regular SEO health checks.',
     persona: 'SEO Manager · Web Developer · Content Manager',
@@ -176,7 +176,7 @@ export const outreachTemplates: OutreachTemplate[] = [
     slug: 'conversion-rate-optimizer',
     title: 'Conversion Rate Optimizer',
     summary:
-      'AI agent that analyzes user behavior, identifies conversion barriers, and provides data-driven recommendations to improve conversion rates across your funnel.',
+      'Analyzes user behavior and identifies conversion barriers to improve conversion rates across your funnel.',
     category: 'Business/Strategy',
     useCase: 'Use when conversion rates are below industry benchmarks, launching new landing pages, or optimizing existing funnels.',
     persona: 'Growth Marketer · Product Manager · CRO Specialist',
@@ -238,7 +238,7 @@ export const outreachTemplates: OutreachTemplate[] = [
     slug: 'blog-content-plan-generator',
     title: 'Blog Content Plan Generator',
     summary:
-      'AI agent that generates comprehensive content plans, topic clusters, and editorial calendars to drive organic traffic and engage your target audience.',
+      'Generates content plans, topic clusters, and editorial calendars to drive organic traffic.',
     category: 'Content Marketing',
     useCase: 'Use when planning quarterly content strategy, launching a new blog, or expanding content production.',
     persona: 'Content Manager · Marketing Director · SEO Specialist',
@@ -300,7 +300,7 @@ export const outreachTemplates: OutreachTemplate[] = [
     slug: 'blog-post-writer',
     title: 'Blog Post Writer',
     summary:
-      'AI agent that generates high-quality, SEO-optimized blog posts based on your topic, audience, and requirements. Creates engaging content ready to publish.',
+      'Generates high-quality, SEO-optimized blog posts ready to publish.',
     category: 'Content Marketing',
     useCase: 'Use when you need to create blog content quickly, maintain consistent quality, or scale content production without sacrificing quality.',
     persona: 'Content Writer · Blog Manager · Marketing Manager',
@@ -357,6 +357,254 @@ export const outreachTemplates: OutreachTemplate[] = [
       },
     ],
     tags: ['Content Marketing', 'Blog Writing', 'SEO', 'Content Creation'],
+  },
+  {
+    slug: 'image-generator',
+    title: 'Image Generator',
+    summary:
+      'Generates high-quality custom images based on your descriptions for marketing and design projects.',
+    category: 'Miscellaneous',
+    useCase: 'Use when you need custom images for blog posts, social media, marketing materials, or any visual content without relying on stock photos.',
+    persona: 'Content Creator · Marketing Manager · Designer',
+    thumbnail: TemplateThumb2,
+    heroImage: TemplateHero2,
+    stats: [
+      { label: 'Images generated', value: 'Unlimited' },
+      { label: 'Time saved', value: '30-60 minutes per image' },
+      { label: 'Resolution', value: 'High quality' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Image Description',
+        channel: 'Agent Interface',
+        timing: 'Provide image description and requirements.',
+        objective: 'Define the image parameters.',
+        copy:
+          'Input:\n• Image description or prompt\n• Style preferences (realistic, artistic, minimalist, etc.)\n• Dimensions or aspect ratio\n• Number of images\n• Additional requirements (colors, mood, etc.)',
+      },
+      {
+        step: 'Step 2 · Image Generation',
+        channel: 'AI Processing',
+        timing: 'Agent generates the image based on your description.',
+        objective: 'Create high-quality custom images.',
+        copy:
+          'The agent will:\n• Analyze your description and requirements\n• Apply style preferences\n• Generate image with specified dimensions\n• Optimize for quality and clarity\n• Ensure brand consistency (if applicable)\n• Create multiple variations (if requested)',
+      },
+      {
+        step: 'Step 3 · Final Output',
+        channel: 'Generated Images',
+        timing: 'Receive your custom images ready to use.',
+        objective: 'Get publication-ready images.',
+        copy:
+          'You\'ll receive:\n• High-quality generated images\n• Multiple variations (if requested)\n• Images in requested dimensions\n• Download-ready format\n• Usage recommendations\n• Alternative suggestions',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Output',
+        subject: 'Generated Image: "Modern workspace with laptop and plants"',
+        body:
+          'Image Description: A clean, modern workspace setup with a laptop, plants, and natural lighting.\n\nGenerated: High-quality image showing a minimalist desk setup with a MacBook, potted plants, and warm natural light streaming through a window. Style: Realistic, professional.\n\nDimensions: 1920x1080px\nFormat: PNG',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Creates custom images tailored to your exact needs, eliminating the need for stock photos and ensuring unique visuals for your brand.',
+      },
+      {
+        label: 'Time efficient',
+        description: 'Generates professional-quality images in minutes, saving hours of searching for the right stock photo or hiring a designer.',
+      },
+    ],
+    tags: ['Content Marketing', 'Image Generation', 'Design', 'Visual Content'],
+  },
+  {
+    slug: 'contact-researcher',
+    title: 'Contact Researcher',
+    summary:
+      'Finds and researches contact information including email addresses, phone numbers, and social profiles.',
+    category: 'Sales',
+    useCase: 'Use when you need to find contact information for outreach, sales prospecting, partnership opportunities, or networking.',
+    persona: 'Sales Rep · Business Developer · Outreach Manager',
+    thumbnail: TemplateThumb3,
+    heroImage: TemplateHero3,
+    stats: [
+      { label: 'Contacts found', value: 'Unlimited' },
+      { label: 'Accuracy rate', value: '85-95%' },
+      { label: 'Time saved', value: '15-30 min per contact' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Research Parameters',
+        channel: 'Agent Interface',
+        timing: 'Provide company or person details.',
+        objective: 'Define what contact information to find.',
+        copy:
+          'Input:\n• Company name or website\n• Person name and title\n• Industry or niche\n• Location (optional)\n• Contact type needed (email, phone, LinkedIn, etc.)',
+      },
+      {
+        step: 'Step 2 · Contact Research',
+        channel: 'AI Processing',
+        timing: 'Agent searches and verifies contact information.',
+        objective: 'Find accurate contact details.',
+        copy:
+          'The agent will:\n• Search company websites and directories\n• Find email addresses and phone numbers\n• Locate LinkedIn and social profiles\n• Verify contact information accuracy\n• Check for multiple contact methods\n• Identify decision-makers and key contacts',
+      },
+      {
+        step: 'Step 3 · Contact Report',
+        channel: 'Results Dashboard',
+        timing: 'Receive verified contact information.',
+        objective: 'Get ready-to-use contact details.',
+        copy:
+          'You\'ll receive:\n• Verified email addresses\n• Phone numbers\n• LinkedIn profiles\n• Social media links\n• Company information\n• Contact verification status\n• Alternative contacts (if available)',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Output',
+        subject: 'Contact Research: "Marketing Director at TechCorp"',
+        body:
+          'Company: TechCorp Inc.\nWebsite: techcorp.com\n\nContact Found:\nName: Sarah Johnson\nTitle: Director of Marketing\nEmail: sarah.johnson@techcorp.com (Verified)\nPhone: +1 (555) 123-4567\nLinkedIn: linkedin.com/in/sarahjohnson\nTwitter: @sarahj_marketing\n\nVerification Status: ✅ Verified\nLast Updated: 2024-01-15',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Automates the time-consuming process of finding and verifying contact information, ensuring you have accurate details for outreach.',
+      },
+      {
+        label: 'Accuracy focus',
+        description: 'Verifies contact information through multiple sources to ensure high accuracy and reduce bounce rates.',
+      },
+    ],
+    tags: ['Research', 'Contact Finding', 'Outreach', 'Sales'],
+  },
+  {
+    slug: 'company-researcher',
+    title: 'Company Researcher',
+    summary:
+      'Researches companies providing insights on funding, team size, technologies, and market positioning.',
+    category: 'Sales',
+    useCase: 'Use when you need to research prospects, understand competitors, evaluate partnerships, or gather intelligence on companies before outreach.',
+    persona: 'Sales Rep · Business Developer · Market Researcher',
+    thumbnail: TemplateThumb1,
+    heroImage: TemplateHero1,
+    stats: [
+      { label: 'Companies researched', value: 'Unlimited' },
+      { label: 'Data points', value: '50+ per company' },
+      { label: 'Time saved', value: '20-40 min per company' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Company Input',
+        channel: 'Agent Interface',
+        timing: 'Provide company name or website.',
+        objective: 'Define what company to research.',
+        copy:
+          'Input:\n• Company name\n• Website URL (optional)\n• Industry focus (optional)\n• Research depth (basic, detailed, comprehensive)\n• Specific information needed',
+      },
+      {
+        step: 'Step 2 · Company Research',
+        channel: 'AI Processing',
+        timing: 'Agent gathers and analyzes company data.',
+        objective: 'Collect comprehensive company information.',
+        copy:
+          'The agent will:\n• Find company website and basic info\n• Research funding and financial data\n• Identify team size and key employees\n• Discover technologies and tools used\n• Analyze market position and competitors\n• Find recent news and updates\n• Gather social media presence',
+      },
+      {
+        step: 'Step 3 · Company Report',
+        channel: 'Results Dashboard',
+        timing: 'Receive comprehensive company profile.',
+        objective: 'Get detailed company intelligence.',
+        copy:
+          'You\'ll receive:\n• Company overview and description\n• Funding and financial information\n• Team size and key personnel\n• Technology stack\n• Market position and competitors\n• Recent news and updates\n• Social media profiles\n• Contact information',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Output',
+        subject: 'Company Research: "TechCorp Inc."',
+        body:
+          'Company: TechCorp Inc.\nWebsite: techcorp.com\nIndustry: SaaS, Project Management\nFounded: 2018\n\nOverview:\nTechCorp is a leading provider of project management software for remote teams...\n\nFunding:\nSeries B: $25M (2023)\nTotal Funding: $45M\n\nTeam:\nEmployees: 150-200\nHeadquarters: San Francisco, CA\n\nTechnologies:\n- React, Node.js\n- AWS, PostgreSQL\n- Stripe, SendGrid\n\nKey Personnel:\nCEO: John Smith\nCTO: Jane Doe\nVP Sales: Bob Johnson',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Automates the time-consuming process of company research, providing comprehensive intelligence in minutes instead of hours.',
+      },
+      {
+        label: 'Comprehensive data',
+        description: 'Gathers information from multiple sources to provide a complete picture of the company, its market position, and opportunities.',
+      },
+    ],
+    tags: ['Research', 'Company Intelligence', 'Sales', 'Market Research'],
+  },
+  {
+    slug: 'competitor-analyst',
+    title: 'Competitor Analyst',
+    summary:
+      'Analyzes competitors providing insights on strategies, positioning, strengths, and opportunities.',
+    category: 'Business/Strategy',
+    useCase: 'Use when entering new markets, launching products, or developing competitive strategies. Understand your competitive landscape and identify opportunities.',
+    persona: 'Strategy Manager · Product Manager · Business Analyst',
+    thumbnail: TemplateThumb2,
+    heroImage: TemplateHero2,
+    stats: [
+      { label: 'Competitors analyzed', value: 'Unlimited' },
+      { label: 'Analysis depth', value: 'Comprehensive' },
+      { label: 'Time saved', value: '2-4 hours per analysis' },
+    ],
+    sequence: [
+      {
+        step: 'Step 1 · Competitor Input',
+        channel: 'Agent Interface',
+        timing: 'Provide competitor information and analysis scope.',
+        objective: 'Define what competitors to analyze.',
+        copy:
+          'Input:\n• Competitor company names or websites\n• Your company/product for context\n• Analysis focus (pricing, features, marketing, etc.)\n• Market segment\n• Geographic scope',
+      },
+      {
+        step: 'Step 2 · Competitive Analysis',
+        channel: 'AI Processing',
+        timing: 'Agent analyzes competitors across multiple dimensions.',
+        objective: 'Generate comprehensive competitive insights.',
+        copy:
+          'The agent will:\n• Research competitor products and services\n• Analyze pricing strategies\n• Compare features and capabilities\n• Review marketing and positioning\n• Examine market share and growth\n• Identify strengths and weaknesses\n• Find differentiation opportunities',
+      },
+      {
+        step: 'Step 3 · Competitive Report',
+        channel: 'Analysis Dashboard',
+        timing: 'Receive detailed competitive analysis.',
+        objective: 'Get actionable competitive intelligence.',
+        copy:
+          'You\'ll receive:\n• Competitive landscape overview\n• Feature comparison matrix\n• Pricing analysis\n• Positioning map\n• Strengths and weaknesses assessment\n• Market opportunities\n• Strategic recommendations',
+      },
+    ],
+    samples: [
+      {
+        label: 'Sample Output',
+        subject: 'Competitive Analysis: "Project Management Tools Market"',
+        body:
+          'Competitors Analyzed:\n1. Asana\n2. Monday.com\n3. Trello\n\nKey Findings:\n\nPricing Comparison:\n- Asana: $10.99/user/month (Premium)\n- Monday.com: $8/user/month (Standard)\n- Trello: $5/user/month (Standard)\n\nFeature Comparison:\n- Timeline/Gantt: Asana ✓, Monday.com ✓, Trello ✗\n- Automation: All three support\n- Integrations: Asana (200+), Monday.com (40+), Trello (100+)\n\nPositioning:\n- Asana: Team collaboration focus\n- Monday.com: Visual workflow management\n- Trello: Simple, card-based approach\n\nOpportunities:\n- Gap in mid-market pricing tier\n- Need for better mobile experience\n- Integration with emerging tools',
+      },
+    ],
+    insights: [
+      {
+        label: 'Why it works',
+        description:
+          'Provides comprehensive competitive intelligence that helps you understand your market position and identify strategic opportunities.',
+      },
+      {
+        label: 'Strategic insights',
+        description: 'Goes beyond surface-level comparison to provide actionable insights for product development, pricing, and marketing strategies.',
+      },
+    ],
+    tags: ['Competitive Analysis', 'Strategy', 'Market Research', 'Business Intelligence'],
   },
 ]
 

@@ -85,6 +85,62 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
     )
   }
 
+  // Image Generator
+  if (slug === 'image-generator') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Image Description', 'Provide image description and requirements including detailed prompt, style preferences, dimensions or aspect ratio, number of images, and additional requirements like colors or mood.')}
+          {renderStep(2, 'Image Generation', 'Agent generates high-quality custom images by analyzing your description, applying style preferences, optimizing for quality and clarity, and creating variations if requested.')}
+          {renderStep(3, 'Final Output', 'Receive your custom images ready to use including high-quality generated images, multiple variations, images in requested dimensions, download-ready format, and usage recommendations.')}
+        </div>
+      </div>
+    )
+  }
+
+  // Contact Researcher
+  if (slug === 'contact-researcher') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Research Parameters', 'Provide company or person details including company name or website, person name and title, industry or niche, location, and contact type needed.')}
+          {renderStep(2, 'Contact Research', 'Agent searches and verifies contact information by searching company websites and directories, finding email addresses and phone numbers, locating LinkedIn and social profiles, and verifying accuracy.')}
+          {renderStep(3, 'Contact Report', 'Receive verified contact information including email addresses, phone numbers, LinkedIn profiles, social media links, company information, verification status, and alternative contacts.')}
+        </div>
+      </div>
+    )
+  }
+
+  // Company Researcher
+  if (slug === 'company-researcher') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Company Input', 'Provide company name or website including company name, website URL, industry focus, research depth level, and specific information needed.')}
+          {renderStep(2, 'Company Research', 'Agent gathers and analyzes company data by finding company website and basic info, researching funding and financial data, identifying team size and key employees, discovering technologies used, analyzing market position, and gathering recent news.')}
+          {renderStep(3, 'Company Report', 'Receive comprehensive company profile including company overview, funding information, team size and key personnel, technology stack, market position and competitors, recent news, social media profiles, and contact information.')}
+        </div>
+      </div>
+    )
+  }
+
+  // Competitor Analyst
+  if (slug === 'competitor-analyst') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Competitor Input', 'Provide competitor information and analysis scope including competitor company names or websites, your company/product for context, analysis focus areas, market segment, and geographic scope.')}
+          {renderStep(2, 'Competitive Analysis', 'Agent analyzes competitors across multiple dimensions by researching products and services, analyzing pricing strategies, comparing features and capabilities, reviewing marketing and positioning, examining market share, and identifying strengths and weaknesses.')}
+          {renderStep(3, 'Competitive Report', 'Receive detailed competitive analysis including competitive landscape overview, feature comparison matrix, pricing analysis, positioning map, strengths and weaknesses assessment, market opportunities, and strategic recommendations.')}
+        </div>
+      </div>
+    )
+  }
+
 
   // Default for other agents
   return (
