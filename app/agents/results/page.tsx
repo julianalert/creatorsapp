@@ -1,51 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { DocumentTextIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { DocumentTextIcon } from '@heroicons/react/24/outline'
 import CustomHeader from '@/components/ui/custom-header'
+import AgentResultsTable from './agent-results-table'
+import type { AgentResult } from './agent-results-table'
 
-type AgentResult = {
-  id: string
-  agent_id: string | null
-  agent_slug: string
-  agents?: {
-    id: string
-    slug: string
-    title: string
-  } | null
-  input_params: Record<string, any>
-  result_data: Record<string, any>
-  created_at: string
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
-
-  if (diffInSeconds < 60) {
-    return 'Just now'
-  } else if (diffInSeconds < 3600) {
-    const minutes = Math.floor(diffInSeconds / 60)
-    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`
-  } else if (diffInSeconds < 86400) {
-    const hours = Math.floor(diffInSeconds / 3600)
-    return `${hours} hour${hours > 1 ? 's' : ''} ago`
-  } else if (diffInSeconds < 604800) {
-    const days = Math.floor(diffInSeconds / 86400)
-    return `${days} day${days > 1 ? 's' : ''} ago`
-  } else {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-  }
-}
-
-export default function AgentResultsPage() {
+function AgentResultsContent() {
   const [results, setResults] = useState<AgentResult[]>([])
   const [allResults, setAllResults] = useState<AgentResult[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<string>('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 2
 
   useEffect(() => {
     fetchAllResults()
@@ -57,6 +25,8 @@ export default function AgentResultsPage() {
     } else {
       setResults(allResults.filter((r) => r.agent_slug === filter))
     }
+    // Reset to page 1 when filter changes
+    setCurrentPage(1)
   }, [filter, allResults])
 
   const fetchAllResults = async () => {
@@ -89,27 +59,28 @@ export default function AgentResultsPage() {
     return result.agent_slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
   }
 
-  const getPreviewText = (resultData: Record<string, any>): string => {
-    if (resultData?.result) {
-      return resultData.result.substring(0, 200) + (resultData.result.length > 200 ? '...' : '')
-    }
-    return 'No preview available'
-  }
-
-  const getInputSummary = (inputParams: Record<string, any>): string => {
-    if (inputParams?.url) {
-      return `URL: ${inputParams.url}`
-    }
-    if (inputParams?.conversionGoal) {
-      return `Goal: ${inputParams.conversionGoal}`
-    }
-    if (inputParams?.topic) {
-      return `Topic: ${inputParams.topic}`
-    }
-    return 'View details'
-  }
-
   const uniqueAgentSlugs = Array.from(new Set(allResults.map((r) => r.agent_slug))).filter(Boolean)
+
+  // Calculate pagination
+  const totalItems = results.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedResults = results.slice(startIndex, endIndex)
+  const startItem = totalItems > 0 ? startIndex + 1 : 0
+  const endItem = Math.min(endIndex, totalItems)
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -123,9 +94,7 @@ export default function AgentResultsPage() {
           <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">
             Your previous runs
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            View and manage all your previous agent runs
-          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">View and manage all your previous agent runs</p>
         </div>
 
         {/* Filters */}
@@ -160,7 +129,7 @@ export default function AgentResultsPage() {
           })}
         </div>
 
-        {/* Results List */}
+        {/* Results Table */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <svg
@@ -188,36 +157,60 @@ export default function AgentResultsPage() {
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {results.map((result) => (
-              <Link
-                key={result.id}
-                href={`/agent/${result.agent_slug}?resultId=${result.id}`}
-                className="block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-xl p-6 hover:border-violet-500 dark:hover:border-violet-500 transition-colors"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">
-                      {getAgentName(result)}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {getInputSummary(result.input_params)}
-                    </p>
-                  </div>
-                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                    <ClockIcon className="w-4 h-4 mr-1" />
-                    {formatDate(result.created_at)}
+          <>
+            {/* Table */}
+            <AgentResultsTable results={paginatedResults} />
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <nav className="mb-4 sm:mb-0 sm:order-1" role="navigation" aria-label="Navigation">
+                    <ul className="flex justify-center">
+                      <li className="ml-3 first:ml-0">
+                        <button
+                          onClick={handlePrevious}
+                          disabled={currentPage === 1}
+                          className={`btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 ${
+                            currentPage === 1
+                              ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                              : 'text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 cursor-pointer'
+                          }`}
+                        >
+                          &lt;- Previous
+                        </button>
+                      </li>
+                      <li className="ml-3 first:ml-0">
+                        <button
+                          onClick={handleNext}
+                          disabled={currentPage === totalPages}
+                          className={`btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 ${
+                            currentPage === totalPages
+                              ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                              : 'text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 cursor-pointer'
+                          }`}
+                        >
+                          Next -&gt;
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                  <div className="text-sm text-gray-500 text-center sm:text-left">
+                    Showing <span className="font-medium text-gray-600 dark:text-gray-300">{startItem}</span> to{' '}
+                    <span className="font-medium text-gray-600 dark:text-gray-300">{endItem}</span> of{' '}
+                    <span className="font-medium text-gray-600 dark:text-gray-300">{totalItems}</span> results
                   </div>
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                  {getPreviewText(result.result_data)}
-                </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>
   )
+}
+
+export default function AgentResultsPage() {
+  return <AgentResultsContent />
 }
 

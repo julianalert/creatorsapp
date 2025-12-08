@@ -9,6 +9,7 @@ type TemplateCardsProps = {
     credits?: number
     ratingAverage?: number
     ratingCount?: number
+    hasInterface?: boolean
   })[]
   columns?: 2 | 3 | 4
 }
@@ -33,54 +34,85 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
   
   return (
     <div className={gridClass}>
-      {templates.map((template) => (
-        <Link
-          key={template.slug}
-          href={`/agent/${template.slug}`}
-          className="flex flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700/40 transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
-        >
-          <div className="grow p-5 flex flex-col">
-            {/* Category Badge - Above Title */}
-            <div className="mb-2">
-              <CategoryBadge category={template.category} />
-            </div>
-
-            {/* Title */}
-            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
-              {template.title}
-            </h2>
-
-            {/* Summary */}
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 grow">{template.summary}</p>
-            
-            {/* Bottom Section: Cost (left) and Rating (right) */}
-            <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/40">
-              {/* Cost - Bottom Left */}
-              <div className="flex items-center space-x-1.5">
-                <CurrencyDollarIcon className="w-4 h-4 text-yellow-500" />
-                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                  {template.credits || 1} credit{(template.credits || 1) !== 1 ? 's' : ''}
+      {templates.map((template) => {
+        const hasInterface = template.hasInterface !== false // Default to true if not specified
+        const cardClassName = `flex flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700/40 relative ${
+          hasInterface 
+            ? 'transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer' 
+            : 'cursor-not-allowed opacity-75'
+        }`
+        
+        const cardContent = (
+          <>
+            {/* Coming Soon Badge */}
+            {!hasInterface && (
+              <div className="absolute top-3 right-3 z-10">
+                <span className="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-800">
+                  Coming Soon
                 </span>
               </div>
+            )}
 
-              {/* Rating - Bottom Right */}
-              {template.ratingAverage && template.ratingAverage > 0 ? (
+            <div className="grow p-5 flex flex-col">
+              {/* Category Badge - Above Title */}
+              <div className="mb-2">
+                <CategoryBadge category={template.category} />
+              </div>
+
+              {/* Title */}
+              <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
+                {template.title}
+              </h2>
+
+              {/* Summary */}
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 grow">{template.summary}</p>
+              
+              {/* Bottom Section: Cost (left) and Rating (right) */}
+              <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/40">
+                {/* Cost - Bottom Left */}
                 <div className="flex items-center space-x-1.5">
-                  <StarIcon filled={true} />
+                  <CurrencyDollarIcon className="w-4 h-4 text-yellow-500" />
                   <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                    {template.ratingAverage.toFixed(1)}
+                    {template.credits || 1} credit{(template.credits || 1) !== 1 ? 's' : ''}
                   </span>
-                  {template.ratingCount && template.ratingCount > 0 && (
-                    <span className="text-xs text-gray-500 dark:text-gray-500">
-                      ({template.ratingCount})
-                    </span>
-                  )}
                 </div>
-              ) : null}
+
+                {/* Rating - Bottom Right */}
+                {template.ratingAverage && template.ratingAverage > 0 ? (
+                  <div className="flex items-center space-x-1.5">
+                    <StarIcon filled={true} />
+                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {template.ratingAverage.toFixed(1)}
+                    </span>
+                    {template.ratingCount && template.ratingCount > 0 && (
+                      <span className="text-xs text-gray-500 dark:text-gray-500">
+                        ({template.ratingCount})
+                      </span>
+                    )}
+                  </div>
+                ) : null}
+              </div>
             </div>
+          </>
+        )
+        
+        return hasInterface ? (
+          <Link
+            key={template.slug}
+            href={`/agent/${template.slug}`}
+            className={cardClassName}
+          >
+            {cardContent}
+          </Link>
+        ) : (
+          <div
+            key={template.slug}
+            className={cardClassName}
+          >
+            {cardContent}
           </div>
-        </Link>
-      ))}
+        )
+      })}
     </div>
   )
 }

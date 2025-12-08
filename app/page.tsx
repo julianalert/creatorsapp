@@ -12,6 +12,12 @@ const agentCategories = [
   'Miscellaneous'
 ]
 
+// Agents that have working API routes
+const WORKING_AGENTS = [
+  'on-page-seo-audit',
+  'conversion-rate-optimizer',
+]
+
 export const metadata = {
   title: 'AI Agents for Marketing',
   description: 'Discover powerful AI agents for SEO, sales, content marketing, paid ads, and creator marketing. Pre-made, ready-to-use and fully customizable agents to supercharge your marketing efforts.',
@@ -50,24 +56,35 @@ export default async function Home() {
     .order('created_at', { ascending: true })
 
   // Transform agents to match the template format
-  const templates = (agents || []).map((agent) => ({
-    slug: agent.slug,
-    title: agent.title,
-    summary: agent.summary,
-    category: agent.category,
-    useCase: agent.use_case,
-    persona: agent.persona,
-    thumbnail: agent.thumbnail_url,
-    heroImage: agent.hero_image_url,
-    stats: agent.stats || [],
-    sequence: agent.sequence || [],
-    samples: agent.samples || [],
-    insights: agent.insights || [],
-    tags: agent.tags || [],
-    credits: agent.credits || 1,
-    ratingAverage: Number(agent.rating_average) || 0,
-    ratingCount: agent.rating_count || 0,
-  }))
+  const templates = (agents || [])
+    .map((agent) => ({
+      slug: agent.slug,
+      title: agent.title,
+      summary: agent.summary,
+      category: agent.category,
+      useCase: agent.use_case,
+      persona: agent.persona,
+      thumbnail: agent.thumbnail_url,
+      heroImage: agent.hero_image_url,
+      stats: agent.stats || [],
+      sequence: agent.sequence || [],
+      samples: agent.samples || [],
+      insights: agent.insights || [],
+      tags: agent.tags || [],
+      credits: agent.credits || 1,
+      ratingAverage: Number(agent.rating_average) || 0,
+      ratingCount: agent.rating_count || 0,
+      hasInterface: WORKING_AGENTS.includes(agent.slug),
+    }))
+    // Sort: working agents first, then by created_at
+    .sort((a, b) => {
+      // First, sort by hasInterface (working ones first)
+      if (a.hasInterface !== b.hasInterface) {
+        return a.hasInterface ? -1 : 1
+      }
+      // Then sort by created_at (older first, maintaining original order)
+      return 0
+    })
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
