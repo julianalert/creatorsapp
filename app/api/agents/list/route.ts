@@ -24,10 +24,11 @@ export async function GET(request: Request) {
   }
 
   if (slug) {
-    query = query.eq('slug', slug).maybeSingle()
+    query = query.eq('slug', slug)
   }
 
-  const { data, error } = await query
+  const queryResult = slug ? query.maybeSingle() : query
+  const { data, error } = await queryResult
 
   if (error) {
     console.error('Error fetching agents:', error)
