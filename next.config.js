@@ -73,7 +73,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://beamanalytics.b-cdn.net",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: *.instagram.com *.cdninstagram.com *.fbcdn.net",
               "font-src 'self' data:",
