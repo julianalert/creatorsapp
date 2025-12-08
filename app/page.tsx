@@ -42,6 +42,9 @@ export default async function Home() {
     samples: agent.samples || [],
     insights: agent.insights || [],
     tags: agent.tags || [],
+    credits: agent.credits || 1,
+    ratingAverage: Number(agent.rating_average) || 0,
+    ratingCount: agent.rating_count || 0,
   }))
 
   return (
