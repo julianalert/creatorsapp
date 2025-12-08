@@ -10,8 +10,6 @@ type AgentInterfaceProps = {
 export default function AgentInterface({ slug }: AgentInterfaceProps) {
   const [url, setUrl] = useState('')
   const [conversionGoal, setConversionGoal] = useState('')
-  const [currentRate, setCurrentRate] = useState('')
-  const [funnelSteps, setFunnelSteps] = useState('')
   // Keyword Research state
   const [topic, setTopic] = useState('')
   const [targetAudience, setTargetAudience] = useState('')
@@ -59,6 +57,7 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
   const [marketSegment, setMarketSegment] = useState('')
   const [geographicScope, setGeographicScope] = useState('')
   const [loading, setLoading] = useState(false)
+  const [currentStep, setCurrentStep] = useState<string | null>(null)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -67,20 +66,94 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
     setError(null)
     setLoading(true)
     setResult(null)
+    setCurrentStep(null)
 
     // Dispatch agent start event
     window.dispatchEvent(new CustomEvent('agent:start', { detail: { slug } }))
 
     try {
-      // TODO: Replace with actual API call
-      // For now, simulate a delay and show placeholder result
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // Placeholder result - will be replaced with actual API response
       if (slug === 'on-page-seo-audit') {
-        setResult('SEO Audit results will appear here...')
+        setCurrentStep('Scraping URL...')
+        // Show scraping step for at least 1.5 seconds
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        setCurrentStep('Analyzing Technical SEO...')
+        // Start the API call
+        const fetchPromise = fetch('/api/agents/seo-audit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url }),
+        })
+
+        // Show technical SEO step for at least 2.5 seconds (even if fetch completes faster)
+        const technicalSEODelay = new Promise(resolve => setTimeout(resolve, 2500))
+        await technicalSEODelay
+
+        setCurrentStep('Analyzing Content SEO...')
+        // Show content SEO step for at least 1 second
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
+        setCurrentStep('Finalizing results...')
+        // Wait for the response while showing finalizing step
+        const response = await fetchPromise
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate SEO audit')
+        }
+
+        if (data.success && data.result) {
+          // Wait for both a delay and ensure processing is complete
+          await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 1500))
+          ])
+          setResult(data.result)
+          setCurrentStep(null)
+        } else {
+          throw new Error('Invalid response from SEO audit API')
+        }
       } else if (slug === 'conversion-rate-optimizer') {
-        setResult('Conversion Rate Optimization results will appear here...')
+        setCurrentStep('Scraping URL...')
+        // Show scraping step for at least 1.5 seconds
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        setCurrentStep('Analyzing Conversion Rate...')
+        // Start the API call
+        const fetchPromise = fetch('/api/agents/conversion-rate-optimizer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url, conversionGoal }),
+        })
+
+        // Show analyzing step for at least 2 seconds
+        const analyzingDelay = new Promise(resolve => setTimeout(resolve, 2000))
+        await analyzingDelay
+
+        setCurrentStep('Finalizing results...')
+        // Wait for the response while showing finalizing step
+        const response = await fetchPromise
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate conversion rate optimization analysis')
+        }
+
+        if (data.success && data.result) {
+          // Wait for both a delay and ensure processing is complete
+          await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 1500))
+          ])
+          setResult(data.result)
+          setCurrentStep(null)
+        } else {
+          throw new Error('Invalid response from conversion rate optimizer API')
+        }
       } else if (slug === 'keyword-research') {
         setResult('Keyword Research results will appear here...')
       } else if (slug === 'blog-content-plan-generator') {
@@ -98,6 +171,7 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
+      setCurrentStep(null)
     } finally {
       setLoading(false)
       // Dispatch agent stop event
@@ -161,6 +235,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
@@ -208,37 +291,6 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
               disabled={loading}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="current-rate">
-              Current Conversion Rate (%)
-            </label>
-            <input
-              id="current-rate"
-              type="number"
-              step="0.01"
-              min="0"
-              max="100"
-              placeholder="e.g., 2.5"
-              value={currentRate}
-              onChange={(e) => setCurrentRate(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
-              disabled={loading}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="funnel-steps">
-              Funnel Steps (optional)
-            </label>
-            <textarea
-              id="funnel-steps"
-              rows={4}
-              placeholder="Describe your conversion funnel steps, e.g., Landing Page → Product Page → Checkout → Thank You"
-              value={funnelSteps}
-              onChange={(e) => setFunnelSteps(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
-              disabled={loading}
-            />
-          </div>
           <div className="flex items-center justify-end">
             <button
               type="submit"
@@ -256,7 +308,7 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
               ) : (
                 <>
                   <SparklesIcon className="w-4 h-4 mr-2" />
-                  Optimize Conversion Rate
+                  Analyze Conversion Rate
                 </>
               )}
             </button>
@@ -275,10 +327,19 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">Your conversion optimization results will appear here</p>
+                <p className="text-gray-500 dark:text-gray-400">Your conversion rate optimization analysis will appear here</p>
               </div>
             )}
           </div>
