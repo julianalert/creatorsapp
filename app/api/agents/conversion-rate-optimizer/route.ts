@@ -264,6 +264,9 @@ export async function POST(request: Request) {
 
   const creditCost = agent.credits || 1
 
+  // Track start time
+  const startedAt = new Date().toISOString()
+
   // Check and deduct credits atomically
   const { data: newBalance, error: creditError } = await supabase.rpc('deduct_user_credits', {
     p_user_id: user.id,
@@ -368,6 +371,12 @@ Here is the content of my landing page: ${sanitizedHtml}`
     )
   }
 
+  // Track end time and calculate run time
+  const endedAt = new Date().toISOString()
+  const startedAtDate = new Date(startedAt)
+  const endedAtDate = new Date(endedAt)
+  const runTimeSeconds = Math.floor((endedAtDate.getTime() - startedAtDate.getTime()) / 1000)
+
   // Save result to Supabase
   const { data: savedResult, error: saveError } = await supabase
     .from('agent_results')
@@ -384,6 +393,9 @@ Here is the content of my landing page: ${sanitizedHtml}`
         url,
         conversionGoal,
       },
+      started_at: startedAt,
+      ended_at: endedAt,
+      run_time_seconds: runTimeSeconds,
     })
     .select()
     .single()

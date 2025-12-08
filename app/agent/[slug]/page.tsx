@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 
 import TemplateCards from '@/app/(default)/outreach/templates/template-cards'
 import AgentInterface from './agent-interface'
 import AgentProcessSteps from './agent-process-steps'
 import AgentActivityLog from './agent-activity-log'
 import AgentRating from './agent-rating'
+import AgentFeedback from './agent-feedback'
 import CategoryBadge from '@/components/category-badge'
 import { createClient } from '@/lib/supabase/server'
 
@@ -250,7 +252,14 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
             <p className="text-xs text-gray-600 dark:text-gray-300">{template.useCase}</p>
           </div>
 
-          <AgentActivityLog agentSlug={template.slug} />
+          <Suspense fallback={
+            <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+              <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-3">Activity log</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Loading...</div>
+            </div>
+          }>
+            <AgentActivityLog agentSlug={template.slug} />
+          </Suspense>
 
           {/* Built for */}
           <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
@@ -295,6 +304,9 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
           </div>
         </aside>
       </div>
+      
+      {/* Sticky Feedback Component */}
+      <AgentFeedback agentId={agent.id} />
     </div>
   )
 }

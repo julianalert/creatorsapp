@@ -15,6 +15,9 @@ export interface AgentResult {
   input_params: Record<string, any>
   result_data: Record<string, any>
   created_at: string
+  started_at?: string | null
+  ended_at?: string | null
+  run_time_seconds?: number | null
 }
 
 export default function AgentResultsTable({ results }: { results: AgentResult[]}) {

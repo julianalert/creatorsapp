@@ -145,6 +145,14 @@ export default function DropdownProfile({ align, credits: creditsProp }: {
         </div>
         <MenuItems as="ul" className="focus:outline-hidden">
           <MenuItem as="li">
+            <Link 
+              className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 cursor-pointer" 
+              href="/request"
+            >
+              Request an Agent
+            </Link>
+          </MenuItem>
+          <MenuItem as="li">
               <Link className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 cursor-pointer" href="/settings/account">
                 Settings
               </Link>
