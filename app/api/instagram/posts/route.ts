@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/supabase/api-auth'
+import { checkRateLimit, RATE_LIMITS, getRateLimitHeaders } from '@/lib/utils/rate-limit'
 
 /**
  * Validates Instagram handle format
@@ -48,6 +49,21 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         { error: 'Invalid next_max_id format' },
         { status: 400 }
+      )
+    }
+
+    // SECURITY: Rate limiting to prevent abuse
+    const rateLimit = checkRateLimit(user.id, RATE_LIMITS.EXTERNAL_API)
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { 
+          error: 'Rate limit exceeded. Please try again later.',
+          retryAfter: Math.ceil((rateLimit.resetTime - Date.now()) / 1000),
+        },
+        { 
+          status: 429,
+          headers: getRateLimitHeaders(rateLimit.remaining, rateLimit.resetTime),
+        }
       )
     }
 

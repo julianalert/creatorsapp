@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
 import Img2 from '@/public/images/yuzuuBg.png'
+import { recordFailedAttempt, clearFailedAttempts, isAccountLocked, getRemainingLockoutTime } from '@/lib/utils/account-lockout'
 
 export default function SignIn() {
   const router = useRouter()
@@ -14,10 +15,37 @@ export default function SignIn() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [lockoutTime, setLockoutTime] = useState<number | null>(null)
+
+  // Check lockout status on mount and periodically
+  useEffect(() => {
+    const checkLockout = () => {
+      if (isAccountLocked()) {
+        const remaining = getRemainingLockoutTime()
+        setLockoutTime(remaining)
+        setError(`Account locked due to too many failed attempts. Please try again in ${Math.ceil(remaining / 60)} minutes.`)
+      } else {
+        setLockoutTime(null)
+      }
+    }
+
+    checkLockout()
+    const interval = setInterval(checkLockout, 1000) // Check every second
+
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+
+    // Check if account is locked
+    if (isAccountLocked()) {
+      const remaining = getRemainingLockoutTime()
+      setError(`Account is locked. Please try again in ${Math.ceil(remaining / 60)} minutes.`)
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -28,15 +56,26 @@ export default function SignIn() {
       })
 
       if (error) {
-        setError(error.message)
+        // Record failed attempt
+        const lockoutInfo = recordFailedAttempt()
+        
+        if (lockoutInfo.isLocked) {
+          setError(`Too many failed attempts. Account locked for ${Math.ceil((lockoutInfo.lockoutUntil! - Date.now()) / 60000)} minutes.`)
+          setLockoutTime(getRemainingLockoutTime())
+        } else {
+          setError(error.message + (lockoutInfo.remainingAttempts > 0 ? ` (${lockoutInfo.remainingAttempts} attempts remaining)` : ''))
+        }
         setLoading(false)
         return
       }
 
+      // Clear failed attempts on successful login
+      clearFailedAttempts()
       router.push('/')
       router.refresh()
     } catch (err) {
-      setError('An unexpected error occurred')
+      const lockoutInfo = recordFailedAttempt()
+      setError('An unexpected error occurred' + (lockoutInfo.remainingAttempts > 0 ? ` (${lockoutInfo.remainingAttempts} attempts remaining)` : ''))
       setLoading(false)
     }
   }

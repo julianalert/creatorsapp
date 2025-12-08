@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-secrets": "node scripts/check-secrets.js",
+    "check-dependencies": "node scripts/check-dependencies.js",
+    "prebuild": "npm run check-secrets",
+    "security-check": "npm run check-secrets && npm run check-dependencies"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

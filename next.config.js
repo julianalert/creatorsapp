@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Request size limits
+  api: {
+    bodyParser: {
+      sizeLimit: '1mb',
+    },
+    responseLimit: '8mb',
+  },
   images: {
     remotePatterns: [
       {
@@ -68,6 +75,19 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https: *.instagram.com *.cdninstagram.com *.fbcdn.net",
+              "font-src 'self' data:",
+              "connect-src 'self' https://*.supabase.co https://api.stripe.com https://app.scrapingbee.com https://api.scrapecreators.com https://api.openai.com",
+              "frame-src 'self' https://js.stripe.com",
+              "frame-ancestors 'self'",
+            ].join('; ')
           },
         ],
       },

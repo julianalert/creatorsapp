@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { validateUrl } from '@/lib/utils/url-validation'
+import { checkRateLimit, RATE_LIMITS, getRateLimitHeaders } from '@/lib/utils/rate-limit'
 
 const SCRAPING_BEE_ENDPOINT = 'https://app.scrapingbee.com/api/v1/'
 const OPENAI_RESPONSES_ENDPOINT =
@@ -54,13 +56,19 @@ async function generateBrandProfile(params: {
 
   const model = process.env.BRAND_PROFILE_MODEL ?? DEFAULT_BRAND_PROFILE_MODEL
 
+  // SECURITY: Add timeout to prevent hanging requests
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout for AI calls
+
   try {
+
     const response = await fetch(OPENAI_RESPONSES_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${openaiApiKey}`,
       },
+      signal: controller.signal,
       body: JSON.stringify({
         model,
         input: [
@@ -95,6 +103,7 @@ async function generateBrandProfile(params: {
         },
       }),
     })
+    clearTimeout(timeoutId)
     const responseText = await response.text()
 
     if (!response.ok) {
@@ -178,7 +187,14 @@ async function generateBrandProfile(params: {
       console.error('Unable to parse brand profile JSON', parseError, rawText)
       return { profile: null, error: 'Brand profile was not valid JSON.' }
     }
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      return { profile: null, error: 'Request timeout while generating brand profile.' }
+    }
+    clearTimeout(timeoutId)
+    if (error.name === 'AbortError') {
+      return { profile: null, error: 'Request timeout while generating brand profile.' }
+    }
     console.error('OpenAI request for brand profile failed', error)
     return { profile: null, error: 'Unexpected error while generating brand profile.' }
   }
@@ -191,16 +207,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'A valid url is required.' }, { status: 400 })
   }
 
-  try {
-    const parsedUrl = new URL(url)
-    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
-      return NextResponse.json(
-        { error: 'Only HTTP and HTTPS URLs are supported.' },
-        { status: 400 }
-      )
-    }
-  } catch {
-    return NextResponse.json({ error: 'Malformed URL provided.' }, { status: 400 })
+  // SECURITY: Validate URL to prevent SSRF attacks
+  const parsedUrl = validateUrl(url, process.env.NODE_ENV === 'development')
+  if (!parsedUrl) {
+    return NextResponse.json(
+      { error: 'Invalid or unsafe URL provided. Only public HTTPS URLs are allowed.' },
+      { status: 400 }
+    )
   }
 
   const apiKey = process.env.SCRAPING_BEE_API_KEY
@@ -223,6 +236,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Authentication required.' }, { status: 401 })
   }
 
+  // SECURITY: Rate limiting to prevent abuse
+  const rateLimit = checkRateLimit(user.id, RATE_LIMITS.EXPENSIVE)
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { 
+        error: 'Rate limit exceeded. Please try again later.',
+        retryAfter: Math.ceil((rateLimit.resetTime - Date.now()) / 1000),
+      },
+      { 
+        status: 429,
+        headers: getRateLimitHeaders(rateLimit.remaining, rateLimit.resetTime),
+      }
+    )
+  }
+
   const scrapingBeeUrl = new URL(SCRAPING_BEE_ENDPOINT)
   scrapingBeeUrl.searchParams.set('api_key', apiKey)
   scrapingBeeUrl.searchParams.set('url', url)
@@ -236,11 +264,18 @@ export async function POST(request: Request) {
   let errorMessage: string | null = null
 
   try {
+    // SECURITY: Add timeout to prevent hanging requests
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+
     const response = await fetch(scrapingBeeUrl, {
       headers: {
         Accept: 'application/json,text/markdown;q=0.9,text/plain;q=0.8,*/*;q=0.7',
       },
+      signal: controller.signal,
     })
+
+    clearTimeout(timeoutId)
 
     statusCode = response.status
     contentType = response.headers.get('content-type') ?? 'text/plain'
@@ -269,11 +304,18 @@ export async function POST(request: Request) {
       statusValue = 'failed'
       errorMessage = `ScrapingBee request failed with status ${response.status}.`
     }
-  } catch (error) {
-    console.error('ScrapingBee request error', error)
-    statusValue = 'failed'
-    errorMessage = 'Unexpected error while scraping the URL.'
-    statusCode = 500
+  } catch (error: any) {
+    clearTimeout(timeoutId)
+    if (error.name === 'AbortError') {
+      statusValue = 'failed'
+      errorMessage = 'Request timeout while scraping the URL.'
+      statusCode = 408
+    } else {
+      console.error('ScrapingBee request error', error)
+      statusValue = 'failed'
+      errorMessage = 'Unexpected error while scraping the URL.'
+      statusCode = 500
+    }
   }
 
   const scrapeResult = {

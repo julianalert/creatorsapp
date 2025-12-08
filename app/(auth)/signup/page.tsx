@@ -8,6 +8,7 @@ import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
 import Model1 from '@/public/images/yuzuuBg2.png'
 import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
+import { validatePassword, getPasswordStrengthColor } from '@/lib/utils/password-validation'
 
 export default function SignUp() {
   const router = useRouter()
@@ -16,11 +17,29 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [passwordValidation, setPasswordValidation] = useState<ReturnType<typeof validatePassword> | null>(null)
+
+  const handlePasswordChange = (newPassword: string) => {
+    setPassword(newPassword)
+    if (newPassword.length > 0) {
+      setPasswordValidation(validatePassword(newPassword))
+    } else {
+      setPasswordValidation(null)
+    }
+  }
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setLoading(true)
+
+    // Validate password before submission
+    const validation = validatePassword(password)
+    if (!validation.isValid) {
+      setError(validation.errors[0] || 'Password does not meet requirements')
+      setLoading(false)
+      return
+    }
 
     try {
       const supabase = createClient()
@@ -102,11 +121,31 @@ export default function SignUp() {
                       type="password" 
                       autoComplete="on" 
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => handlePasswordChange(e.target.value)}
                       required
-                      minLength={6}
+                      minLength={8}
                       disabled={loading}
                     />
+                    {passwordValidation && (
+                      <div className="mt-2 space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-gray-600 dark:text-gray-400">Password strength:</span>
+                          <span className={getPasswordStrengthColor(passwordValidation.strength)}>
+                            {passwordValidation.strength.toUpperCase()}
+                          </span>
+                        </div>
+                        {passwordValidation.errors.length > 0 && (
+                          <ul className="text-xs text-red-600 dark:text-red-400 space-y-0.5">
+                            {passwordValidation.errors.map((err, idx) => (
+                              <li key={idx}>• {err}</li>
+                            ))}
+                          </ul>
+                        )}
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          Requirements: 8+ characters, uppercase, lowercase, number, special character
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-6">

@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { ApiErrorResponse } from '@/lib/utils/error-handler'
+import { getRequestId, addRequestIdHeader } from '@/lib/utils/request-id'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const requestId = getRequestId(request)
   const supabase = await createClient()
   const {
     data: { user },
@@ -9,7 +12,9 @@ export async function GET() {
   } = await supabase.auth.getUser()
 
   if (authError || !user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const response = ApiErrorResponse.unauthorized('Authentication required', requestId)
+    addRequestIdHeader(response, requestId)
+    return response
   }
 
   // Get user credits using the function
@@ -27,21 +32,18 @@ export async function GET() {
       .maybeSingle()
 
     if (creditsError) {
-      return NextResponse.json(
-        { error: 'Failed to fetch credits' },
-        { status: 500 }
-      )
+      const response = ApiErrorResponse.internalError('Failed to fetch credits', requestId)
+      addRequestIdHeader(response, requestId)
+      return response
     }
 
-    return NextResponse.json({
-      success: true,
-      credits: creditsData?.credits ?? 0,
-    })
+    const response = ApiErrorResponse.success({ credits: creditsData?.credits ?? 0 }, requestId)
+    addRequestIdHeader(response, requestId)
+    return response
   }
 
-  return NextResponse.json({
-    success: true,
-    credits: data ?? 0,
-  })
+  const response = ApiErrorResponse.success({ credits: data ?? 0 }, requestId)
+  addRequestIdHeader(response, requestId)
+  return response
 }
 

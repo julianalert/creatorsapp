@@ -47,8 +47,9 @@ export async function POST(request: NextRequest) {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
     } catch (err: any) {
       console.error('Webhook signature verification failed:', err.message)
+      // Don't expose internal error details
       return NextResponse.json(
-        { error: `Webhook Error: ${err.message}` },
+        { error: 'Invalid webhook signature' },
         { status: 400 }
       )
     }
@@ -91,8 +92,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ received: true, creditsAdded: credits })
     } catch (error: any) {
       console.error('Error processing webhook:', error)
+      // Don't expose internal error details
       return NextResponse.json(
-        { error: error.message || 'Failed to process webhook' },
+        { error: 'Failed to process webhook' },
         { status: 500 }
       )
     }
@@ -101,8 +103,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   } catch (error: any) {
     console.error('Error in webhook handler:', error)
+    // Don't expose internal error details
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: 'Internal server error' },
       { status: 500 }
     )
   }

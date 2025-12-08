@@ -9,10 +9,21 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
  * This allows you to manually add credits after a successful payment
  * when webhooks aren't set up yet.
  * 
+ * ⚠️ SECURITY: This endpoint is DISABLED in production for security reasons.
+ * Only use webhooks for production credit additions.
+ * 
  * Usage: POST /api/stripe/manual-credit
  * Body: { sessionId: "cs_test_..." }
  */
 export async function POST(request: NextRequest) {
+  // SECURITY: Disable this endpoint in production
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      { error: 'This endpoint is not available in production. Use webhooks instead.' },
+      { status: 403 }
+    )
+  }
+
   try {
     const supabase = await createClient()
     const {
@@ -81,8 +92,9 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Error adding credits:', error)
+      // Don't expose internal error details in response
       return NextResponse.json(
-        { error: 'Failed to add credits', details: error.message },
+        { error: 'Failed to add credits' },
         { status: 500 }
       )
     }
@@ -95,8 +107,9 @@ export async function POST(request: NextRequest) {
     })
   } catch (error: any) {
     console.error('Error in manual credit addition:', error)
+    // Don't expose internal error details in response
     return NextResponse.json(
-      { error: error.message || 'Failed to add credits' },
+      { error: 'Failed to add credits' },
       { status: 500 }
     )
   }

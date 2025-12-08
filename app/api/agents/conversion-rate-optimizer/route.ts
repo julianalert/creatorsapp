@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { validateUrl } from '@/lib/utils/url-validation'
+import { checkRateLimit, RATE_LIMITS, getRateLimitHeaders } from '@/lib/utils/rate-limit'
 
 const SCRAPING_BEE_ENDPOINT = 'https://app.scrapingbee.com/api/v1/'
 const OPENAI_RESPONSES_ENDPOINT =
@@ -25,11 +27,18 @@ async function scrapeUrl(url: string): Promise<{ html: string | null; error: str
   scrapingBeeUrl.searchParams.set('premium_proxy', 'false')
 
   try {
+    // SECURITY: Add timeout to prevent hanging requests
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+
     const response = await fetch(scrapingBeeUrl, {
       headers: {
         Accept: 'application/json,text/html;q=0.9,*/*;q=0.8',
       },
+      signal: controller.signal,
     })
+
+    clearTimeout(timeoutId)
 
     if (!response.ok) {
       return { html: null, error: `ScrapingBee request failed with status ${response.status}.` }
@@ -56,7 +65,11 @@ async function scrapeUrl(url: string): Promise<{ html: string | null; error: str
       const html = await response.text()
       return { html: html || null, error: html ? null : 'Unexpected content type from ScrapingBee.' }
     }
-  } catch (error) {
+  } catch (error: any) {
+    clearTimeout(timeoutId)
+    if (error.name === 'AbortError') {
+      return { html: null, error: 'Request timeout while scraping the URL.' }
+    }
     console.error('ScrapingBee request error', error)
     return { html: null, error: 'Unexpected error while scraping the URL.' }
   }
@@ -72,12 +85,17 @@ async function callOpenAI(prompt: string): Promise<{ result: string | null; erro
   const model = process.env.BRAND_PROFILE_MODEL ?? DEFAULT_MODEL
 
   try {
+    // SECURITY: Add timeout to prevent hanging requests
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout for AI calls
+
     const response = await fetch(OPENAI_RESPONSES_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${openaiApiKey}`,
       },
+      signal: controller.signal,
       body: JSON.stringify({
         model,
         input: [
@@ -94,6 +112,7 @@ async function callOpenAI(prompt: string): Promise<{ result: string | null; erro
       }),
     })
 
+    clearTimeout(timeoutId)
     const responseText = await response.text()
 
     if (!response.ok) {
@@ -168,7 +187,11 @@ async function callOpenAI(prompt: string): Promise<{ result: string | null; erro
     }
 
     return { result: rawText, error: null }
-  } catch (error) {
+  } catch (error: any) {
+    clearTimeout(timeoutId)
+    if (error.name === 'AbortError') {
+      return { result: null, error: 'Request timeout while calling OpenAI.' }
+    }
     console.error('OpenAI request failed', error)
     return { result: null, error: 'Unexpected error while calling OpenAI.' }
   }
@@ -185,16 +208,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'A conversion goal is required.' }, { status: 400 })
   }
 
-  try {
-    const parsedUrl = new URL(url)
-    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
-      return NextResponse.json(
-        { error: 'Only HTTP and HTTPS URLs are supported.' },
-        { status: 400 }
-      )
-    }
-  } catch {
-    return NextResponse.json({ error: 'Malformed URL provided.' }, { status: 400 })
+  // SECURITY: Validate URL to prevent SSRF attacks
+  const parsedUrl = validateUrl(url, process.env.NODE_ENV === 'development')
+  if (!parsedUrl) {
+    return NextResponse.json(
+      { error: 'Invalid or unsafe URL provided. Only public HTTPS URLs are allowed.' },
+      { status: 400 }
+    )
   }
 
   const supabase = await createClient()
@@ -209,6 +229,21 @@ export async function POST(request: Request) {
 
   if (!user) {
     return NextResponse.json({ error: 'You must signup or log in to use this ai agent' }, { status: 401 })
+  }
+
+  // SECURITY: Rate limiting to prevent abuse
+  const rateLimit = checkRateLimit(user.id, RATE_LIMITS.EXPENSIVE)
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { 
+        error: 'Rate limit exceeded. Please try again later.',
+        retryAfter: Math.ceil((rateLimit.resetTime - Date.now()) / 1000),
+      },
+      { 
+        status: 429,
+        headers: getRateLimitHeaders(rateLimit.remaining, rateLimit.resetTime),
+      }
+    )
   }
 
   // Get agent to check credit cost
