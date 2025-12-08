@@ -1,6 +1,7 @@
 import './css/style.css'
 
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 import Theme from './theme-provider'
 import AppProvider from './app-provider'
 
@@ -111,6 +112,11 @@ export default function RootLayout({
             {children}
           </AppProvider>
         </Theme>
+        <Script
+          src="https://beamanalytics.b-cdn.net/beam.min.js"
+          data-token="a1af78f4-e22c-412d-9149-42af8e3897e4"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
