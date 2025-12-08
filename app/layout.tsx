@@ -20,7 +20,7 @@ const getBaseUrl = () => {
     return new URL(`https://${process.env.VERCEL_URL}`)
   }
   // Development fallback
-  return new URL('https://yuzuu.app')
+  return new URL('https://yuzuu.co')
 }
 
 export const metadata = {
