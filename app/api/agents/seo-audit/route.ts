@@ -285,12 +285,14 @@ Here is the content of my landing page: ${sanitizedHtml}`
 
   if (technicalError) {
     // If agent execution fails, refund the credits
-    await supabase.rpc('add_user_credits', {
-      p_user_id: user.id,
-      p_credits_to_add: creditCost,
-    }).catch((refundError) => {
+    try {
+      await supabase.rpc('add_user_credits', {
+        p_user_id: user.id,
+        p_credits_to_add: creditCost,
+      })
+    } catch (refundError) {
       console.error('Error refunding credits:', refundError)
-    })
+    }
 
     return NextResponse.json(
       { error: `Technical SEO audit failed: ${technicalError}` },
@@ -331,12 +333,14 @@ Here is the content of my landing page: ${sanitizedHtml}`
 
   if (contentError) {
     // If agent execution fails, refund the credits
-    await supabase.rpc('add_user_credits', {
-      p_user_id: user.id,
-      p_credits_to_add: creditCost,
-    }).catch((refundError) => {
+    try {
+      await supabase.rpc('add_user_credits', {
+        p_user_id: user.id,
+        p_credits_to_add: creditCost,
+      })
+    } catch (refundError) {
       console.error('Error refunding credits:', refundError)
-    })
+    }
 
     return NextResponse.json(
       { error: `Content SEO audit failed: ${contentError}` },

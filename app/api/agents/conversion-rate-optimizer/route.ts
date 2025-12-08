@@ -307,12 +307,14 @@ Here is the content of my landing page: ${sanitizedHtml}`
 
   if (error) {
     // If agent execution fails, refund the credits
-    await supabase.rpc('add_user_credits', {
-      p_user_id: user.id,
-      p_credits_to_add: creditCost,
-    }).catch((refundError) => {
+    try {
+      await supabase.rpc('add_user_credits', {
+        p_user_id: user.id,
+        p_credits_to_add: creditCost,
+      })
+    } catch (refundError) {
       console.error('Error refunding credits:', refundError)
-    })
+    }
 
     return NextResponse.json(
       { error: `Conversion rate optimization analysis failed: ${error}` },
