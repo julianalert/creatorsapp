@@ -263,11 +263,11 @@ export async function POST(request: Request) {
   let statusValue: 'completed' | 'failed' = 'completed'
   let errorMessage: string | null = null
 
-  try {
-    // SECURITY: Add timeout to prevent hanging requests
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+  // SECURITY: Add timeout to prevent hanging requests
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
 
+  try {
     const response = await fetch(scrapingBeeUrl, {
       headers: {
         Accept: 'application/json,text/markdown;q=0.9,text/plain;q=0.8,*/*;q=0.7',

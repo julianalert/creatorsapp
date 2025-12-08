@@ -26,11 +26,11 @@ async function scrapeUrl(url: string): Promise<{ html: string | null; error: str
   scrapingBeeUrl.searchParams.set('render_js', 'false')
   scrapingBeeUrl.searchParams.set('premium_proxy', 'false')
 
-  try {
-    // SECURITY: Add timeout to prevent hanging requests
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+  // SECURITY: Add timeout to prevent hanging requests
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
 
+  try {
     const response = await fetch(scrapingBeeUrl, {
       headers: {
         Accept: 'application/json,text/html;q=0.9,*/*;q=0.8',
@@ -84,11 +84,11 @@ async function callOpenAI(prompt: string): Promise<{ result: string | null; erro
 
   const model = process.env.BRAND_PROFILE_MODEL ?? DEFAULT_MODEL
 
-  try {
-    // SECURITY: Add timeout to prevent hanging requests
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout for AI calls
+  // SECURITY: Add timeout to prevent hanging requests
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout for AI calls
 
+  try {
     const response = await fetch(OPENAI_RESPONSES_ENDPOINT, {
       method: 'POST',
       headers: {
