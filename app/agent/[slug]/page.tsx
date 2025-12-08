@@ -256,7 +256,7 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
           <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
             <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-3">Built for</div>
             <div className="flex flex-wrap gap-2">
-              {template.persona.split(' · ').map((persona, index) => (
+              {template.persona.split(' · ').map((persona: string, index: number) => (
                 <span
                   key={`${template.slug}-persona-${index}`}
                   className="inline-flex items-center px-3 py-1 rounded-full bg-violet-500/10 text-xs font-medium text-violet-600 dark:text-violet-400"
