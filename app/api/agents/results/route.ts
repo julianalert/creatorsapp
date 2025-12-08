@@ -27,7 +27,14 @@ export async function GET(request: Request) {
 
   if (resultId) {
     // Single result query
-    query = query.eq('id', resultId).maybeSingle()
+    const { data, error } = await query.eq('id', resultId).maybeSingle()
+    
+    if (error) {
+      console.error('Error fetching agent result:', error)
+      return NextResponse.json({ error: 'Failed to fetch result' }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true, data })
   } else {
     // Multiple results query
     query = query
@@ -40,15 +47,15 @@ export async function GET(request: Request) {
       // Fallback to slug if agent_id not provided
       query = query.eq('agent_slug', agentSlug)
     }
+
+    const { data, error } = await query
+
+    if (error) {
+      console.error('Error fetching agent results:', error)
+      return NextResponse.json({ error: 'Failed to fetch results' }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true, data })
   }
-
-  const { data, error } = await query
-
-  if (error) {
-    console.error('Error fetching agent results:', error)
-    return NextResponse.json({ error: 'Failed to fetch results' }, { status: 500 })
-  }
-
-  return NextResponse.json({ success: true, data })
 }
 
