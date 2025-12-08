@@ -57,8 +57,9 @@ async function generateBrandProfile(params: {
   const model = process.env.BRAND_PROFILE_MODEL ?? DEFAULT_BRAND_PROFILE_MODEL
 
   // SECURITY: Add timeout to prevent hanging requests
+  // Increased to 240 seconds to allow for complex OpenAI responses
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout for AI calls
+  const timeoutId = setTimeout(() => controller.abort(), 240000) // 240 second timeout for AI calls
 
   try {
 

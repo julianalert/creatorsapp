@@ -13,8 +13,30 @@ const agentCategories = [
 ]
 
 export const metadata = {
-  title: 'AI Agents for Marketing - Mosaic',
-  description: 'Page description',
+  title: 'AI Agents for Marketing',
+  description: 'Discover powerful AI agents for SEO, sales, content marketing, paid ads, and creator marketing. Pre-made, ready-to-use and fully customizable agents to supercharge your marketing efforts.',
+  openGraph: {
+    title: 'AI Agents for Marketing | Yuzuu',
+    description: 'Discover powerful AI agents for SEO, sales, content marketing, paid ads, and creator marketing. Pre-made, ready-to-use and fully customizable agents to supercharge your marketing efforts.',
+    url: '/',
+    siteName: 'Yuzuu',
+    images: [
+      {
+        url: '/images/thubmnail.png',
+        width: 1200,
+        height: 630,
+        alt: 'Yuzuu - AI Agents for Marketing',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Agents for Marketing | Yuzuu',
+    description: 'Discover powerful AI agents for SEO, sales, content marketing, paid ads, and creator marketing. Pre-made, ready-to-use and fully customizable agents to supercharge your marketing efforts.',
+    images: ['/images/thubmnail.png'],
+  },
 }
 
 export default async function Home() {

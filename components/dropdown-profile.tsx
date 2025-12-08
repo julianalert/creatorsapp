@@ -52,8 +52,8 @@ export default function DropdownProfile({ align, credits: creditsProp }: {
     try {
       const response = await fetch('/api/user/credits')
       const data = await response.json()
-      if (data.success) {
-        setCredits(data.credits)
+      if (data.success && data.data) {
+        setCredits(data.data.credits)
       }
     } catch (error) {
       console.error('Error fetching credits:', error)

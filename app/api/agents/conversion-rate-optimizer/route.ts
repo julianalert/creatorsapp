@@ -85,8 +85,9 @@ async function callOpenAI(prompt: string): Promise<{ result: string | null; erro
   const model = process.env.BRAND_PROFILE_MODEL ?? DEFAULT_MODEL
 
   // SECURITY: Add timeout to prevent hanging requests
+  // Increased to 240 seconds to allow for complex OpenAI responses
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout for AI calls
+  const timeoutId = setTimeout(() => controller.abort(), 240000) // 240 second timeout for AI calls
 
   try {
     const response = await fetch(OPENAI_RESPONSES_ENDPOINT, {
@@ -291,6 +292,16 @@ export async function POST(request: Request) {
   const { html, error: scrapeError } = await scrapeUrl(url)
 
   if (scrapeError || !html) {
+    // Refund credits if scraping fails
+    try {
+      await supabase.rpc('add_user_credits', {
+        p_user_id: user.id,
+        p_credits_to_add: creditCost,
+      })
+    } catch (refundError) {
+      console.error('Error refunding credits after scrape failure:', refundError)
+    }
+
     return NextResponse.json(
       { error: scrapeError ?? 'Failed to scrape the URL.' },
       { status: 500 }

@@ -39,8 +39,8 @@ function CreditsSuccessContent() {
         // Fetch updated credits
         const response = await fetch('/api/user/credits')
         const data = await response.json()
-        if (data.success) {
-          setCredits(data.credits)
+        if (data.success && data.data) {
+          setCredits(data.data.credits)
           // Trigger credit update event for header
           window.dispatchEvent(new Event('agent:credits-updated'))
         }
