@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SparklesIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 
 type AgentInterfaceProps = {
   slug: string
+  resultId?: string
 }
 
-export default function AgentInterface({ slug }: AgentInterfaceProps) {
+export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) {
   const [url, setUrl] = useState('')
   const [conversionGoal, setConversionGoal] = useState('')
   // Keyword Research state
@@ -60,6 +61,39 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
   const [currentStep, setCurrentStep] = useState<string | null>(null)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isLoadingSavedResult, setIsLoadingSavedResult] = useState(false)
+
+  // Fetch saved result if resultId is provided
+  useEffect(() => {
+    if (resultId) {
+      setIsLoadingSavedResult(true)
+      fetch(`/api/agents/results?id=${resultId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.data) {
+            const savedResult = data.data
+            // Extract result from result_data based on agent type
+            if (savedResult.result_data?.result) {
+              setResult(savedResult.result_data.result)
+            }
+            // Populate form fields from input_params if available
+            if (savedResult.input_params) {
+              if (savedResult.input_params.url) setUrl(savedResult.input_params.url)
+              if (savedResult.input_params.conversionGoal) setConversionGoal(savedResult.input_params.conversionGoal)
+            }
+          } else {
+            setError('Failed to load saved result')
+          }
+        })
+        .catch((err) => {
+          console.error('Error loading saved result:', err)
+          setError('Failed to load saved result')
+        })
+        .finally(() => {
+          setIsLoadingSavedResult(false)
+        })
+    }
+  }, [resultId])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -112,6 +146,12 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
           ])
           setResult(data.result)
           setCurrentStep(null)
+          // Update URL to include resultId if available
+          if (data.resultId) {
+            const url = new URL(window.location.href)
+            url.searchParams.set('resultId', data.resultId)
+            window.history.replaceState({}, '', url.toString())
+          }
         } else {
           throw new Error('Invalid response from SEO audit API')
         }
@@ -151,6 +191,12 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
           ])
           setResult(data.result)
           setCurrentStep(null)
+          // Update URL to include resultId if available
+          if (data.resultId) {
+            const url = new URL(window.location.href)
+            url.searchParams.set('resultId', data.resultId)
+            window.history.replaceState({}, '', url.toString())
+          }
         } else {
           throw new Error('Invalid response from conversion rate optimizer API')
         }
@@ -231,7 +277,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -323,7 +377,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -458,7 +520,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -600,7 +670,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -742,7 +820,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -883,7 +969,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -1055,7 +1149,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -1185,7 +1287,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>
@@ -1316,7 +1426,15 @@ export default function AgentInterface({ slug }: AgentInterfaceProps) {
             </div>
           )}
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
-            {result ? (
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
                 <pre className="whitespace-pre-wrap text-sm">{result}</pre>
               </div>

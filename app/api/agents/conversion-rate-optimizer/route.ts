@@ -271,11 +271,50 @@ Here is the content of my landing page: ${sanitizedHtml}`
     )
   }
 
+  // Get agent_id from database
+  const { data: agent, error: agentError } = await supabase
+    .from('agents')
+    .select('id')
+    .eq('slug', 'conversion-rate-optimizer')
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (agentError || !agent) {
+    console.error('Error fetching agent:', agentError)
+    // Still return the result even if agent lookup fails
+  }
+
+  // Save result to Supabase
+  const { data: savedResult, error: saveError } = await supabase
+    .from('agent_results')
+    .insert({
+      user_id: user.id,
+      agent_id: agent?.id || null,
+      agent_slug: 'conversion-rate-optimizer', // Keep for backward compatibility
+      input_params: {
+        url,
+        conversionGoal,
+      },
+      result_data: {
+        result,
+        url,
+        conversionGoal,
+      },
+    })
+    .select()
+    .single()
+
+  if (saveError) {
+    console.error('Error saving agent result:', saveError)
+    // Still return the result even if saving fails
+  }
+
   return NextResponse.json({
     success: true,
     result: result,
     url,
     conversionGoal,
+    resultId: savedResult?.id || null,
   })
 }
 

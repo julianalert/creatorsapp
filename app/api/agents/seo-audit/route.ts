@@ -290,10 +290,49 @@ Here is the content of my landing page: ${sanitizedHtml}`
   // Step 4: Merge results
   const mergedResult = `# Technical SEO Audit\n\n${technicalResult}\n\n---\n\n# Content SEO Audit\n\n${contentResult}`
 
+  // Get agent_id from database
+  const { data: agent, error: agentError } = await supabase
+    .from('agents')
+    .select('id')
+    .eq('slug', 'on-page-seo-audit')
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (agentError || !agent) {
+    console.error('Error fetching agent:', agentError)
+    // Still return the result even if agent lookup fails
+  }
+
+  // Save result to Supabase
+  const { data: savedResult, error: saveError } = await supabase
+    .from('agent_results')
+    .insert({
+      user_id: user.id,
+      agent_id: agent?.id || null,
+      agent_slug: 'on-page-seo-audit', // Keep for backward compatibility
+      input_params: {
+        url,
+      },
+      result_data: {
+        result: mergedResult,
+        technicalResult,
+        contentResult,
+        url,
+      },
+    })
+    .select()
+    .single()
+
+  if (saveError) {
+    console.error('Error saving agent result:', saveError)
+    // Still return the result even if saving fails
+  }
+
   return NextResponse.json({
     success: true,
     result: mergedResult,
     url,
+    resultId: savedResult?.id || null,
   })
 }
 

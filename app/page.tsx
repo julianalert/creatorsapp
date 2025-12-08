@@ -1,6 +1,6 @@
 import CustomHeader from '@/components/ui/custom-header'
 import TemplatesBrowser from '@/app/(default)/outreach/templates/templates-browser'
-import { outreachTemplates } from '@/app/(default)/outreach/templates/template-data'
+import { createClient } from '@/lib/supabase/server'
 
 const agentCategories = [
   'SEO',
@@ -17,7 +17,33 @@ export const metadata = {
   description: 'Page description',
 }
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient()
+  
+  // Fetch agents from Supabase
+  const { data: agents, error } = await supabase
+    .from('agents')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: true })
+
+  // Transform agents to match the template format
+  const templates = (agents || []).map((agent) => ({
+    slug: agent.slug,
+    title: agent.title,
+    summary: agent.summary,
+    category: agent.category,
+    useCase: agent.use_case,
+    persona: agent.persona,
+    thumbnail: agent.thumbnail_url,
+    heroImage: agent.hero_image_url,
+    stats: agent.stats || [],
+    sequence: agent.sequence || [],
+    samples: agent.samples || [],
+    insights: agent.insights || [],
+    tags: agent.tags || [],
+  }))
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Custom Header */}
@@ -35,7 +61,7 @@ export default function Home() {
         </div>
 
         {/* Templates Browser */}
-        <TemplatesBrowser templates={outreachTemplates} categories={agentCategories} />
+        <TemplatesBrowser templates={templates} categories={agentCategories} />
       </main>
     </div>
   )

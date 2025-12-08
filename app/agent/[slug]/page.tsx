@@ -6,57 +6,112 @@ import TemplateCards from '@/app/(default)/outreach/templates/template-cards'
 import AgentInterface from './agent-interface'
 import AgentProcessSteps from './agent-process-steps'
 import AgentActivityLog from './agent-activity-log'
+import AgentRating from './agent-rating'
 import CategoryBadge from '@/components/category-badge'
-import {
-  getRelatedTemplates,
-  getTemplateBySlug,
-  outreachTemplateCount,
-  outreachTemplates,
-} from '@/app/(default)/outreach/templates/template-data'
+import { createClient } from '@/lib/supabase/server'
 
 type TemplateDetailPageProps = {
   params: Promise<{
     slug: string
   }>
+  searchParams: Promise<{
+    resultId?: string
+  }>
 }
 
-export const dynamicParams = false
-
-export function generateStaticParams() {
-  return outreachTemplates.map((template) => ({
-    slug: template.slug,
-  }))
-}
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: TemplateDetailPageProps): Promise<Metadata> {
   const { slug } = await params
-  const template = getTemplateBySlug(slug)
+  const supabase = await createClient()
+  
+  const { data: agent } = await supabase
+    .from('agents')
+    .select('title, summary')
+    .eq('slug', slug)
+    .eq('is_active', true)
+    .maybeSingle()
 
-  if (!template) {
+  if (!agent) {
     return {
       title: 'Agent not found',
     }
   }
 
   return {
-    title: `${template.title} · AI Agent`,
-    description: template.summary,
+    title: `${agent.title} · AI Agent`,
+    description: agent.summary,
     openGraph: {
-      title: template.title,
-      description: template.summary,
+      title: agent.title,
+      description: agent.summary,
     },
   }
 }
 
-export default async function TemplateDetailPage({ params }: TemplateDetailPageProps) {
+export default async function TemplateDetailPage({ params, searchParams }: TemplateDetailPageProps) {
   const { slug } = await params
-  const template = getTemplateBySlug(slug)
+  const { resultId } = await searchParams
+  const supabase = await createClient()
+  
+  // Fetch the agent
+  const { data: agent, error } = await supabase
+    .from('agents')
+    .select('*')
+    .eq('slug', slug)
+    .eq('is_active', true)
+    .maybeSingle()
 
-  if (!template) {
+  if (!agent || error) {
     notFound()
   }
 
-  const relatedTemplates = getRelatedTemplates(template.slug, 2)
+  // Transform agent to template format
+  const template = {
+    slug: agent.slug,
+    title: agent.title,
+    summary: agent.summary,
+    category: agent.category,
+    useCase: agent.use_case,
+    persona: agent.persona,
+    thumbnail: agent.thumbnail_url,
+    heroImage: agent.hero_image_url,
+    stats: agent.stats || [],
+    sequence: agent.sequence || [],
+    samples: agent.samples || [],
+    insights: agent.insights || [],
+    tags: agent.tags || [],
+  }
+
+  // Fetch related agents (same category, different slug)
+  const { data: relatedAgents } = await supabase
+    .from('agents')
+    .select('*')
+    .eq('category', agent.category)
+    .neq('slug', slug)
+    .eq('is_active', true)
+    .limit(2)
+
+  const relatedTemplates = (relatedAgents || []).map((a) => ({
+    slug: a.slug,
+    title: a.title,
+    summary: a.summary,
+    category: a.category,
+    useCase: a.use_case,
+    persona: a.persona,
+    thumbnail: a.thumbnail_url,
+    heroImage: a.hero_image_url,
+    stats: a.stats || [],
+    sequence: a.sequence || [],
+    samples: a.samples || [],
+    insights: a.insights || [],
+    tags: a.tags || [],
+  }))
+
+  // Get total count of active agents
+  const { count: totalCount } = await supabase
+    .from('agents')
+    .select('*', { count: 'exact', head: true })
+    .eq('is_active', true)
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 w-full">
@@ -97,7 +152,7 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
           */}
 
           {/* Agent Interface */}
-          <AgentInterface slug={template.slug} />
+          <AgentInterface slug={template.slug} resultId={resultId} />
 
 
           {/* Multi-touch sequence section - hidden
@@ -174,7 +229,7 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
                   className="text-sm font-semibold text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300"
                   href="/"
                 >
-                  View all {outreachTemplateCount}
+                  View all {totalCount || 0}
                 </Link>
               </div>
               <TemplateCards templates={relatedTemplates} columns={2} />
@@ -183,7 +238,10 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
         </div>
 
         <aside className="space-y-4 mt-8 lg:mt-0 lg:w-[18rem] xl:w-[20rem]">
-          {/* Process Steps Card - First */}
+          {/* Rating Card - First */}
+          <AgentRating agentId={agent.id} />
+
+          {/* Process Steps Card */}
           <AgentProcessSteps slug={template.slug} />
 
           {/* Where this agent shines */}
