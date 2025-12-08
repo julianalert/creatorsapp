@@ -121,7 +121,7 @@ export default function AgentResultsPage() {
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">
-            Agent Results
+            Your previous runs
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
             View and manage all your previous agent runs

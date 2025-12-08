@@ -152,6 +152,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             url.searchParams.set('resultId', data.resultId)
             window.history.replaceState({}, '', url.toString())
           }
+          // Dispatch event to update credits in navbar
+          if (data.creditsRemaining !== undefined) {
+            window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+          }
         } else {
           throw new Error('Invalid response from SEO audit API')
         }
@@ -196,6 +200,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             const url = new URL(window.location.href)
             url.searchParams.set('resultId', data.resultId)
             window.history.replaceState({}, '', url.toString())
+          }
+          // Dispatch event to update credits in navbar
+          if (data.creditsRemaining !== undefined) {
+            window.dispatchEvent(new CustomEvent('agent:credits-updated'))
           }
         } else {
           throw new Error('Invalid response from conversion rate optimizer API')

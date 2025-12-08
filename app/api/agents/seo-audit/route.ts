@@ -207,6 +207,47 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'You must signup or log in to use this ai agent' }, { status: 401 })
   }
 
+  // Get agent to check credit cost
+  const { data: agent, error: agentError } = await supabase
+    .from('agents')
+    .select('id, credits')
+    .eq('slug', 'on-page-seo-audit')
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (agentError || !agent) {
+    return NextResponse.json(
+      { error: 'Agent not found or inactive' },
+      { status: 404 }
+    )
+  }
+
+  const creditCost = agent.credits || 1
+
+  // Check and deduct credits atomically
+  const { data: newBalance, error: creditError } = await supabase.rpc('deduct_user_credits', {
+    p_user_id: user.id,
+    p_credits_to_deduct: creditCost,
+  })
+
+  if (creditError) {
+    console.error('Error deducting credits:', creditError)
+    return NextResponse.json(
+      { error: 'Failed to process credits. Please try again.' },
+      { status: 500 }
+    )
+  }
+
+  if (newBalance === null) {
+    return NextResponse.json(
+      { 
+        error: `Insufficient credits. This agent costs ${creditCost} credit${creditCost !== 1 ? 's' : ''}. Please purchase more credits.`,
+        insufficientCredits: true,
+      },
+      { status: 402 } // 402 Payment Required
+    )
+  }
+
   // Step 1: Scrape the URL
   const { html, error: scrapeError } = await scrapeUrl(url)
 
@@ -243,6 +284,14 @@ Here is the content of my landing page: ${sanitizedHtml}`
   const { result: technicalResult, error: technicalError } = await callOpenAI(technicalSEOPrompt)
 
   if (technicalError) {
+    // If agent execution fails, refund the credits
+    await supabase.rpc('add_user_credits', {
+      p_user_id: user.id,
+      p_credits_to_add: creditCost,
+    }).catch((refundError) => {
+      console.error('Error refunding credits:', refundError)
+    })
+
     return NextResponse.json(
       { error: `Technical SEO audit failed: ${technicalError}` },
       { status: 500 }
@@ -281,6 +330,14 @@ Here is the content of my landing page: ${sanitizedHtml}`
   const { result: contentResult, error: contentError } = await callOpenAI(contentSEOPrompt)
 
   if (contentError) {
+    // If agent execution fails, refund the credits
+    await supabase.rpc('add_user_credits', {
+      p_user_id: user.id,
+      p_credits_to_add: creditCost,
+    }).catch((refundError) => {
+      console.error('Error refunding credits:', refundError)
+    })
+
     return NextResponse.json(
       { error: `Content SEO audit failed: ${contentError}` },
       { status: 500 }
@@ -290,25 +347,12 @@ Here is the content of my landing page: ${sanitizedHtml}`
   // Step 4: Merge results
   const mergedResult = `# Technical SEO Audit\n\n${technicalResult}\n\n---\n\n# Content SEO Audit\n\n${contentResult}`
 
-  // Get agent_id from database
-  const { data: agent, error: agentError } = await supabase
-    .from('agents')
-    .select('id')
-    .eq('slug', 'on-page-seo-audit')
-    .eq('is_active', true)
-    .maybeSingle()
-
-  if (agentError || !agent) {
-    console.error('Error fetching agent:', agentError)
-    // Still return the result even if agent lookup fails
-  }
-
   // Save result to Supabase
   const { data: savedResult, error: saveError } = await supabase
     .from('agent_results')
     .insert({
       user_id: user.id,
-      agent_id: agent?.id || null,
+      agent_id: agent.id,
       agent_slug: 'on-page-seo-audit', // Keep for backward compatibility
       input_params: {
         url,
@@ -333,6 +377,7 @@ Here is the content of my landing page: ${sanitizedHtml}`
     result: mergedResult,
     url,
     resultId: savedResult?.id || null,
+    creditsRemaining: newBalance,
   })
 }
 

@@ -6,15 +6,36 @@ import DropdownProfile from '@/components/dropdown-profile'
 import ThemeToggle from '@/components/theme-toggle'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Toast02 from '@/components/toast-02'
 
 export default function CustomHeader() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const [credits, setCredits] = useState<number | null>(null)
+  const [toastOpen, setToastOpen] = useState<boolean>(true)
+
+  const fetchCredits = async () => {
+    try {
+      const response = await fetch('/api/user/credits')
+      const data = await response.json()
+      if (data.success) {
+        setCredits(data.credits)
+      }
+    } catch (error) {
+      console.error('Error fetching credits:', error)
+    }
+  }
 
   useEffect(() => {
     const checkAuth = async () => {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
-      setIsAuthenticated(!!user)
+      const authenticated = !!user
+      setIsAuthenticated(authenticated)
+      if (authenticated) {
+        await fetchCredits()
+      } else {
+        setCredits(null)
+      }
     }
 
     checkAuth()
@@ -25,8 +46,15 @@ export default function CustomHeader() {
       checkAuth()
     })
 
+    // Listen for credit updates (when agents are run)
+    const handleCreditUpdate = () => {
+      fetchCredits()
+    }
+    window.addEventListener('agent:credits-updated', handleCreditUpdate)
+
     return () => {
       subscription?.unsubscribe()
+      window.removeEventListener('agent:credits-updated', handleCreditUpdate)
     }
   }, [])
 
@@ -44,13 +72,28 @@ export default function CustomHeader() {
             <ThemeToggle />
             {isAuthenticated ? (
               <>
+                {credits !== null && (
+                  <Toast02 
+                    open={toastOpen} 
+                    setOpen={setToastOpen} 
+                    type="" 
+                    className="min-w-0"
+                    closeButton={
+                      <Link href="/credits" className="text-xs font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300">
+                        Buy credits
+                      </Link>
+                    }
+                  >
+                    {credits} credit{credits !== 1 ? 's' : ''} left
+                  </Toast02>
+                )}
                 <Link
                   href="/agents/results"
                   className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300 cursor-pointer"
                 >
                   Previous runs
                 </Link>
-                <DropdownProfile align="right" />
+                <DropdownProfile align="right" credits={credits} />
               </>
             ) : (
               <>

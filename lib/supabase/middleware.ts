@@ -59,39 +59,6 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Check if authenticated user has submitted a website
-  const isOutreachTemplates = pathname.startsWith('/outreach/templates')
-  const isAgentPage = pathname.startsWith('/agent/')
-  if (user && !isAuthPage && !isApiRoute && !isAuthCallback && pathname !== '/' && !isPublicPage && !isOutreachTemplates && !isAgentPage) {
-    // Check if user has a website in the database
-    const { data: websites, error: websiteError } = await supabase
-      .from('website')
-      .select('id, url')
-      .eq('user_id', user.id)
-      .limit(1)
-
-    // Only redirect if we're certain about the website status
-    // If there's an error, don't redirect (fail open to avoid redirect loops)
-    if (!websiteError && !isNewPage) {
-      const hasWebsite = Boolean(websites && websites.length > 0 && websites[0]?.url)
-
-      // If user is logged in but has no website, redirect to the new flow
-      if (!hasWebsite) {
-        const url = request.nextUrl.clone()
-        url.pathname = '/new'
-        const redirectResponse = NextResponse.redirect(url)
-        // Copy cookies from supabaseResponse to maintain session
-        supabaseResponse.cookies.getAll().forEach((cookie) => {
-          redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
-        })
-        return redirectResponse
-      }
-    } else if (websiteError) {
-      // Log error but don't redirect (fail open)
-      console.error('Website query error in middleware:', websiteError)
-    }
-  }
-
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:

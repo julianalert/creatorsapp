@@ -28,7 +28,7 @@ export default function SignUp() {
         email,
         password,
         options: {
-          emailRedirectTo: getRedirectUrl('/auth/callback?next=/new'),
+          emailRedirectTo: getRedirectUrl('/auth/callback?next=/'),
         },
       })
 
@@ -41,10 +41,10 @@ export default function SignUp() {
       setSuccess(true)
       setLoading(false)
       
-      // Redirect to the new flow after successful signup
+      // Redirect to homepage after successful signup
       // For email confirmation, you might want to show a message instead
       setTimeout(() => {
-        router.push('/new')
+        router.push('/')
         router.refresh()
       }, 2000)
     } catch (err) {

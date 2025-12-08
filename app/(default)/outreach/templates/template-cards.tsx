@@ -66,11 +66,7 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
               {/* Rating - Bottom Right */}
               {template.ratingAverage && template.ratingAverage > 0 ? (
                 <div className="flex items-center space-x-1.5">
-                  <div className="flex items-center space-x-0.5">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <StarIcon key={star} filled={star <= Math.round(template.ratingAverage || 0)} />
-                    ))}
-                  </div>
+                  <StarIcon filled={true} />
                   <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
                     {template.ratingAverage.toFixed(1)}
                   </span>

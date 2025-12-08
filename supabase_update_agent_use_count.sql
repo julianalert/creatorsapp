@@ -1,4 +1,6 @@
 -- Function to increment agent use_count when a result is saved
+-- SECURITY DEFINER allows the function to run with the privileges of the function creator,
+-- which bypasses RLS restrictions when updating the agents table
 CREATE OR REPLACE FUNCTION public.increment_agent_use_count()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -10,7 +12,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Trigger to increment use_count when agent_result is inserted
 CREATE TRIGGER increment_agent_use_count_trigger
