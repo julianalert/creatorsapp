@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import CustomHeader from '@/components/ui/custom-header'
 
-export default function CreditsPage() {
+function CreditsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState<string | null>(null)
@@ -292,6 +292,24 @@ export default function CreditsPage() {
         </section>
       </main>
     </div>
+  )
+}
+
+export default function CreditsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        <CustomHeader />
+        <main className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[128rem] mx-auto">
+          <div className="mb-8">
+            <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">Pay as you go</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
+          </div>
+        </main>
+      </div>
+    }>
+      <CreditsContent />
+    </Suspense>
   )
 }
 
