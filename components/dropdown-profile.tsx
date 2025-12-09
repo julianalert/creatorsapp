@@ -147,6 +147,14 @@ export default function DropdownProfile({ align, credits: creditsProp }: {
           <MenuItem as="li">
             <Link 
               className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
+              href="/credits"
+            >
+              Buy Credits
+            </Link>
+          </MenuItem>
+          <MenuItem as="li">
+            <Link 
+              className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
               href="/request"
             >
               Request an Agent
