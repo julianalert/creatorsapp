@@ -139,6 +139,11 @@ To enable Google sign-in and sign-up:
    - **Extra spaces**: Check for any extra spaces in URLs (common copy-paste issue)
    - **HTTP vs HTTPS**: Make sure all URLs use `https://` (not `http://`)
 
+   **f. Still Getting 500 Errors?**
+   - See `GOOGLE_OAUTH_DEBUGGING.md` for detailed troubleshooting steps
+   - **Most important**: Check **Supabase Dashboard → Logs → Auth Logs** for the exact error message
+   - The error message in the logs will tell you exactly what's wrong
+
 ## Testing
 
 1. **Local Development:**

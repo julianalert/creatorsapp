@@ -100,20 +100,28 @@ function SignInContent() {
 
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signInWithOAuth({
+      const redirectUrl = getRedirectUrl('/auth/callback?next=/')
+      console.log('Initiating Google OAuth with redirect:', redirectUrl)
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: getRedirectUrl('/auth/callback?next=/'),
+          redirectTo: redirectUrl,
         },
       })
 
       if (error) {
-        setError(error.message)
+        console.error('Google OAuth error:', error)
+        setError(`Google sign-in failed: ${error.message}. Check Supabase Auth Logs for details.`)
         setGoogleLoading(false)
+      } else if (data?.url) {
+        // Redirect will happen automatically
+        console.log('Redirecting to Google OAuth:', data.url)
       }
       // Note: If successful, the user will be redirected to Google, so we don't need to handle success here
     } catch (err) {
-      setError('An unexpected error occurred')
+      console.error('Unexpected error during Google sign-in:', err)
+      setError(`An unexpected error occurred: ${err instanceof Error ? err.message : 'Unknown error'}. Check browser console and Supabase Auth Logs.`)
       setGoogleLoading(false)
     }
   }
