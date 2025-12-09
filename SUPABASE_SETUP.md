@@ -110,7 +110,7 @@ To enable Google sign-in and sign-up:
    - Verify redirect URLs are configured in Supabase dashboard for production
    - Test the authentication flows on your live site
 
-## Security Notes
+## Security Notess
 
 - Never commit `.env.local` to git
 - The `SUPABASE_SERVICE_ROLE_KEY` should only be used server-side (it's already configured correctly)
