@@ -9,11 +9,11 @@ export default function NewProgress({ step = 1 }: { step?: number}) {
           <div className="absolute left-0 top-1/2 -mt-px w-full h-0.5 bg-gray-200 dark:bg-gray-700/60" aria-hidden="true"></div>
           {/* Purple progress bar - fills to 80% when on step 1 */}
           {step === 1 && (
-            <div className="absolute left-0 top-1/2 -mt-px w-9/10 h-0.5 bg-violet-500" aria-hidden="true"></div>
+            <div className="absolute left-0 top-1/2 -mt-px w-9/10 h-0.5 bg-blue-500" aria-hidden="true"></div>
           )}
           <ul className="relative flex justify-between w-full">
             <li>
-              <Link className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ${step >= 1 ? 'bg-violet-500 text-white' : 'bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400'}`} href="/new">1</Link>
+              <Link className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ${step >= 1 ? 'bg-blue-500 text-white' : 'bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400'}`} href="/new">1</Link>
             </li>
             <li>
               <Link className="flex items-center justify-center w-8 h-8 rounded-full text-2xl leading-none bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400" href="/new/onboarding-02">🥳</Link>

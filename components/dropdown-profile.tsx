@@ -33,7 +33,7 @@ function Avatar({ email, size = 32 }: { email: string | null | undefined; size?:
   const textSizeClass = size === 32 ? 'text-sm' : size === 40 ? 'text-base' : 'text-sm'
   
   return (
-    <div className={`${sizeClass} rounded-full bg-violet-500 flex items-center justify-center text-white font-semibold ${textSizeClass}`}>
+    <div className={`${sizeClass} rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold ${textSizeClass}`}>
       {initials}
     </div>
   )
@@ -146,21 +146,21 @@ export default function DropdownProfile({ align, credits: creditsProp }: {
         <MenuItems as="ul" className="focus:outline-hidden">
           <MenuItem as="li">
             <Link 
-              className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 cursor-pointer" 
+              className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
               href="/request"
             >
               Request an Agent
             </Link>
           </MenuItem>
           <MenuItem as="li">
-              <Link className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 cursor-pointer" href="/settings/account">
+              <Link className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" href="/settings/account">
                 Settings
               </Link>
           </MenuItem>
           <MenuItem as="li">
             <button 
               onClick={handleSignOut}
-              className="font-medium text-sm flex items-center py-1 px-3 text-violet-500 w-full text-left cursor-pointer"
+              className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 w-full text-left cursor-pointer"
             >
               Sign Out
             </button>

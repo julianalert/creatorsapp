@@ -211,7 +211,7 @@ export default function Calendar() {
               </li>
               <li className="m-1">
                 <button className="btn-sm bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 text-gray-500 dark:text-gray-400">
-                  <div className="w-1 h-3.5 bg-violet-500 shrink-0"></div>
+                  <div className="w-1 h-3.5 bg-blue-500 shrink-0"></div>
                   <span className="ml-1.5">Reservations</span>
                 </button>
               </li>
@@ -228,14 +228,14 @@ export default function Calendar() {
                 </button>
               </li>
               <li className="m-1">
-                <button className="btn-sm bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 text-violet-500">+Add New</button>
+                <button className="btn-sm bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 text-blue-500">+Add New</button>
               </li>
             </ul>
           </div>
 
           {/* View buttons (requires custom integration) */}
           <div className="flex flex-nowrap -space-x-px">
-            <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 text-violet-500 rounded-none first:rounded-l-lg last:rounded-r-lg">Month</button>
+            <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 text-blue-500 rounded-none first:rounded-l-lg last:rounded-r-lg">Month</button>
             <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-600 dark:text-gray-300 rounded-none first:rounded-l-lg last:rounded-r-lg">Week</button>
             <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-600 dark:text-gray-300 rounded-none first:rounded-l-lg last:rounded-r-lg">Day</button>
           </div>

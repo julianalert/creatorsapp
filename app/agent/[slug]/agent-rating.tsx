@@ -176,7 +176,7 @@ export default function AgentRating({ agentId }: AgentRatingProps) {
       )}
 
       {userRating && (
-        <p className="text-xs text-violet-600 dark:text-violet-400 mt-2">
+        <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
           You rated this {userRating} {userRating === 1 ? 'star' : 'stars'}
         </p>
       )}

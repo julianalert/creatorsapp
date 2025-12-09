@@ -18,8 +18,8 @@ export default function FintechCard04() {
         data: [
           4100, 1900, 2700, 3900,
         ],
-        backgroundColor: getCssVariable('--color-violet-500'),
-        hoverBackgroundColor: getCssVariable('--color-violet-600'),
+        backgroundColor: getCssVariable('--color-blue-500'),
+        hoverBackgroundColor: getCssVariable('--color-blue-600'),
         categoryPercentage: 0.7,
         borderRadius: 4,
       },
@@ -29,8 +29,8 @@ export default function FintechCard04() {
         data: [
           2000, 1000, 1100, 2600,
         ],
-        backgroundColor: getCssVariable('--color-violet-200'),
-        hoverBackgroundColor: getCssVariable('--color-violet-300'),
+        backgroundColor: getCssVariable('--color-blue-200'),
+        hoverBackgroundColor: getCssVariable('--color-blue-300'),
         categoryPercentage: 0.7,
         borderRadius: 4,
       },

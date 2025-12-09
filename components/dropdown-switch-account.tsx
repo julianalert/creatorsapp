@@ -44,7 +44,7 @@ export default function DropdownSwitchAccount({ align }: {
         <div className="flex items-center truncate">
           {selectedWebsite && (
             <>
-              <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-2">
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-2">
                 <span className="text-white text-xs font-semibold">
                   {getWebsiteInitial(selectedWebsite)}
                 </span>
@@ -80,9 +80,9 @@ export default function DropdownSwitchAccount({ align }: {
                   onClick={() => handleSelectWebsite(website)}
                   className={`w-full flex items-center py-2 px-4 cursor-pointer ${
                     active && 'bg-gray-50 dark:bg-gray-700/20'
-                  } ${selectedWebsite?.id === website.id ? 'bg-violet-50 dark:bg-violet-900/20' : ''}`}
+                  } ${selectedWebsite?.id === website.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
                 >
-                  <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">
                     <span className="text-white text-xs font-semibold">
                       {getWebsiteInitial(website)}
                     </span>
@@ -96,7 +96,7 @@ export default function DropdownSwitchAccount({ align }: {
                     </div>
                   </div>
                   {selectedWebsite?.id === website.id && (
-                    <svg className="w-4 h-4 fill-current text-violet-500" viewBox="0 0 12 12">
+                    <svg className="w-4 h-4 fill-current text-blue-500" viewBox="0 0 12 12">
                       <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   )}

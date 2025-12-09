@@ -115,7 +115,7 @@ export default function CalendarTable({ events }: { events: Event[] }) {
                       </button>
                     }
                     {/* Day number */}
-                    <button className={`inline-flex ml-auto w-6 h-6 items-center justify-center text-xs sm:text-sm dark:text-gray-300 font-medium text-center rounded-full hover:bg-violet-100 dark:hover:bg-gray-600 ${isToday(day) && 'text-violet-500'}`}>{day}</button>
+                    <button className={`inline-flex ml-auto w-6 h-6 items-center justify-center text-xs sm:text-sm dark:text-gray-300 font-medium text-center rounded-full hover:bg-blue-100 dark:hover:bg-gray-600 ${isToday(day) && 'text-blue-500'}`}>{day}</button>
                   </div>
                 </div>
               </div>

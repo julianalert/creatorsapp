@@ -18,8 +18,8 @@ export default function AnalyticsCard04() {
         data: [
           8000, 3800, 5350, 7800,
         ],
-        backgroundColor: getCssVariable('--color-violet-500'),
-        hoverBackgroundColor: getCssVariable('--color-violet-600'),
+        backgroundColor: getCssVariable('--color-blue-500'),
+        hoverBackgroundColor: getCssVariable('--color-blue-600'),
         categoryPercentage: 0.7,
         borderRadius: 4,
       },

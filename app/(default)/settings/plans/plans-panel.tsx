@@ -150,10 +150,10 @@ export default function PlansPanel() {
               </div>
               {/* Tab 3 */}
               <div className="relative col-span-full xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-b-lg">
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-violet-500" aria-hidden="true"></div>
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-blue-500" aria-hidden="true"></div>
                 <div className="px-5 pt-5 pb-6 border-b border-gray-200 dark:border-gray-700/60">
                   <header className="flex items-center mb-2">
-                    <div className="w-6 h-6 rounded-full shrink-0 bg-violet-500 mr-3">
+                    <div className="w-6 h-6 rounded-full shrink-0 bg-blue-500 mr-3">
                       <svg className="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
                         <path d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z" />
                       </svg>
@@ -217,7 +217,7 @@ export default function PlansPanel() {
 
         {/* Contact Sales */}
         <section>
-          <div className="px-5 py-3 bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] rounded-lg text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
+          <div className="px-5 py-3 bg-linear-to-r from-blue-500/[0.12] dark:from-blue-500/[0.24] to-blue-500/[0.04] rounded-lg text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
             <div className="text-gray-800 dark:text-gray-100 font-semibold mb-2 xl:mb-0">Looking for different configurations?</div>
             <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">Contact Sales</button>
           </div>
@@ -250,7 +250,7 @@ export default function PlansPanel() {
                 Got more questions?
               </div>
               <div className="text-sm">
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum in voluptate velit esse cillum dolore eu fugiat <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">contact us</a>.
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum in voluptate velit esse cillum dolore eu fugiat <a className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">contact us</a>.
               </div>
             </li>
           </ul>

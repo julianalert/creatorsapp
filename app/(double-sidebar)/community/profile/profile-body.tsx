@@ -59,7 +59,7 @@ export default function ProfileBody() {
                 </svg>
               </button>
               <button className="p-1.5 shrink-0 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm">
-                <svg className="fill-current text-violet-500" width="16" height="16" viewBox="0 0 16 16">
+                <svg className="fill-current text-blue-500" width="16" height="16" viewBox="0 0 16 16">
                   <path d="M8 0C3.6 0 0 3.1 0 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7Zm4 10.8v2.3L8.9 12H8c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8Z" />
                 </svg>
               </button>
@@ -96,7 +96,7 @@ export default function ProfileBody() {
               <svg className="fill-current shrink-0 text-gray-400 dark:text-gray-500" width="16" height="16" viewBox="0 0 16 16">
                 <path d="M11 0c1.3 0 2.6.5 3.5 1.5 1 .9 1.5 2.2 1.5 3.5 0 1.3-.5 2.6-1.4 3.5l-1.2 1.2c-.2.2-.5.3-.7.3-.2 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l1.1-1.2c.6-.5.9-1.3.9-2.1s-.3-1.6-.9-2.2C12 1.7 10 1.7 8.9 2.8L7.7 4c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l1.2-1.1C8.4.5 9.7 0 11 0ZM8.3 12c.4-.4 1-.5 1.4-.1.4.4.4 1 0 1.4l-1.2 1.2C7.6 15.5 6.3 16 5 16c-1.3 0-2.6-.5-3.5-1.5C.5 13.6 0 12.3 0 11c0-1.3.5-2.6 1.5-3.5l1.1-1.2c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L2.9 8.9c-.6.5-.9 1.3-.9 2.1s.3 1.6.9 2.2c1.1 1.1 3.1 1.1 4.2 0L8.3 12Zm1.1-6.8c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-4.2 4.2c-.2.2-.5.3-.7.3-.2 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l4.2-4.2Z" />
               </svg>
-              <a className="text-sm font-medium whitespace-nowrap text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 ml-2" href="#0">
+              <a className="text-sm font-medium whitespace-nowrap text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 ml-2" href="#0">
                 carolinmcneail.com
               </a>
             </div>
@@ -108,7 +108,7 @@ export default function ProfileBody() {
           <div className="absolute bottom-0 w-full h-px bg-gray-200 dark:bg-gray-700/60" aria-hidden="true"></div>
           <ul className="relative text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
             <li className="mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-              <a className="block pb-3 text-violet-500 whitespace-nowrap border-b-2 border-violet-500" href="#0">
+              <a className="block pb-3 text-blue-500 whitespace-nowrap border-b-2 border-blue-500" href="#0">
                 General
               </a>
             </li>
@@ -171,7 +171,7 @@ export default function ProfileBody() {
                     </div>
                     {/* Link */}
                     <div>
-                      <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                      <a className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                         View -&gt;
                       </a>
                     </div>
@@ -201,7 +201,7 @@ export default function ProfileBody() {
                     </div>
                     {/* Link */}
                     <div>
-                      <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                      <a className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                         View -&gt;
                       </a>
                     </div>
@@ -255,8 +255,8 @@ export default function ProfileBody() {
                   <li className="sm:flex sm:items-center sm:justify-between">
                     <div className="sm:grow flex items-center text-sm">
                       {/* Icon */}
-                      <div className="w-8 h-8 rounded-full shrink-0 bg-violet-500 my-2 mr-3">
-                        <svg className="w-8 h-8 fill-current text-violet-50" viewBox="0 0 32 32">
+                      <div className="w-8 h-8 rounded-full shrink-0 bg-blue-500 my-2 mr-3">
+                        <svg className="w-8 h-8 fill-current text-blue-50" viewBox="0 0 32 32">
                           <path d="M8.994 20.006a1 1 0 0 1-.707-1.707l4.5-4.5a1 1 0 0 1 1.414 0l3.293 3.293 4.793-4.793a1 1 0 1 1 1.414 1.414l-5.5 5.5a1 1 0 0 1-1.414 0l-3.293-3.293L9.7 19.713a1 1 0 0 1-.707.293Z" />
                         </svg>
                       </div>
@@ -291,8 +291,8 @@ export default function ProfileBody() {
                   <li className="sm:flex sm:items-center sm:justify-between">
                     <div className="sm:grow flex items-center text-sm">
                       {/* Icon */}
-                      <div className="w-8 h-8 rounded-full shrink-0 bg-violet-500 my-2 mr-3">
-                        <svg className="w-8 h-8 fill-current text-violet-50" viewBox="0 0 32 32">
+                      <div className="w-8 h-8 rounded-full shrink-0 bg-blue-500 my-2 mr-3">
+                        <svg className="w-8 h-8 fill-current text-blue-50" viewBox="0 0 32 32">
                           <path d="M8.994 20.006a1 1 0 0 1-.707-1.707l4.5-4.5a1 1 0 0 1 1.414 0l3.293 3.293 4.793-4.793a1 1 0 1 1 1.414 1.414l-5.5 5.5a1 1 0 0 1-1.414 0l-3.293-3.293L9.7 19.713a1 1 0 0 1-.707.293Z" />
                         </svg>
                       </div>

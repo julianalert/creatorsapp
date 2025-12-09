@@ -6,7 +6,7 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
   const renderStep = (stepNumber: number, title: string, description: string) => (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-semibold">
+        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-semibold">
           {stepNumber}
         </span>
         <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">{title}</h3>

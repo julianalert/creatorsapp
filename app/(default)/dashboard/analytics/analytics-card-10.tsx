@@ -16,12 +16,12 @@ export default function AnalyticsCard10() {
           500, 326, 242,
         ],
         backgroundColor: [
-          adjustColorOpacity(getCssVariable('--color-violet-500'), 0.8),
+          adjustColorOpacity(getCssVariable('--color-blue-500'), 0.8),
           adjustColorOpacity(getCssVariable('--color-sky-500'), 0.8),
           adjustColorOpacity(getCssVariable('--color-green-500'), 0.8),
         ],
         hoverBackgroundColor: [
-          adjustColorOpacity(getCssVariable('--color-violet-600'), 0.8),
+          adjustColorOpacity(getCssVariable('--color-blue-600'), 0.8),
           adjustColorOpacity(getCssVariable('--color-sky-600'), 0.8),
           adjustColorOpacity(getCssVariable('--color-green-600'), 0.8),
         ],

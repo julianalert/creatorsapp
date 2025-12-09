@@ -22,7 +22,7 @@ export default function Product() {
         {/* Content */}
         <div>
           <div className="mb-3">
-            <Link className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="/ecommerce/shop/">&lt;- Back To Listing</Link>
+            <Link className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="/ecommerce/shop/">&lt;- Back To Listing</Link>
           </div>
           <header className="mb-4">
             {/* Title */}
@@ -523,9 +523,9 @@ export default function Product() {
                 </button>
               </li>
               <li>
-                <button className="w-full h-full text-left py-3 px-4 rounded-lg bg-white dark:bg-gray-800 border-2 border-violet-400 dark:border-violet-500 shadow-sm transition">
+                <button className="w-full h-full text-left py-3 px-4 rounded-lg bg-white dark:bg-gray-800 border-2 border-blue-400 dark:border-blue-500 shadow-sm transition">
                   <div className="flex flex-wrap items-center justify-between mb-0.5">
-                    <span className="font-semibold text-gray-800 dark:text-gray-100">Premium <span className="text-xs italic text-violet-500 align-top">Best Value</span></span>
+                    <span className="font-semibold text-gray-800 dark:text-gray-100">Premium <span className="text-xs italic text-blue-500 align-top">Best Value</span></span>
                     <span className="font-medium text-green-600">$69.00</span>
                   </div>
                   <div className="text-sm">Lorem ipsum dolor sit amet elit sed do eiusmod.</div>

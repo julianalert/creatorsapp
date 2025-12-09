@@ -243,8 +243,8 @@ export default function DashboardCard07() {
                                 }}
                               />
                             ) : (
-                              <div className="absolute inset-0 flex items-center justify-center bg-violet-100 dark:bg-violet-900/20">
-                                <HiVideoCamera className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                              <div className="absolute inset-0 flex items-center justify-center bg-blue-100 dark:bg-blue-900/20">
+                                <HiVideoCamera className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                               </div>
                             )}
                           </div>

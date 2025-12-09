@@ -59,7 +59,7 @@ export default function CampaignCard({ campaign }: { campaign: Campaign }) {
               <div className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${typeColor(campaign.type)}`}>{campaign.type}</div>
             </div>
             <div>
-              <Link className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href={campaign.link}>View -&gt;</Link>
+              <Link className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href={campaign.link}>View -&gt;</Link>
             </div>
           </div>
         </footer>

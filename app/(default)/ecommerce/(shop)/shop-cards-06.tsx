@@ -16,7 +16,7 @@ export default function ShopCards06() {
         {/* Content */}
         <div className="relative h-full p-5 flex flex-col justify-end">
           <h3 className="text-lg text-white font-semibold mt-16 mb-0.5">Merchandise</h3>
-          <a className="text-sm font-medium text-violet-400 hover:text-violet-300" href="#0">Explore -&gt;</a>
+          <a className="text-sm font-medium text-blue-400 hover:text-blue-300" href="#0">Explore -&gt;</a>
         </div>
       </div>
 
@@ -29,7 +29,7 @@ export default function ShopCards06() {
         {/* Content */}
         <div className="relative h-full p-5 flex flex-col justify-end">
           <h3 className="text-lg text-white font-semibold mt-16 mb-0.5">Audiobooks</h3>
-          <a className="text-sm font-medium text-violet-400 hover:text-violet-300" href="#0">Explore -&gt;</a>
+          <a className="text-sm font-medium text-blue-400 hover:text-blue-300" href="#0">Explore -&gt;</a>
         </div>
       </div>
 
@@ -42,7 +42,7 @@ export default function ShopCards06() {
         {/* Content */}
         <div className="relative h-full p-5 flex flex-col justify-end">
           <h3 className="text-lg text-white font-semibold mt-16 mb-0.5">Design & Tech</h3>
-          <a className="text-sm font-medium text-violet-400 hover:text-violet-300" href="#0">Explore -&gt;</a>
+          <a className="text-sm font-medium text-blue-400 hover:text-blue-300" href="#0">Explore -&gt;</a>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export default function ShopCards06() {
         {/* Content */}
         <div className="relative h-full p-5 flex flex-col justify-end">
           <h3 className="text-lg text-white font-semibold mt-16 mb-0.5">Apps & Software</h3>
-          <a className="text-sm font-medium text-violet-400 hover:text-violet-300" href="#0">Explore -&gt;</a>
+          <a className="text-sm font-medium text-blue-400 hover:text-blue-300" href="#0">Explore -&gt;</a>
         </div>
       </div>
     </>

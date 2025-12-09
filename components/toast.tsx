@@ -54,7 +54,7 @@ export default function Toast({
       case 'success':
         return 'bg-green-500'
       default:
-        return 'bg-violet-500'
+        return 'bg-blue-500'
     }
   }
 

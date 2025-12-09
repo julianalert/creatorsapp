@@ -22,7 +22,7 @@ export const CalendarProperties = () => {
       case 'sky':
         return 'text-white bg-sky-500'
       case 'indigo':
-        return 'text-white bg-violet-500'
+        return 'text-white bg-blue-500'
       case 'yellow':
         return 'text-white bg-yellow-500'
       case 'green':

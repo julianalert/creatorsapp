@@ -14,7 +14,7 @@ export default function Cart() {
         <div className="mb-6 lg:mb-0">
           <div className="mb-3">
             <div className="flex text-sm font-medium text-gray-400 dark:text-gray-500 space-x-2">
-              <span className="text-violet-500">Review</span>
+              <span className="text-blue-500">Review</span>
               <span>-&gt;</span>
               <span className="text-gray-500 dark:text-gray-400">Payment</span>
               <span>-&gt;</span>

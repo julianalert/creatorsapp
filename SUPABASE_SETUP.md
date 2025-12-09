@@ -25,7 +25,7 @@ Set these in your hosting platform (Vercel, Netlify, etc.):
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-NEXT_PUBLIC_APP_URL=https://app.creatooors.com
+NEXT_PUBLIC_APP_URL=https://yuzuu.co
 ```
 
 **Important:** Only set `NEXT_PUBLIC_APP_URL` in production. For localhost, leave it unset and it will work automatically.
@@ -35,7 +35,7 @@ NEXT_PUBLIC_APP_URL=https://app.creatooors.com
 ### 1. Site URL Configuration
 
 1. Go to your Supabase Dashboard → **Authentication** → **URL Configuration**
-2. Set **Site URL** to: `https://app.creatooors.com`
+2. Set **Site URL** to: `https://yuzuu.co`
 
 ### 2. Redirect URLs
 
@@ -43,8 +43,8 @@ Add these redirect URLs in **Authentication** → **URL Configuration** → **Re
 
 **Production:**
 ```
-https://app.creatooors.com/auth/callback
-https://app.creatooors.com/reset-password
+https://yuzuu.co/auth/callback
+https://yuzuu.co/reset-password
 ```
 
 **Development (if you want to test locally):**
@@ -70,6 +70,34 @@ If you want to use a custom SMTP provider (recommended for production):
 2. Configure your SMTP provider (SendGrid, AWS SES, etc.)
 3. This ensures reliable email delivery
 
+### 5. Google OAuth Configuration
+
+To enable Google sign-in and sign-up:
+
+1. **Create Google OAuth Credentials:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Navigate to **APIs & Services** → **Credentials**
+   - Click **Create Credentials** → **OAuth client ID**
+   - Choose **Web application** as the application type
+   - Add authorized redirect URIs:
+     - Production: `https://[your-project-ref].supabase.co/auth/v1/callback`
+     - Development: `https://[your-project-ref].supabase.co/auth/v1/callback` (same for both)
+   - Copy the **Client ID** and **Client Secret**
+
+2. **Configure in Supabase:**
+   - Go to your Supabase Dashboard → **Authentication** → **Providers**
+   - Find **Google** in the list and click to configure
+   - Enable the Google provider
+   - Paste your **Client ID** and **Client Secret** from Google Cloud Console
+   - Click **Save**
+
+3. **Important Notes:**
+   - The redirect URI in Google Cloud Console must match: `https://[your-project-ref].supabase.co/auth/v1/callback`
+   - Replace `[your-project-ref]` with your actual Supabase project reference (found in your Supabase project URL)
+   - Google OAuth will work for both sign-in and sign-up automatically
+   - Users can sign in with Google even if they previously signed up with email/password (if the email matches)
+
 ## Testing
 
 1. **Local Development:**
@@ -78,7 +106,7 @@ If you want to use a custom SMTP provider (recommended for production):
    - Test signup, signin, and password reset flows
 
 2. **Production:**
-   - Set `NEXT_PUBLIC_APP_URL=https://app.creatooors.com` in your hosting platform's environment variables
+   - Set `NEXT_PUBLIC_APP_URL=https://yuzuu.co` in your hosting platform's environment variables
    - Verify redirect URLs are configured in Supabase dashboard for production
    - Test the authentication flows on your live site
 

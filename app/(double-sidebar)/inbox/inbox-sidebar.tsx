@@ -63,7 +63,7 @@ export default function InboxSidebar() {
               <div className="absolute bottom-0 w-full h-px bg-gray-200 dark:bg-gray-700/60" aria-hidden="true"></div>
               <ul className="relative text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
                 <li className="mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                  <a className="block pb-3 text-violet-500 whitespace-nowrap border-b-2 border-violet-500" href="#0">
+                  <a className="block pb-3 text-blue-500 whitespace-nowrap border-b-2 border-blue-500" href="#0">
                     Primary
                   </a>
                 </li>
@@ -84,7 +84,7 @@ export default function InboxSidebar() {
               <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-3">Inbox (44)</div>
               <ul className="mb-6">
                 <li className="-mx-2">
-                  <button className="flex w-full p-2 rounded-lg bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] text-left" onClick={() => setFlyoutOpen(false)}>
+                  <button className="flex w-full p-2 rounded-lg bg-linear-to-r from-blue-500/[0.12] dark:from-blue-500/[0.24] to-blue-500/[0.04] text-left" onClick={() => setFlyoutOpen(false)}>
                     <Image className="w-8 h-8 rounded-full mr-2" src={UserImage01} width={32} height={32} alt="User 01" />
                     <div className="grow truncate">
                       <div className="flex items-center justify-between mb-1.5">

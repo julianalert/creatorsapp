@@ -39,10 +39,10 @@ export default function FeedLeftContent() {
               <ul className="flex flex-nowrap md:block mr-3 md:mr-0">
                 <li className="mr-0.5 md:mr-0 md:mb-0.5">
                   <a className="flex items-center px-2.5 py-2 rounded-lg whitespace-nowrap bg-white dark:bg-gray-800" href="#0">
-                    <svg className="shrink-0 fill-current text-violet-500 mr-2" width="16" height="16" viewBox="0 0 16 16">
+                    <svg className="shrink-0 fill-current text-blue-500 mr-2" width="16" height="16" viewBox="0 0 16 16">
                       <path d="M4.904 10.114a.98.98 0 0 1 0-1.961h5.886a.98.98 0 0 1 0 1.961H4.904ZM2.863 5.166a1.962 1.962 0 0 0-.901 1.651v5.26c0 1.083.878 1.961 1.961 1.961h7.85a1.962 1.962 0 0 0 1.961-1.961v-5.26c0-.668-.34-1.29-.901-1.65L7.848 1.961 2.863 5.166ZM6.786.312a1.962 1.962 0 0 1 2.123 0l4.985 3.204a3.923 3.923 0 0 1 1.802 3.301v5.26A3.923 3.923 0 0 1 11.772 16H3.923A3.923 3.923 0 0 1 0 12.077v-5.26c0-1.335.679-2.579 1.802-3.3L6.786.311Z" />
                     </svg>
-                    <span className="text-sm font-medium text-violet-500">Home</span>
+                    <span className="text-sm font-medium text-blue-500">Home</span>
                   </a>
                 </li>
                 <li className="mr-0.5 md:mr-0 md:mb-0.5">

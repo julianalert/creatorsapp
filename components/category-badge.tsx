@@ -20,7 +20,7 @@ export default function CategoryBadge({ category }: CategoryBadgeProps) {
       case 'Miscellaneous':
         return 'text-xs inline-flex font-medium bg-gray-500/20 text-gray-700 dark:text-gray-400 rounded-full text-center px-2.5 py-1'
       default:
-        return 'text-xs inline-flex font-medium bg-violet-500/20 text-violet-600 dark:text-violet-400 rounded-full text-center px-2.5 py-1'
+        return 'text-xs inline-flex font-medium bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full text-center px-2.5 py-1'
     }
   }
 

@@ -112,8 +112,8 @@ export default function FeedbackPanel() {
                       onClick={() => handleRatingClick(value)}
                       className={`w-3 h-3 rounded-full border-2 transition-all cursor-pointer ${
                         rating === value
-                          ? 'bg-violet-500 border-violet-500'
-                          : 'bg-white dark:bg-gray-800 border-gray-400 dark:border-gray-500 hover:border-violet-400 dark:hover:border-violet-400'
+                          ? 'bg-blue-500 border-blue-500'
+                          : 'bg-white dark:bg-gray-800 border-gray-400 dark:border-gray-500 hover:border-blue-400 dark:hover:border-blue-400'
                       }`}
                       aria-label={`Rating ${value}`}
                     >

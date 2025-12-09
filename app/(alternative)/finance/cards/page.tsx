@@ -94,7 +94,7 @@ export default function CreditCards() {
               </div>
             </div>
             <div
-              className="absolute inset-0 border-2 border-transparent peer-checked:border-violet-400 dark:peer-checked:border-violet-500 rounded-lg pointer-events-none"
+              className="absolute inset-0 border-2 border-transparent peer-checked:border-blue-400 dark:peer-checked:border-blue-500 rounded-lg pointer-events-none"
               aria-hidden="true"
             />
           </label>
@@ -147,7 +147,7 @@ export default function CreditCards() {
               </div>
             </div>
             <div
-              className="absolute inset-0 border-2 border-transparent peer-checked:border-violet-400 dark:peer-checked:border-violet-500 rounded-lg pointer-events-none"
+              className="absolute inset-0 border-2 border-transparent peer-checked:border-blue-400 dark:peer-checked:border-blue-500 rounded-lg pointer-events-none"
               aria-hidden="true"
             />
           </label>

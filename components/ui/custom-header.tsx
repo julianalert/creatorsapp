@@ -79,7 +79,7 @@ export default function CustomHeader() {
                     type="" 
                     className="min-w-0"
                     closeButton={
-                      <Link href="/credits" className="text-xs font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300">
+                      <Link href="/credits" className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
                         Buy credits
                       </Link>
                     }

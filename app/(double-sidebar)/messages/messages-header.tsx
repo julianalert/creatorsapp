@@ -41,7 +41,7 @@ export default function MessagesHeader() {
             </svg>
           </button>
           <button className="p-1.5 shrink-0 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm ml-2">
-            <svg className="fill-current text-violet-500" width="16" height="16" viewBox="0 0 16 16">
+            <svg className="fill-current text-blue-500" width="16" height="16" viewBox="0 0 16 16">
               <path d="M14.3 2.3L5 11.6 1.7 8.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l4 4c.2.2.4.3.7.3.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0z" />
             </svg>
           </button>

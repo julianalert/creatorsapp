@@ -23,8 +23,8 @@ export default function DashboardCard01() {
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
       <div className="px-5 pt-5 pb-5">
         <div className="flex items-center">
-          <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-violet-100 dark:bg-violet-900/20 mr-4">
-            <HiVideoCamera className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+          <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/20 mr-4">
+            <HiVideoCamera className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="flex-1">
             <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Total reels</div>

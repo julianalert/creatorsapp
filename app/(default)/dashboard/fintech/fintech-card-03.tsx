@@ -17,8 +17,8 @@ export default function FintechCard03() {
       {
         label: 'Inflow',
         data: [800, 2600, 4000, 1200, 3200, 1700],
-        backgroundColor: getCssVariable('--color-violet-500'),
-        hoverBackgroundColor: getCssVariable('--color-violet-600'),
+        backgroundColor: getCssVariable('--color-blue-500'),
+        hoverBackgroundColor: getCssVariable('--color-blue-600'),
         barPercentage: 0.7,
         categoryPercentage: 0.7,
         borderRadius: 4,
@@ -27,8 +27,8 @@ export default function FintechCard03() {
       {
         label: 'Outflow',
         data: [2800, 1700, 900, 2900, 1950, 3100],
-        backgroundColor: getCssVariable('--color-violet-200'),
-        hoverBackgroundColor: getCssVariable('--color-violet-300'),
+        backgroundColor: getCssVariable('--color-blue-200'),
+        hoverBackgroundColor: getCssVariable('--color-blue-300'),
         barPercentage: 0.7,
         categoryPercentage: 0.7,
         borderRadius: 4,

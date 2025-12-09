@@ -16,13 +16,13 @@ export default function AnalyticsCard09() {
           30, 50, 5, 15,
         ],
         backgroundColor: [
-          getCssVariable('--color-violet-500'),
+          getCssVariable('--color-blue-500'),
           getCssVariable('--color-sky-500'),
           getCssVariable('--color-red-500'),
           getCssVariable('--color-green-500'),
         ],
         hoverBackgroundColor: [
-          getCssVariable('--color-violet-600'),
+          getCssVariable('--color-blue-600'),
           getCssVariable('--color-sky-600'),
           getCssVariable('--color-red-600'),
           getCssVariable('--color-green-600'),

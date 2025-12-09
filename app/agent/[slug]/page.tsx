@@ -210,7 +210,7 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
                   key={`${template.slug}-${insight.label}`}
                   className="flex items-start gap-3 bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-700/40 rounded-xl p-4"
                 >
-                  <span className="mt-1 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-semibold">
+                  <span className="mt-1 inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-semibold">
                     →
                   </span>
                   <div>
@@ -228,7 +228,7 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">Related agents</h2>
                 <Link
-                  className="text-sm font-semibold text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300"
+                  className="text-sm font-semibold text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
                   href="/"
                 >
                   View all {totalCount || 0}
@@ -268,7 +268,7 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
               {template.persona.split(' · ').map((persona: string, index: number) => (
                 <span
                   key={`${template.slug}-persona-${index}`}
-                  className="inline-flex items-center px-3 py-1 rounded-full bg-violet-500/10 text-xs font-medium text-violet-600 dark:text-violet-400"
+                  className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 text-xs font-medium text-blue-600 dark:text-blue-400"
                 >
                   {persona}
                 </span>

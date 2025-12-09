@@ -71,7 +71,7 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
               <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/40">
                 {/* Cost - Bottom Left */}
                 <div className="flex items-center space-x-1.5">
-                  <CurrencyDollarIcon className="w-4 h-4 text-yellow-500" />
+                  <CurrencyDollarIcon className="w-4 h-4 text-blue-500" />
                   <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
                     {template.credits || 1} credit{(template.credits || 1) !== 1 ? 's' : ''}
                   </span>

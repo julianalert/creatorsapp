@@ -116,7 +116,7 @@ export default function NewPage() {
                     {loading ? (
                       <div className="flex flex-col items-center justify-center w-full gap-4 py-16">
                         <svg
-                          className="h-10 w-10 text-violet-500 dark:text-violet-300 animate-spin"
+                          className="h-10 w-10 text-blue-500 dark:text-blue-300 animate-spin"
                           viewBox="0 0 24 24"
                         >
                           <circle
@@ -173,7 +173,7 @@ export default function NewPage() {
                                 )}
 
                                 {result.brandProfile && (
-                                  <div className="rounded-lg border border-violet-200 dark:border-violet-900/40 bg-violet-50/60 dark:bg-violet-900/20 p-4 space-y-4">
+                                  <div className="rounded-lg border border-blue-200 dark:border-blue-900/40 bg-blue-50/60 dark:bg-blue-900/20 p-4 space-y-4">
                                     <div>
                                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                         Brand profile
@@ -245,7 +245,7 @@ export default function NewPage() {
                                           {result.brandProfile.keywords.map((keyword) => (
                                             <span
                                               key={keyword}
-                                              className="inline-flex items-center rounded-full bg-white dark:bg-gray-900 border border-violet-200 dark:border-violet-800 px-3 py-1 text-xs font-medium text-violet-700 dark:text-violet-300"
+                                              className="inline-flex items-center rounded-full bg-white dark:bg-gray-900 border border-blue-200 dark:border-blue-800 px-3 py-1 text-xs font-medium text-blue-700 dark:text-blue-300"
                                             >
                                               {keyword}
                                             </span>
@@ -365,7 +365,7 @@ export default function NewPage() {
                           placeholder="https://www.yuzuu.co"
                           value={url}
                           onChange={(event) => setUrl(event.target.value)}
-                          className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                          className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                           required
                         />
                       </div>

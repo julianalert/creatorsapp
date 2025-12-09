@@ -92,7 +92,7 @@ export default function FeedbackExamples() {
             <div className="p-5 flex space-x-4">
               {/* Icon */}
               <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-gray-100 dark:bg-gray-700">
-                <svg className="shrink-0 fill-current text-violet-500" width="16" height="16" viewBox="0 0 16 16">
+                <svg className="shrink-0 fill-current text-blue-500" width="16" height="16" viewBox="0 0 16 16">
                   <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zM8 6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
                 </svg>
               </div>

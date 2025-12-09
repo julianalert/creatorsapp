@@ -24,7 +24,7 @@ export default function IconsLibrary() {
             <div>
               <div className="flex items-start space-x-3 mb-6">
                 <h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold">Nucleo</h2>
-                <div className="btn-xs text-xs bg-violet-500/20 text-violet-600 px-2.5 py-1 rounded-full shadow-none">Recommended</div>
+                <div className="btn-xs text-xs bg-blue-500/20 text-blue-600 px-2.5 py-1 rounded-full shadow-none">Recommended</div>
               </div>
               <div className="px-6 py-8 bg-gray-100 dark:bg-gray-800/50 rounded-lg text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
                 <div className="text-gray-900 dark:text-gray-100 mb-4 xl:mb-0 max-w-lg mx-auto xl:mx-0 2xl:max-w-none">99% of the icons used in Mosaic come from Nucleo; a huge library of 3K+ vector icons!</div>

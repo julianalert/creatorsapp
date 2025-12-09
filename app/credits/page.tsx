@@ -177,10 +177,10 @@ function CreditsContent() {
 
             {/* Plus Plan */}
             <div className="relative col-span-full xl:col-span-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 shadow-sm rounded-b-lg">
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-violet-500" aria-hidden="true"></div>
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-blue-500" aria-hidden="true"></div>
               <div className="px-5 pt-5 pb-6 border-b border-gray-200 dark:border-gray-700/60">
                 <header className="flex items-center mb-2">
-                  <div className="w-6 h-6 rounded-full shrink-0 bg-violet-500 mr-3">
+                  <div className="w-6 h-6 rounded-full shrink-0 bg-blue-500 mr-3">
                     <svg className="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
                       <path d="M12 17a.833.833 0 01-.833-.833 3.333 3.333 0 00-3.334-3.334.833.833 0 110-1.666 3.333 3.333 0 003.334-3.334.833.833 0 111.666 0 3.333 3.333 0 003.334 3.334.833.833 0 110 1.666 3.333 3.333 0 00-3.334 3.334c0 .46-.373.833-.833.833z" />
                     </svg>

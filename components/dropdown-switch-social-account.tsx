@@ -65,7 +65,7 @@ export default function DropdownSwitchSocialAccount({ align }: {
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-2">
                   <span className="text-white text-xs font-semibold">
                     {selectedAccount.platform.charAt(0).toUpperCase()}
                   </span>
@@ -102,7 +102,7 @@ export default function DropdownSwitchSocialAccount({ align }: {
                   onClick={() => handleSelectAccount(account)}
                   className={`w-full flex items-center py-2 px-4 cursor-pointer ${
                     active && 'bg-gray-50 dark:bg-gray-700/20'
-                  } ${selectedAccount?.id === account.id ? 'bg-violet-50 dark:bg-violet-900/20' : ''}`}
+                  } ${selectedAccount?.id === account.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
                 >
                   {getAccountAvatar(account) ? (
                     <img 
@@ -112,7 +112,7 @@ export default function DropdownSwitchSocialAccount({ align }: {
                       referrerPolicy="no-referrer"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center mr-3">
+                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">
                       <span className="text-white text-xs font-semibold">
                         {account.platform.charAt(0).toUpperCase()}
                       </span>
@@ -127,7 +127,7 @@ export default function DropdownSwitchSocialAccount({ align }: {
                     </div>
                   </div>
                   {selectedAccount?.id === account.id && (
-                    <svg className="w-4 h-4 fill-current text-violet-500" viewBox="0 0 12 12">
+                    <svg className="w-4 h-4 fill-current text-blue-500" viewBox="0 0 12 12">
                       <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   )}

@@ -15,7 +15,7 @@ export default function Channels() {
               </div>
             </div>
             <div className="flex items-center ml-2">
-              <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
+              <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
             </div>
           </button>
         </li>

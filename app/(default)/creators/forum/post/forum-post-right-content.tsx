@@ -47,7 +47,7 @@ export default function ForumPostRightContent() {
                     </a>
                   </div>
                   <div className="text-xs text-gray-500">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                    <a className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                       markusj
                     </a>{' '}
                     · 2d · 312 comments
@@ -60,7 +60,7 @@ export default function ForumPostRightContent() {
                     </a>
                   </div>
                   <div className="text-xs text-gray-500">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                    <a className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                       katemerlu
                     </a>{' '}
                     · 2h · 7 comments
@@ -73,7 +73,7 @@ export default function ForumPostRightContent() {
                     </a>
                   </div>
                   <div className="text-xs text-gray-500">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                    <a className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                       sophiestar
                     </a>{' '}
                     · 3d · 66 comments
@@ -86,7 +86,7 @@ export default function ForumPostRightContent() {
                     </a>
                   </div>
                   <div className="text-xs text-gray-500">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                    <a className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                       ekuplu89
                     </a>{' '}
                     · 4h · 14 comments
@@ -99,7 +99,7 @@ export default function ForumPostRightContent() {
                     </a>
                   </div>
                   <div className="text-xs text-gray-500">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+                    <a className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                       molliehacks
                     </a>{' '}
                     · 3d · 32 comments

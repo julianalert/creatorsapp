@@ -40,7 +40,7 @@ export default function Kanban() {
       <div className="mb-4 border-b border-gray-200 dark:border-gray-700/60">
         <ul className="text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
           <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-            <Link className="text-violet-500 whitespace-nowrap" href="#0">View All</Link>
+            <Link className="text-blue-500 whitespace-nowrap" href="#0">View All</Link>
           </li>
           <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
             <Link className="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 whitespace-nowrap" href="#0">Web Sprint</Link>

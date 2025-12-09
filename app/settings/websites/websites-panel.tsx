@@ -142,7 +142,7 @@ export default function WebsitesPanel() {
                             href={website.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300 break-all"
+                            className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 break-all"
                           >
                             {website.url}
                           </a>

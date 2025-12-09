@@ -37,7 +37,7 @@ export default function Onboarding02() {
                       <input type="radio" name="radio-buttons" className="peer sr-only" defaultChecked />
                       <div className="h-full text-center bg-white dark:bg-gray-800 px-4 py-6 rounded-lg border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm transition">
                         <svg
-                          className="inline-flex fill-current text-violet-500 mt-2 mb-4"
+                          className="inline-flex fill-current text-blue-500 mt-2 mb-4"
                           xmlns="http://www.w3.org/2000/svg"
                           width={24}
                           height={24}
@@ -51,13 +51,13 @@ export default function Onboarding02() {
                         <div className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Individual</div>
                         <div className="text-sm">Lorem ipsum is place text commonly used.</div>
                       </div>
-                      <div className="absolute inset-0 border-2 border-transparent peer-checked:border-violet-400 dark:peer-checked:border-violet-500 rounded-lg pointer-events-none" aria-hidden="true"></div>
+                      <div className="absolute inset-0 border-2 border-transparent peer-checked:border-blue-400 dark:peer-checked:border-blue-500 rounded-lg pointer-events-none" aria-hidden="true"></div>
                     </label>
                     <label className="flex-1 relative block cursor-pointer">
                       <input type="radio" name="radio-buttons" className="peer sr-only" />
                       <div className="h-full text-center bg-white dark:bg-gray-800 px-4 py-6 rounded-lg border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm transition">
                         <svg
-                          className="inline-flex fill-current text-violet-500 mt-2 mb-4"
+                          className="inline-flex fill-current text-blue-500 mt-2 mb-4"
                           xmlns="http://www.w3.org/2000/svg"
                           width={24}
                           height={24}
@@ -68,7 +68,7 @@ export default function Onboarding02() {
                         <div className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Organization</div>
                         <div className="text-sm">Lorem ipsum is place text commonly used.</div>
                       </div>
-                      <div className="absolute inset-0 border-2 border-transparent peer-checked:border-violet-400 dark:peer-checked:border-violet-500 rounded-lg pointer-events-none" aria-hidden="true"></div>
+                      <div className="absolute inset-0 border-2 border-transparent peer-checked:border-blue-400 dark:peer-checked:border-blue-500 rounded-lg pointer-events-none" aria-hidden="true"></div>
                     </label>
                   </div>
                   <div className="flex items-center justify-between space-x-6 mb-8">

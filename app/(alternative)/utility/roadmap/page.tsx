@@ -76,7 +76,7 @@ export default function Roadmap() {
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
                         <div className="absolute left-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>
@@ -89,7 +89,7 @@ export default function Roadmap() {
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
                         <div className="absolute left-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>
@@ -102,7 +102,7 @@ export default function Roadmap() {
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
                         <div className="absolute left-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>
@@ -114,7 +114,7 @@ export default function Roadmap() {
                     {/* List item */}
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>
@@ -151,7 +151,7 @@ export default function Roadmap() {
                       </div>
                       <div className="text-gray-400 dark:text-gray-600">·</div>
                       <div>
-                        <div className="btn-xs text-xs bg-violet-500/20 text-violet-600 px-2.5 py-1 rounded-full shadow-none">Working on</div>
+                        <div className="btn-xs text-xs bg-blue-500/20 text-blue-600 px-2.5 py-1 rounded-full shadow-none">Working on</div>
                       </div>
                     </div>
                   </header>
@@ -161,7 +161,7 @@ export default function Roadmap() {
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
                         <div className="absolute left-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>
@@ -174,7 +174,7 @@ export default function Roadmap() {
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
                         <div className="absolute left-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>
@@ -187,7 +187,7 @@ export default function Roadmap() {
                     <li className="relative py-2">
                       <div className="flex items-center mb-1">
                         <div className="absolute left-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
-                        <div className="absolute left-0 rounded-full bg-violet-500" aria-hidden="true">
+                        <div className="absolute left-0 rounded-full bg-blue-500" aria-hidden="true">
                           <svg className="fill-current text-white" width="20" height="20" viewBox="0 0 20 20">
                             <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z" />
                           </svg>

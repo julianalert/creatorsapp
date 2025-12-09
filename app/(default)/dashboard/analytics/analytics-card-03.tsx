@@ -19,8 +19,8 @@ export default function AnalyticsCard03() {
         data: [
           5000, 4000, 4000, 3800, 5200, 5100,
         ],
-        backgroundColor: getCssVariable('--color-violet-700'),
-        hoverBackgroundColor: getCssVariable('--color-violet-800'),
+        backgroundColor: getCssVariable('--color-blue-700'),
+        hoverBackgroundColor: getCssVariable('--color-blue-800'),
         barPercentage: 0.7,
         categoryPercentage: 0.7,
         borderRadius: 4,
@@ -31,8 +31,8 @@ export default function AnalyticsCard03() {
         data: [
           2500, 2600, 4000, 4000, 4800, 3500,
         ],
-        backgroundColor: getCssVariable('--color-violet-500'),
-        hoverBackgroundColor: getCssVariable('--color-violet-600'),
+        backgroundColor: getCssVariable('--color-blue-500'),
+        hoverBackgroundColor: getCssVariable('--color-blue-600'),
         barPercentage: 0.7,
         categoryPercentage: 0.7,
         borderRadius: 4,
@@ -43,8 +43,8 @@ export default function AnalyticsCard03() {
         data: [
           2300, 2000, 3100, 2700, 1300, 2600,
         ],
-        backgroundColor: getCssVariable('--color-violet-300'),
-        hoverBackgroundColor: getCssVariable('--color-violet-400'),
+        backgroundColor: getCssVariable('--color-blue-300'),
+        hoverBackgroundColor: getCssVariable('--color-blue-400'),
         barPercentage: 0.7,
         categoryPercentage: 0.7,
         borderRadius: 4,
@@ -55,8 +55,8 @@ export default function AnalyticsCard03() {
         data: [
           4800, 4200, 4800, 1800, 3300, 3500,
         ],
-        backgroundColor: getCssVariable('--color-violet-100'),
-        hoverBackgroundColor: getCssVariable('--color-violet-200'),
+        backgroundColor: getCssVariable('--color-blue-100'),
+        hoverBackgroundColor: getCssVariable('--color-blue-200'),
         barPercentage: 0.7,
         categoryPercentage: 0.7,
         borderRadius: 4,

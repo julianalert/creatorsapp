@@ -103,7 +103,7 @@ function AgentResultsContent() {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
               filter === 'all'
-                ? 'bg-violet-500 text-white'
+                ? 'bg-blue-500 text-white'
                 : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
             }`}
           >
@@ -119,7 +119,7 @@ function AgentResultsContent() {
                 onClick={() => setFilter(slug)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                   filter === slug
-                    ? 'bg-violet-500 text-white'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
@@ -133,7 +133,7 @@ function AgentResultsContent() {
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <svg
-              className="animate-spin h-8 w-8 text-violet-500"
+              className="animate-spin h-8 w-8 text-blue-500"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

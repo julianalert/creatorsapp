@@ -25,7 +25,7 @@ export default function TabsLibrary() {
               <div className="mb-8 border-b border-gray-200 dark:border-gray-700/60">
                 <ul className="text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
                   <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                    <a className="text-violet-500 whitespace-nowrap" href="#0">Account</a>
+                    <a className="text-blue-500 whitespace-nowrap" href="#0">Account</a>
                   </li>
                   <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
                     <a className="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 whitespace-nowrap" href="#0">Notifications</a>
@@ -52,7 +52,7 @@ export default function TabsLibrary() {
                 <div className="absolute bottom-0 w-full h-px bg-gray-200 dark:bg-gray-700/60" aria-hidden="true"></div>
                 <ul className="relative text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
                   <li className="mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                    <a className="block pb-3 text-violet-500 whitespace-nowrap border-b-2 border-violet-500" href="#0">Account</a>
+                    <a className="block pb-3 text-blue-500 whitespace-nowrap border-b-2 border-blue-500" href="#0">Account</a>
                   </li>
                   <li className="mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
                     <a className="block pb-3 text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 whitespace-nowrap" href="#0">Notifications</a>
@@ -78,7 +78,7 @@ export default function TabsLibrary() {
               <div className="mb-8 border-b border-gray-200 dark:border-gray-700/60">
                 <ul className="text-sm font-medium flex flex-nowrap -mx-4 sm:-mx-6 lg:-mx-8 overflow-x-scroll no-scrollbar">
                   <li className="pb-3 mr-6 last:mr-0 first:pl-4 sm:first:pl-6 lg:first:pl-8 last:pr-4 sm:last:pr-6 lg:last:pr-8">
-                    <a className="text-violet-500 whitespace-nowrap flex items-center" href="#0">
+                    <a className="text-blue-500 whitespace-nowrap flex items-center" href="#0">
                       <svg className="shrink-0 fill-current mr-2" width="16" height="16" viewBox=" 0 0 16 16">
                         <path d="M8 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-5.143 7.91a1 1 0 1 1-1.714-1.033A7.996 7.996 0 0 1 8 10a7.996 7.996 0 0 1 6.857 3.877 1 1 0 1 1-1.714 1.032A5.996 5.996 0 0 0 8 12a5.996 5.996 0 0 0-5.143 2.91Z" />
                       </svg>

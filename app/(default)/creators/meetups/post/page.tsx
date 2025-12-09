@@ -37,7 +37,7 @@ export default function MeetupPost() {
               <span>Back To Meetups</span>
             </Link>
           </div>
-          <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Mon 27 Dec, 2024 - 9:00 PM -&gt; 10:00 PM</div>
+          <div className="text-sm font-semibold text-blue-500 uppercase mb-2">Mon 27 Dec, 2024 - 9:00 PM -&gt; 10:00 PM</div>
           <header className="mb-4">
             {/* Title */}
             <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">The World of AI and Machine Learning — Open Chat</h1>
@@ -190,7 +190,7 @@ export default function MeetupPost() {
                 {/* Content */}
                 <div className="grow p-5 flex flex-col">
                   <div className='grow'>
-                    <div className="text-sm font-semibold text-violet-500 uppercase mb-2">Mon 27 Dec, 2024</div>
+                    <div className="text-sm font-semibold text-blue-500 uppercase mb-2">Mon 27 Dec, 2024</div>
                     <a className="inline-flex mb-2" href="#0">
                       <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">New York &amp; New Jersey Virtual Retreat 2024</h3>
                     </a>
@@ -247,7 +247,7 @@ export default function MeetupPost() {
           <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl lg:w-[18rem] xl:w-[20rem]">
             <div className="flex justify-between space-x-1 mb-5">
               <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold">Attendees (127)</div>
-              <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+              <a className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                 View All
               </a>
             </div>
@@ -339,7 +339,7 @@ export default function MeetupPost() {
           <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl lg:w-[18rem] xl:w-[20rem]">
             <div className="flex justify-between space-x-1 mb-5">
               <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold">Invite Friends</div>
-              <a className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">
+              <a className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">
                 View All
               </a>
             </div>

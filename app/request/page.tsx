@@ -95,7 +95,7 @@ export default function RequestAgentPage() {
 - What inputs does it need?
 - What outputs should it provide?
 - Any specific features or requirements?"
-                className="form-textarea w-full px-3 py-2 border border-gray-200 dark:border-gray-700/60 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-textarea w-full px-3 py-2 border border-gray-200 dark:border-gray-700/60 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
                 minLength={10}
               />
@@ -116,7 +116,7 @@ export default function RequestAgentPage() {
               <button
                 type="submit"
                 disabled={isSubmitting || requestText.trim().length < 10}
-                className={`btn bg-violet-500 text-white hover:bg-violet-600 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed ${
+                className={`btn bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed ${
                   isSubmitting ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer'
                 }`}
               >

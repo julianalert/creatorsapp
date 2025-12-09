@@ -84,7 +84,7 @@ export default function AnalyticsCard06() {
           </div>
           {/* Card footer */}
           <div className="text-center pt-4 pb-1 border-t border-gray-100 dark:border-gray-700/60">
-            <Link className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Page Report -&gt;</Link>
+            <Link className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">Page Report -&gt;</Link>
           </div>
         </div>
       </div>

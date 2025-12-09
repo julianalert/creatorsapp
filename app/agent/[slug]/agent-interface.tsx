@@ -248,7 +248,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="https://example.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -287,7 +287,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -299,7 +299,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               </div>
             ) : loading && currentStep ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -333,7 +333,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="https://example.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -348,7 +348,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., Sign up, Purchase, Download"
               value={conversionGoal}
               onChange={(e) => setConversionGoal(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -387,7 +387,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -399,7 +399,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               </div>
             ) : loading && currentStep ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -433,7 +433,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., Project management software, SaaS tools"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -448,7 +448,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., Small business owners, Marketing teams"
               value={targetAudience}
               onChange={(e) => setTargetAudience(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
@@ -463,7 +463,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., US, Global, Europe"
                 value={geographicFocus}
                 onChange={(e) => setGeographicFocus(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -477,7 +477,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., Blog post, Product page"
                 value={contentType}
                 onChange={(e) => setContentType(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -492,7 +492,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="Enter competitor URLs, one per line"
               value={competitorUrls}
               onChange={(e) => setCompetitorUrls(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               disabled={loading}
             />
           </div>
@@ -530,7 +530,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -567,7 +567,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="Describe your target audience personas, e.g., Marketing managers at SaaS companies, Small business owners"
               value={audiencePersonas}
               onChange={(e) => setAudiencePersonas(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               required
               disabled={loading}
             />
@@ -582,7 +582,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., Drive organic traffic, Generate leads, Build brand awareness"
               value={contentGoals}
               onChange={(e) => setContentGoals(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -597,7 +597,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., SaaS, E-commerce, B2B Marketing"
               value={industryFocus}
               onChange={(e) => setIndustryFocus(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -612,7 +612,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="Enter competitor blog URLs, one per line"
               value={competitorBlogs}
               onChange={(e) => setCompetitorBlogs(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               disabled={loading}
             />
           </div>
@@ -627,7 +627,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="List your existing blog posts or topics"
                 value={existingContent}
                 onChange={(e) => setExistingContent(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
                 disabled={loading}
               />
             </div>
@@ -641,7 +641,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., 2 posts/week, Monthly"
                 value={publishingFrequency}
                 onChange={(e) => setPublishingFrequency(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -680,7 +680,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -717,7 +717,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., 10 Best Project Management Tools for Remote Teams"
               value={postTopic}
               onChange={(e) => setPostTopic(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               required
               disabled={loading}
             />
@@ -732,7 +732,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., Marketing managers, Small business owners"
               value={postAudience}
               onChange={(e) => setPostAudience(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
@@ -747,7 +747,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., Professional, Conversational, Friendly"
                 value={tone}
                 onChange={(e) => setTone(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -763,7 +763,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., 1500"
                 value={wordCount}
                 onChange={(e) => setWordCount(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -778,7 +778,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="List the main points or sections you want covered in the blog post, one per line"
               value={keyPoints}
               onChange={(e) => setKeyPoints(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               disabled={loading}
             />
           </div>
@@ -792,7 +792,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., project management, remote teams, collaboration tools"
               value={seoKeywords}
               onChange={(e) => setSeoKeywords(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
@@ -830,7 +830,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -867,7 +867,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="Describe the image you want to generate in detail, e.g., A modern workspace with a laptop, plants, and natural lighting"
               value={imageDescription}
               onChange={(e) => setImageDescription(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               required
               disabled={loading}
             />
@@ -881,7 +881,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 id="image-style"
                 value={imageStyle}
                 onChange={(e) => setImageStyle(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
                 <option value="">Select style...</option>
@@ -901,7 +901,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 id="aspect-ratio"
                 value={aspectRatio}
                 onChange={(e) => setAspectRatio(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
                 <option value="">Select aspect ratio...</option>
@@ -926,7 +926,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="1"
                 value={numberOfImages}
                 onChange={(e) => setNumberOfImages(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -940,7 +940,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., Bright colors, Professional mood"
                 value={additionalRequirements}
                 onChange={(e) => setAdditionalRequirements(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -979,7 +979,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -1023,7 +1023,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., TechCorp Inc."
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
                 disabled={loading}
               />
@@ -1038,7 +1038,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="https://example.com"
                 value={companyWebsite}
                 onChange={(e) => setCompanyWebsite(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1054,7 +1054,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., John Smith"
                 value={personName}
                 onChange={(e) => setPersonName(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1068,7 +1068,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., Marketing Director"
                 value={personTitle}
                 onChange={(e) => setPersonTitle(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1084,7 +1084,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., SaaS, E-commerce"
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1098,7 +1098,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., San Francisco, CA"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1118,7 +1118,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                     checked={contactTypes.includes(type)}
                     onChange={() => handleContactTypeChange(type)}
                     disabled={loading}
-                    className="form-checkbox w-4 h-4 text-violet-500 border-gray-300 dark:border-gray-600 rounded focus:ring-violet-500"
+                    className="form-checkbox w-4 h-4 text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                   />
                   <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{type}</span>
                 </label>
@@ -1159,7 +1159,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -1197,7 +1197,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., TechCorp Inc."
                 value={researchCompanyName}
                 onChange={(e) => setResearchCompanyName(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
                 disabled={loading}
               />
@@ -1212,7 +1212,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="https://example.com"
                 value={researchCompanyWebsite}
                 onChange={(e) => setResearchCompanyWebsite(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1228,7 +1228,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., SaaS, E-commerce, Healthcare"
                 value={researchIndustry}
                 onChange={(e) => setResearchIndustry(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1240,7 +1240,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 id="research-depth"
                 value={researchDepth}
                 onChange={(e) => setResearchDepth(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
                 <option value="basic">Basic</option>
@@ -1259,7 +1259,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., Focus on funding history, technology stack, or recent news"
               value={specificInfo}
               onChange={(e) => setSpecificInfo(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               disabled={loading}
             />
           </div>
@@ -1297,7 +1297,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
@@ -1334,7 +1334,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="Enter competitor company names or websites, one per line"
               value={competitorNames}
               onChange={(e) => setCompetitorNames(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               required
               disabled={loading}
             />
@@ -1349,7 +1349,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., MyCompany - Project Management Tool"
               value={yourCompany}
               onChange={(e) => setYourCompany(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
@@ -1362,7 +1362,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 id="analysis-focus"
                 value={analysisFocus}
                 onChange={(e) => setAnalysisFocus(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
                 <option value="">Select focus...</option>
@@ -1383,7 +1383,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 placeholder="e.g., B2B SaaS, Enterprise, SMB"
                 value={marketSegment}
                 onChange={(e) => setMarketSegment(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
@@ -1398,7 +1398,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               placeholder="e.g., North America, Global, Europe"
               value={geographicScope}
               onChange={(e) => setGeographicScope(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
@@ -1436,7 +1436,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
-                <svg className="animate-spin h-12 w-12 text-violet-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>

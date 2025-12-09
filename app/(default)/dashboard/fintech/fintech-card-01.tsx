@@ -36,22 +36,22 @@ export default function FintechCard01() {
           35, 32, 29, 35, 36, 34, 39, 36, 41, 41,
           48,
         ],
-        borderColor: getCssVariable('--color-violet-500'),
+        borderColor: getCssVariable('--color-blue-500'),
         fill: true,
         backgroundColor: function(context: any) {
           const chart = context.chart;
           const {ctx, chartArea} = chart;
           const gradientOrColor = chartAreaGradient(ctx, chartArea, [
-            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
-            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
+            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-blue-500'), 0) },
+            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-blue-500'), 0.2) }
           ]);
           return gradientOrColor || 'transparent';
         },     
         borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 3,
-        pointBackgroundColor: getCssVariable('--color-violet-500'),
-        pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
+        pointBackgroundColor: getCssVariable('--color-blue-500'),
+        pointHoverBackgroundColor: getCssVariable('--color-blue-500'),
         pointBorderWidth: 0,
         pointHoverBorderWidth: 0,
         clip: 20,

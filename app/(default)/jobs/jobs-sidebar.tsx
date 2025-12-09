@@ -10,7 +10,7 @@ export default function JobsSidebar() {
   return (
     <div className="space-y-8">
       {/* Alert */}
-      <div className="relative bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] rounded-lg p-5">
+      <div className="relative bg-linear-to-r from-blue-500/[0.12] dark:from-blue-500/[0.24] to-blue-500/[0.04] rounded-lg p-5">
         <div className="absolute bottom-0 -mb-3">
           <svg width="44" height="42" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <defs>
@@ -34,9 +34,9 @@ export default function JobsSidebar() {
           </svg>
         </div>
         <div className="relative">
-          <div className="text-sm font-medium text-gray-800 dark:text-violet-200 mb-2">Remember to keep track of your job research.</div>
+          <div className="text-sm font-medium text-gray-800 dark:text-blue-200 mb-2">Remember to keep track of your job research.</div>
           <div className="text-right">
-            <a className="text-sm font-medium text-violet-500 hover:text-violet-600" href="#0">
+            <a className="text-sm font-medium text-blue-500 hover:text-blue-600" href="#0">
               Create Alert -&gt;
             </a>
           </div>

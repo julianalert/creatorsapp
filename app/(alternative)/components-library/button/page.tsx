@@ -34,7 +34,7 @@ export default function ButtonLibrary() {
                 </div>
                 <div className="m-1.5">
                   {/* Start */}
-                  <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-violet-500">Tertiary</button>
+                  <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-blue-500">Tertiary</button>
                   {/* End */}
                 </div>
                 <div className="m-1.5">
@@ -171,7 +171,7 @@ export default function ButtonLibrary() {
                 <div className="m-1.5">
                   {/* Start */}
                   <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600">
-                    <svg className="fill-current text-violet-500 shrink-0" width="16" height="16" viewBox="0 0 16 16">
+                    <svg className="fill-current text-blue-500 shrink-0" width="16" height="16" viewBox="0 0 16 16">
                       <path d="M14.3 2.3L5 11.6 1.7 8.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l4 4c.2.2.4.3.7.3.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0z" />
                     </svg>
                   </button>
@@ -187,7 +187,7 @@ export default function ButtonLibrary() {
                 <div className="m-1.5">
                   {/* Start */}
                   <div className="flex flex-wrap -space-x-px">
-                    <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 text-violet-500 rounded-none first:rounded-l-lg last:rounded-r-lg">Weekly</button>
+                    <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 text-blue-500 rounded-none first:rounded-l-lg last:rounded-r-lg">Weekly</button>
                     <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-600 dark:text-gray-300 rounded-none first:rounded-l-lg last:rounded-r-lg">Monthly</button>
                     <button className="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-600 dark:text-gray-300 rounded-none first:rounded-l-lg last:rounded-r-lg">Yearly</button>
                   </div>

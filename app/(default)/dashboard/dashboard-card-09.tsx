@@ -142,13 +142,13 @@ export default function DashboardCard09() {
             {
               label: metricOptions.find(m => m.id === selectedMetric)?.label || 'Metric',
               data: values,
-              borderColor: getCssVariable('--color-violet-500'),
+              borderColor: getCssVariable('--color-blue-500'),
               fill: false,
               borderWidth: 2,
               pointRadius: 0,
               pointHoverRadius: 3,
-              pointBackgroundColor: getCssVariable('--color-violet-500'),
-              pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
+              pointBackgroundColor: getCssVariable('--color-blue-500'),
+              pointHoverBackgroundColor: getCssVariable('--color-blue-500'),
               pointBorderWidth: 0,
               pointHoverBorderWidth: 0,
               clip: 20,
@@ -226,11 +226,11 @@ export default function DashboardCard09() {
                     <MenuItem key={option.id}>
                       {({ active }) => (
                         <button
-                          className={`flex items-center justify-between w-full py-2 px-3 cursor-pointer ${active ? 'bg-gray-50 dark:bg-gray-700/20' : ''} ${option.id === selectedMetric && 'text-violet-500'}`}
+                          className={`flex items-center justify-between w-full py-2 px-3 cursor-pointer ${active ? 'bg-gray-50 dark:bg-gray-700/20' : ''} ${option.id === selectedMetric && 'text-blue-500'}`}
                           onClick={() => { setSelectedMetric(option.id) }}
                         >
                           <span>{option.label}</span>
-                          <svg className={`shrink-0 mr-2 fill-current text-violet-500 ${option.id !== selectedMetric && 'invisible'}`} width="12" height="9" viewBox="0 0 12 9">
+                          <svg className={`shrink-0 mr-2 fill-current text-blue-500 ${option.id !== selectedMetric && 'invisible'}`} width="12" height="9" viewBox="0 0 12 9">
                             <path d="M10.28.28L3.989 6.575 1.695 4.28A1 1 0 00.28 5.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28.28z" />
                           </svg>
                         </button>

@@ -39,7 +39,7 @@ export default function ProfileSidebar() {
                 </div>
                 {/* Add button */}
                 <button className="p-1.5 shrink-0 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 shadow-sm ml-2">
-                  <svg className="fill-current text-violet-500" width="16" height="16" viewBox="0 0 16 16">
+                  <svg className="fill-current text-blue-500" width="16" height="16" viewBox="0 0 16 16">
                     <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1Z" />
                   </svg>
                 </button>
@@ -72,7 +72,7 @@ export default function ProfileSidebar() {
               <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-3">Team members</div>
               <ul className="mb-6">
                 <li className="-mx-2">
-                  <button className="w-full p-2 rounded-lg bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]" onClick={() => setFlyoutOpen(false)}>
+                  <button className="w-full p-2 rounded-lg bg-linear-to-r from-blue-500/[0.12] dark:from-blue-500/[0.24] to-blue-500/[0.04]" onClick={() => setFlyoutOpen(false)}>
                     <div className="flex items-center">
                       <div className="relative mr-2">
                         <Image className="w-8 h-8 rounded-full" src={UserImage08} width={32} height={32} alt="User 08" />

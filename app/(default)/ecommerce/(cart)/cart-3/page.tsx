@@ -25,7 +25,7 @@ export default function Cart3() {
                 <span>-&gt;</span>
                 <span className="text-gray-500 dark:text-gray-400">Payment</span>
                 <span>-&gt;</span>
-                <span className="text-violet-500">Confirm</span>
+                <span className="text-blue-500">Confirm</span>
               </div>
             </div>
             <header className="mb-6">

@@ -197,7 +197,7 @@ export default function CartItems() {
       </ul>
 
       <div className="mt-6">
-        <Link className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="/ecommerce/shop">&lt;- Back To Shopping</Link>
+        <Link className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="/ecommerce/shop">&lt;- Back To Shopping</Link>
       </div>
     </>
   )

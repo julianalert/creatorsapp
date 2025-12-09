@@ -27,7 +27,7 @@ export default function Forum() {
               {/* Buttons group */}
               <div className="mb-4">
                 <div className="w-full flex flex-wrap -space-x-px">
-                  <button className="btn grow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 text-violet-500 rounded-none first:rounded-l-lg last:rounded-r-lg">Popular</button>
+                  <button className="btn grow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 text-blue-500 rounded-none first:rounded-l-lg last:rounded-r-lg">Popular</button>
                   <button className="btn grow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:bg-gray-50 dark:hover:bg-gray-700/20 text-gray-600 dark:text-gray-300 rounded-none first:rounded-l-lg last:rounded-r-lg">Newest</button>
                   <button className="btn grow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:bg-gray-50 dark:hover:bg-gray-700/20 text-gray-600 dark:text-gray-300 rounded-none first:rounded-l-lg last:rounded-r-lg">Following</button>
                 </div>

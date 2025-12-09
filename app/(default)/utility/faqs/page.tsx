@@ -20,8 +20,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">How do I connect my social media accounts?</h3>
@@ -36,8 +36,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">Can I manage multiple accounts from different platforms?</h3>
@@ -52,8 +52,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">How do I remove a connected account?</h3>
@@ -68,8 +68,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">Is my account data secure?</h3>
@@ -84,8 +84,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">Can I change my email or password?</h3>
@@ -100,8 +100,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">What happens if I disconnect my account?</h3>
@@ -116,8 +116,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">How do I switch between different accounts?</h3>
@@ -132,8 +132,8 @@ export default function Faqs() {
             <header className="flex items-start mb-2">
               <div className="mt-2 mr-3">
                 <svg className="shrink-0 fill-current" width="16" height="16" viewBox="0 0 16 16">
-                  <path className="text-violet-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
-                  <path className="text-violet-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
+                  <path className="text-blue-300" d="M4 8H0v4.9c0 1 .7 1.9 1.7 2.1 1.2.2 2.3-.8 2.3-2V8z" />
+                  <path className="text-blue-500" d="M15 1H7c-.6 0-1 .4-1 1v11c0 .7-.2 1.4-.6 2H13c1.7 0 3-1.3 3-3V2c0-.6-.4-1-1-1z" />
                 </svg>
               </div>
               <h3 className="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold">Why isn't my account data showing up?</h3>

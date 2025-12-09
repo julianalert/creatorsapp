@@ -8,6 +8,8 @@ import AuthImage from '../auth-image'
 import { createClient } from '@/lib/supabase/client'
 import Img2 from '@/public/images/yuzuuBg.png'
 import { recordFailedAttempt, clearFailedAttempts, isAccountLocked, getRemainingLockoutTime } from '@/lib/utils/account-lockout'
+import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
+import { FcGoogle } from 'react-icons/fc'
 
 export default function SignIn() {
   const router = useRouter()
@@ -16,6 +18,7 @@ export default function SignIn() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [lockoutTime, setLockoutTime] = useState<number | null>(null)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   // Check lockout status on mount and periodically
   useEffect(() => {
@@ -80,6 +83,30 @@ export default function SignIn() {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    setError(null)
+    setGoogleLoading(true)
+
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: getRedirectUrl('/auth/callback?next=/'),
+        },
+      })
+
+      if (error) {
+        setError(error.message)
+        setGoogleLoading(false)
+      }
+      // Note: If successful, the user will be redirected to Google, so we don't need to handle success here
+    } catch (err) {
+      setError('An unexpected error occurred')
+      setGoogleLoading(false)
+    }
+  }
+
   return (
     <main className="bg-white dark:bg-gray-900">
 
@@ -96,6 +123,30 @@ export default function SignIn() {
               <div className="text-sm mb-6">
                   Sign in to your account to continue
                 </div>
+              
+              {/* Google Sign In Button */}
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                disabled={loading || googleLoading}
+                className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+              >
+                <FcGoogle className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  {googleLoading ? 'Connecting...' : 'Sign in with Google'}
+                </span>
+              </button>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">Or continue with</span>
+                </div>
+              </div>
+
               {/* Form */}
               <form onSubmit={handleSignIn}>
                 {error && (
@@ -143,10 +194,11 @@ export default function SignIn() {
                   </button>
                 </div>
               </form>
+
               {/* Footer */}
               <div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">
                 <div className="text-sm">
-                  Don't you have an account? <Link className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="/signup">Sign Up</Link>
+                  Don't you have an account? <Link className="font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="/signup">Sign Up</Link>
                 </div>
                 
               </div>

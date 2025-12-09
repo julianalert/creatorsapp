@@ -8,7 +8,7 @@ export default function ShopSidebar() {
             <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-3">Discover</div>
             <ul className="text-sm font-medium space-y-2">
               <li>
-                <a className="text-violet-500" href="#0">View All</a>
+                <a className="text-blue-500" href="#0">View All</a>
               </li>
               <li>
                 <a className="text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200" href="#0">Apps / Software</a>

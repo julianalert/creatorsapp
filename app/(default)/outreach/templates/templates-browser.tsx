@@ -107,7 +107,7 @@ export default function TemplatesBrowser({ templates, categories }: TemplatesBro
                 className={`inline-flex items-center justify-center rounded-lg leading-5 px-2.5 py-2 border border-gray-200 dark:border-gray-700/60 ${
                   currentPage === 1
                     ? 'bg-white dark:bg-gray-800 text-gray-300 dark:text-gray-600 cursor-not-allowed'
-                    : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-violet-500 cursor-pointer'
+                    : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-blue-500 cursor-pointer'
                 }`}
               >
                 <span className="sr-only">Previous</span>
@@ -126,7 +126,7 @@ export default function TemplatesBrowser({ templates, categories }: TemplatesBro
                       onClick={() => setCurrentPage(pageNumber)}
                       className={`inline-flex items-center justify-center leading-5 px-3.5 py-2 border border-gray-200 dark:border-gray-700/60 ${
                         isActive
-                          ? 'rounded-lg bg-white dark:bg-gray-800 text-violet-500 cursor-default'
+                          ? 'rounded-lg bg-white dark:bg-gray-800 text-blue-500 cursor-default'
                           : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-600 dark:text-gray-300 cursor-pointer'
                       }`}
                     >
@@ -144,7 +144,7 @@ export default function TemplatesBrowser({ templates, categories }: TemplatesBro
                 className={`inline-flex items-center justify-center rounded-lg leading-5 px-2.5 py-2 border border-gray-200 dark:border-gray-700/60 ${
                   currentPage === totalPages
                     ? 'bg-white dark:bg-gray-800 text-gray-300 dark:text-gray-600 cursor-not-allowed'
-                    : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-violet-500 cursor-pointer'
+                    : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-blue-500 cursor-pointer'
                 }`}
               >
                 <span className="sr-only">Next</span>

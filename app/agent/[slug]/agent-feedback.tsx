@@ -81,7 +81,7 @@ export default function AgentFeedback({ agentId }: AgentFeedbackProps) {
         <div className="max-w-[128rem] mx-auto flex justify-end">
           <button
             onClick={() => setIsExpanded(true)}
-            className="pointer-events-auto btn bg-violet-500 hover:bg-violet-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2 cursor-pointer"
+            className="pointer-events-auto btn bg-blue-500 hover:bg-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2 cursor-pointer"
             aria-label="Open feedback form"
           >
             <ChatBubbleLeftRightIcon className="w-4 h-4" />
@@ -147,7 +147,7 @@ export default function AgentFeedback({ agentId }: AgentFeedbackProps) {
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
                 placeholder="Share your thoughts about this agent... What worked well? What could be improved?"
-                className="form-textarea w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-violet-500 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-500 resize-none"
+                className="form-textarea w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
                 disabled={isSubmitting || !isAuthenticated}
                 maxLength={5000}
               />
@@ -173,7 +173,7 @@ export default function AgentFeedback({ agentId }: AgentFeedbackProps) {
               <button
                 type="submit"
                 disabled={isSubmitting || !isAuthenticated || !feedbackText.trim()}
-                className="btn-sm px-3 bg-violet-500 hover:bg-violet-600 text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-sm px-3 bg-blue-500 hover:bg-blue-600 text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>

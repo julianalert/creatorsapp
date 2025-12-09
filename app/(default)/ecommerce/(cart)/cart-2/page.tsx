@@ -19,7 +19,7 @@ export default function Cart2() {
               <div className="flex text-sm font-medium text-gray-400 dark:text-gray-500 space-x-2">
                 <span className="text-gray-500 dark:text-gray-400">Review</span>
                 <span>-&gt;</span>
-                <span className="text-violet-500">Payment</span>
+                <span className="text-blue-500">Payment</span>
                 <span>-&gt;</span>
                 <span className="text-gray-500 dark:text-gray-400">Confirm</span>
               </div>

@@ -12,8 +12,8 @@ export default function TransactionDropdown({
     <Menu as="div" className="relative inline-flex">
       <MenuButton className="inline-flex justify-center items-center group">
         <div className="flex items-center truncate">
-          <span className="truncate font-medium text-violet-500 group-hover:text-violet-600 dark:group-hover:text-violet-400">My Personal Account</span>
-          <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-violet-400" viewBox="0 0 12 12">
+          <span className="truncate font-medium text-blue-500 group-hover:text-blue-600 dark:group-hover:text-blue-400">My Personal Account</span>
+          <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-blue-400" viewBox="0 0 12 12">
             <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
           </svg>
         </div>

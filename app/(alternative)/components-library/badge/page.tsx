@@ -24,7 +24,7 @@ export default function BadgeLibrary() {
               <div className="flex flex-wrap items-center -m-1.5">
                 <div className="m-1.5">
                   {/* Start */}
-                  <div className="btn-xs text-xs bg-violet-500/20 text-violet-600 px-2.5 py-1 rounded-full shadow-none">Working on</div>
+                  <div className="btn-xs text-xs bg-blue-500/20 text-blue-600 px-2.5 py-1 rounded-full shadow-none">Working on</div>
                   {/* End */}
                 </div>
                 <div className="m-1.5">
@@ -71,7 +71,7 @@ export default function BadgeLibrary() {
               <div className="flex flex-wrap items-center -m-1.5">
                 <div className="m-1.5">
                   {/* Start */}
-                  <div className="text-sm inline-flex font-medium bg-violet-500/20 text-violet-600 rounded-full text-center px-2.5 py-1">Working on</div>
+                  <div className="text-sm inline-flex font-medium bg-blue-500/20 text-blue-600 rounded-full text-center px-2.5 py-1">Working on</div>
                   {/* End */}
                 </div>
                 <div className="m-1.5">

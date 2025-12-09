@@ -35,17 +35,17 @@ export default function AnalyticsCard02() {
           const chart = context.chart;
           const {ctx, chartArea} = chart;
           const gradientOrColor = chartAreaGradient(ctx, chartArea, [
-            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
-            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
+            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-blue-500'), 0) },
+            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-blue-500'), 0.2) }
           ]);
           return gradientOrColor || 'transparent';
         },     
-        borderColor: getCssVariable('--color-violet-500'),
+        borderColor: getCssVariable('--color-blue-500'),
         borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 3,
-        pointBackgroundColor: getCssVariable('--color-violet-500'),
-        pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
+        pointBackgroundColor: getCssVariable('--color-blue-500'),
+        pointHoverBackgroundColor: getCssVariable('--color-blue-500'),
         pointBorderWidth: 0,
         pointHoverBorderWidth: 0,
         clip: 20,
@@ -143,7 +143,7 @@ export default function AnalyticsCard02() {
 
         {/* Card footer */}
         <div className="text-right px-5 pb-4">
-          <Link className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Real-Time Report -&gt;</Link>
+          <Link className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">Real-Time Report -&gt;</Link>
         </div>
       </div>
     </div>

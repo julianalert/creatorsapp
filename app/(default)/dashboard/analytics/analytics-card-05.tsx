@@ -18,7 +18,7 @@ export default function AnalyticsCard05() {
             <ul className="space-y-1 text-sm text-gray-800 dark:text-gray-100 mt-3 mb-4">
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '82%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '82%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Google</div>
                   <div className="font-medium">4.7K</div>
@@ -26,7 +26,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '70%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '70%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Indiehackers.com</div>
                   <div className="font-medium">4.2K</div>
@@ -34,7 +34,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '60%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '60%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>DuckDuckGo</div>
                   <div className="font-medium">3.4K</div>
@@ -42,7 +42,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '44%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '44%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Hacker News</div>
                   <div className="font-medium">3.1K</div>
@@ -50,7 +50,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '40%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '40%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Github.com</div>
                   <div className="font-medium">2.2K</div>
@@ -58,7 +58,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '30%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '30%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Madewithvuejs.com</div>
                   <div className="font-medium">1.7K</div>
@@ -66,7 +66,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '22%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '22%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Producthunt.com</div>
                   <div className="font-medium">924</div>
@@ -74,7 +74,7 @@ export default function AnalyticsCard05() {
               </li>
               {/* Item */}
               <li className="relative px-2 py-1">
-                <div className="absolute inset-0 bg-violet-100 dark:bg-violet-500/20 rounded-r" aria-hidden="true" style={{ width: '12%' }}></div>
+                <div className="absolute inset-0 bg-blue-100 dark:bg-blue-500/20 rounded-r" aria-hidden="true" style={{ width: '12%' }}></div>
                 <div className="relative flex justify-between space-x-2">
                   <div>Dev.to</div>
                   <div className="font-medium">696</div>
@@ -84,7 +84,7 @@ export default function AnalyticsCard05() {
           </div>
           {/* Card footer */}
           <div className="text-center pt-4 pb-1 border-t border-gray-100 dark:border-gray-700/60">
-            <Link className="text-sm font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Channels Report -&gt;</Link>
+            <Link className="text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400" href="#0">Channels Report -&gt;</Link>
           </div>
         </div>
       </div>
