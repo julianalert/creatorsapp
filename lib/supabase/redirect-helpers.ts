@@ -14,7 +14,7 @@ const getRedirectUrl = (path: string) => {
     return `http://localhost:3000${path}`
   }
   // Production fallback
-  return `https://app.creatooors.com${path}`
+  return `https://yuzuu.co${path}`
 }
 
 export { getRedirectUrl }

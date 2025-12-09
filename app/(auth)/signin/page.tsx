@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import AuthHeader from '../auth-header'
 import AuthImage from '../auth-image'
@@ -13,12 +13,23 @@ import { FcGoogle } from 'react-icons/fc'
 
 export default function SignIn() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [lockoutTime, setLockoutTime] = useState<number | null>(null)
   const [googleLoading, setGoogleLoading] = useState(false)
+
+  // Check for error from OAuth callback
+  useEffect(() => {
+    const errorParam = searchParams.get('error')
+    if (errorParam) {
+      setError(errorParam)
+      // Clean up URL
+      router.replace('/signin')
+    }
+  }, [searchParams, router])
 
   // Check lockout status on mount and periodically
   useEffect(() => {

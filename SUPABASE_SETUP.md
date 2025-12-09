@@ -93,10 +93,51 @@ To enable Google sign-in and sign-up:
    - Click **Save**
 
 3. **Important Notes:**
-   - The redirect URI in Google Cloud Console must match: `https://[your-project-ref].supabase.co/auth/v1/callback`
+   - The redirect URI in Google Cloud Console must match **exactly**: `https://[your-project-ref].supabase.co/auth/v1/callback`
    - Replace `[your-project-ref]` with your actual Supabase project reference (found in your Supabase project URL)
    - Google OAuth will work for both sign-in and sign-up automatically
    - Users can sign in with Google even if they previously signed up with email/password (if the email matches)
+
+4. **Troubleshooting Google OAuth 500 Errors:**
+   
+   If you're getting a 500 error when trying to sign in with Google, check the following:
+   
+   **a. Verify Google Cloud Console Configuration:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/) → **APIs & Services** → **Credentials**
+   - Find your OAuth 2.0 Client ID
+   - Under **Authorized redirect URIs**, ensure you have **exactly**:
+     ```
+     https://[your-project-ref].supabase.co/auth/v1/callback
+     ```
+   - Make sure there are no extra spaces, trailing slashes, or typos
+   - The project reference should match your Supabase project URL (e.g., if your Supabase URL is `https://cuguhabyzdwtvrcuynev.supabase.co`, use `cuguhabyzdwtvrcuynev`)
+   
+   **b. Verify Supabase Configuration:**
+   - Go to Supabase Dashboard → **Authentication** → **URL Configuration**
+   - **Site URL** should be set to: `https://yuzuu.co` (no trailing slash, no spaces)
+   - **Redirect URLs** should include:
+     ```
+     https://yuzuu.co/auth/callback
+     ```
+   - Make sure there are no extra spaces or formatting issues
+   
+   **c. Verify Google OAuth Credentials in Supabase:**
+   - Go to Supabase Dashboard → **Authentication** → **Providers** → **Google**
+   - Ensure the provider is **enabled**
+   - Verify the **Client ID** and **Client Secret** match exactly what's in Google Cloud Console
+   - Try disabling and re-enabling the Google provider, then save again
+   
+   **d. Check Supabase Logs:**
+   - Go to Supabase Dashboard → **Logs** → **Auth Logs**
+   - Look for any error messages related to the OAuth callback
+   - This will give you more specific information about what's failing
+   
+   **e. Common Issues:**
+   - **Mismatched redirect URI**: The redirect URI in Google Cloud Console must match Supabase's callback URL exactly
+   - **Wrong project reference**: Make sure you're using the correct Supabase project reference in the redirect URI
+   - **Site URL mismatch**: The Site URL in Supabase must match your actual website URL
+   - **Extra spaces**: Check for any extra spaces in URLs (common copy-paste issue)
+   - **HTTP vs HTTPS**: Make sure all URLs use `https://` (not `http://`)
 
 ## Testing
 
