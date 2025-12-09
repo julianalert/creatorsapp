@@ -3,6 +3,7 @@ import './css/style.css'
 import { Inter } from 'next/font/google'
 import Theme from './theme-provider'
 import AppProvider from './app-provider'
+import BeamAnalytics from '@/components/beam-analytics'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -106,16 +107,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>{/* suppressHydrationWarning: https://github.com/vercel/next.js/issues/44343 */}
       <body className="font-inter antialiased bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400">
+        <BeamAnalytics />
         <Theme>
           <AppProvider>
             {children}
           </AppProvider>
         </Theme>
-        <script
-          src="https://beamanalytics.b-cdn.net/beam.min.js"
-          data-token="a1af78f4-e22c-412d-9149-42af8e3897e4"
-          async
-        />
       </body>
     </html>
   )
