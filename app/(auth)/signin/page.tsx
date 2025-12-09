@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import AuthHeader from '../auth-header'
@@ -11,7 +11,7 @@ import { recordFailedAttempt, clearFailedAttempts, isAccountLocked, getRemaining
 import { getRedirectUrl } from '@/lib/supabase/redirect-helpers'
 import { FcGoogle } from 'react-icons/fc'
 
-export default function SignIn() {
+function SignInContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
@@ -223,5 +223,29 @@ export default function SignIn() {
       </div>
 
     </main>
+  )
+}
+
+export default function SignIn() {
+  return (
+    <Suspense fallback={
+      <main className="bg-white dark:bg-gray-900">
+        <div className="relative md:flex">
+          <div className="md:w-1/2">
+            <div className="min-h-[100dvh] h-full flex flex-col after:flex-1">
+              <AuthHeader />
+              <div className="max-w-sm mx-auto w-full px-4 py-8">
+                <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">Welcome back!</h1>
+                <div className="text-sm mb-6">Sign in to your account to continue</div>
+                <div className="text-sm text-gray-500">Loading...</div>
+              </div>
+            </div>
+          </div>
+          <AuthImage imageSrc={Img2} />
+        </div>
+      </main>
+    }>
+      <SignInContent />
+    </Suspense>
   )
 }
