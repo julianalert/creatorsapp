@@ -77,7 +77,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: *.instagram.com *.cdninstagram.com *.fbcdn.net",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.supabase.co https://api.stripe.com https://app.scrapingbee.com https://api.scrapecreators.com https://api.openai.com",
+              "connect-src 'self' https://*.supabase.co https://api.stripe.com https://app.scrapingbee.com https://api.scrapecreators.com https://api.openai.com https://beamanalytics.b-cdn.net https://*.beamanalytics.io",
               "frame-src 'self' https://js.stripe.com",
               "frame-ancestors 'self'",
             ].join('; ')

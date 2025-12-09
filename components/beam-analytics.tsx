@@ -15,6 +15,15 @@ export default function BeamAnalytics() {
     script.setAttribute('data-token', 'a1af78f4-e22c-412d-9149-42af8e3897e4')
     script.async = true
     
+    // Add error handling
+    script.onerror = () => {
+      console.error('Beam Analytics script failed to load')
+    }
+    
+    script.onload = () => {
+      console.log('Beam Analytics script loaded successfully')
+    }
+    
     // Append to head (analytics scripts typically go in head)
     document.head.appendChild(script)
   }, [])
