@@ -1,8 +1,12 @@
 const getRedirectUrl = (path: string) => {
   // Use environment variable if set, otherwise fall back to window.location.origin
   if (typeof window !== 'undefined') {
-    // Client-side: use env var or current origin (works for both localhost and production)
-    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || window.location.origin).trim()
+    // Client-side: prioritize current origin to avoid redirect issues in development
+    // Only use env var if we're explicitly in production
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+    const baseUrl = (isProduction && process.env.NEXT_PUBLIC_APP_URL) 
+      ? process.env.NEXT_PUBLIC_APP_URL.trim() 
+      : window.location.origin
     return `${baseUrl}${path}`
   }
   // Server-side: use env var or detect from NODE_ENV

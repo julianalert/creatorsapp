@@ -45,7 +45,7 @@ export default function SignUp() {
 
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -57,6 +57,38 @@ export default function SignUp() {
         setError(error.message)
         setLoading(false)
         return
+      }
+
+      // Add contact to Loops.so and trigger signedUp event
+      // Do this asynchronously so it doesn't block the signup flow
+      if (data.user) {
+        fetch('/api/loops/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: data.user.email || email,
+            userId: data.user.id,
+          }),
+        }).catch((err) => {
+          // Silently fail - don't interrupt user flow if Loops.so is down
+          console.error('Failed to add contact to Loops.so:', err)
+        })
+      } else {
+        // User might not be created yet if email confirmation is required
+        // Still try to add the email to Loops
+        fetch('/api/loops/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+          }),
+        }).catch((err) => {
+          console.error('Failed to add contact to Loops.so:', err)
+        })
       }
 
       setSuccess(true)

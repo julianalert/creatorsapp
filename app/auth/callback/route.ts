@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { addContactAndTriggerSignup } from '@/lib/utils/loops'
 
 /**
  * Validates that a redirect path is safe (relative path only)
@@ -74,6 +75,46 @@ export async function GET(request: Request) {
       }
       
       console.log('Session exchange successful, redirecting to:', next)
+      
+      // Check if this is a new user (Google OAuth signup)
+      // A user is considered "new" if they were created very recently (within 10 minutes)
+      // This is reliable because OAuth callback happens immediately after user creation
+      if (data.user && data.user.email) {
+        const userCreatedAt = new Date(data.user.created_at)
+        const now = new Date()
+        const timeSinceCreation = now.getTime() - userCreatedAt.getTime()
+        
+        // Check if user was created very recently (within 10 minutes)
+        // This window is large enough to be reliable but small enough to avoid false positives
+        const isNewUser = timeSinceCreation < 600000 // 10 minutes threshold
+        
+        if (isNewUser) {
+          console.log('Detected new OAuth user, adding to Loops.so:', {
+            email: data.user.email,
+            userId: data.user.id,
+            created_at: data.user.created_at,
+            timeSinceCreationSeconds: Math.round(timeSinceCreation / 1000),
+            origin: origin, // Log the origin to debug redirect issues
+          })
+          
+          // Add contact to Loops.so and trigger signedUp event
+          // Do this asynchronously so it doesn't block the redirect
+          addContactAndTriggerSignup(data.user.email, data.user.id)
+            .then((result) => {
+              if (result.success) {
+                console.log('✅ Successfully added user to Loops.so:', data.user.email)
+              } else {
+                console.warn('⚠️ Failed to add user to Loops.so:', result.message)
+              }
+            })
+            .catch((err) => {
+              // Silently fail - don't interrupt user flow if Loops.so is down
+              console.error('❌ Error adding contact to Loops.so:', err)
+            })
+        } else {
+          console.log('Existing user (created', Math.round(timeSinceCreation / 1000 / 60), 'minutes ago), skipping Loops.so signup:', data.user.email)
+        }
+      }
       
       // Success - redirect to the next page
       const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
