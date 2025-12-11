@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { SparklesIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+import EmailSequenceDisplay from './email-sequence-display'
 
 type AgentInterfaceProps = {
   slug: string
@@ -57,6 +58,14 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
   const [analysisFocus, setAnalysisFocus] = useState('')
   const [marketSegment, setMarketSegment] = useState('')
   const [geographicScope, setGeographicScope] = useState('')
+  // Welcome Email Sequence Writer state
+  const [websiteUrl, setWebsiteUrl] = useState('')
+  const [numberOfEmails, setNumberOfEmails] = useState('3')
+  const [timeframe, setTimeframe] = useState('within the first 7 days after signup')
+  const [primaryCta, setPrimaryCta] = useState('')
+  const [secondaryCtas, setSecondaryCtas] = useState('')
+  const [emailFormat, setEmailFormat] = useState('HTML-friendly but simple')
+  const [personalizationTokens, setPersonalizationTokens] = useState('{{first_name}}, {{company_name}}')
   const [loading, setLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState<string | null>(null)
   const [result, setResult] = useState<string | null>(null)
@@ -80,6 +89,14 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             if (savedResult.input_params) {
               if (savedResult.input_params.url) setUrl(savedResult.input_params.url)
               if (savedResult.input_params.conversionGoal) setConversionGoal(savedResult.input_params.conversionGoal)
+              // Welcome Email Sequence Writer fields
+              if (savedResult.input_params.url) setWebsiteUrl(savedResult.input_params.url)
+              if (savedResult.input_params.numberOfEmails) setNumberOfEmails(savedResult.input_params.numberOfEmails)
+              if (savedResult.input_params.timeframe) setTimeframe(savedResult.input_params.timeframe)
+              if (savedResult.input_params.primaryCta) setPrimaryCta(savedResult.input_params.primaryCta)
+              if (savedResult.input_params.secondaryCtas) setSecondaryCtas(savedResult.input_params.secondaryCtas)
+              if (savedResult.input_params.emailFormat) setEmailFormat(savedResult.input_params.emailFormat)
+              if (savedResult.input_params.personalizationTokens) setPersonalizationTokens(savedResult.input_params.personalizationTokens)
             }
           } else {
             setError('Failed to load saved result')
@@ -1450,6 +1467,259 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">Your competitive analysis results will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Welcome Email Sequence Writer specific interface
+  if (slug === 'welcome-email-sequence-writer') {
+    return (
+      <div className="mb-8">
+        <form onSubmit={async (e) => {
+          e.preventDefault()
+          setError(null)
+          setLoading(true)
+          setResult(null)
+          setCurrentStep(null)
+
+          window.dispatchEvent(new CustomEvent('agent:start', { detail: { slug } }))
+
+          try {
+            setCurrentStep('Scraping website...')
+            await new Promise(resolve => setTimeout(resolve, 1500))
+
+            setCurrentStep('Analyzing website content...')
+            const analyzingDelay = new Promise(resolve => setTimeout(resolve, 2000))
+            await analyzingDelay
+
+            setCurrentStep('Generating email sequence...')
+            const fetchPromise = fetch('/api/agents/welcome-email-sequence-writer', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                url: websiteUrl,
+                numberOfEmails,
+                timeframe,
+                primaryCta,
+                secondaryCtas,
+                emailFormat,
+                personalizationTokens,
+              }),
+            })
+
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            setCurrentStep('Finalizing results...')
+
+            const response = await fetchPromise
+            const data = await response.json()
+
+            if (!response.ok) {
+              throw new Error(data.error || 'Failed to generate email sequence')
+            }
+
+            if (data.success && data.result) {
+              await Promise.all([
+                new Promise(resolve => setTimeout(resolve, 1500))
+              ])
+              setResult(data.result)
+              setCurrentStep(null)
+              if (data.resultId) {
+                const url = new URL(window.location.href)
+                url.searchParams.set('resultId', data.resultId)
+                window.history.replaceState({}, '', url.toString())
+              }
+              if (data.creditsRemaining !== undefined) {
+                window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+              }
+            } else {
+              throw new Error('Invalid response from email sequence API')
+            }
+          } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred')
+            setCurrentStep(null)
+          } finally {
+            setLoading(false)
+            window.dispatchEvent(new CustomEvent('agent:stop', { detail: { slug } }))
+          }
+        }} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="website-url">
+              Website URL <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="website-url"
+              type="url"
+              placeholder="https://example.com"
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              required
+              disabled={loading}
+            />
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll scrape and analyze your website to understand your product and brand</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="number-of-emails">
+                Number of Emails <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="number-of-emails"
+                value={numberOfEmails}
+                onChange={(e) => setNumberOfEmails(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              >
+                <option value="3">3 emails</option>
+                <option value="4">4 emails</option>
+                <option value="5">5 emails</option>
+                <option value="6">6 emails</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="timeframe">
+                Timeframe <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="timeframe"
+                type="text"
+                placeholder="e.g., within the first 7 days after signup"
+                value={timeframe}
+                onChange={(e) => setTimeframe(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="primary-cta">
+              Primary CTA
+            </label>
+            <input
+              id="primary-cta"
+              type="text"
+              placeholder="e.g., create first project, book a demo, install the script"
+              value={primaryCta}
+              onChange={(e) => setPrimaryCta(e.target.value)}
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              disabled={loading}
+            />
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Leave empty to let the AI infer from your website</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="secondary-ctas">
+              Secondary CTAs (optional)
+            </label>
+            <input
+              id="secondary-ctas"
+              type="text"
+              placeholder="e.g., watch tutorial, join community, read docs"
+              value={secondaryCtas}
+              onChange={(e) => setSecondaryCtas(e.target.value)}
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              disabled={loading}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="email-format">
+                Email Format
+              </label>
+              <select
+                id="email-format"
+                value={emailFormat}
+                onChange={(e) => setEmailFormat(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              >
+                <option value="plain text style">Plain text style</option>
+                <option value="HTML-friendly but simple">HTML-friendly but simple</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="personalization-tokens">
+                Personalization Tokens
+              </label>
+              <input
+                id="personalization-tokens"
+                type="text"
+                placeholder="e.g., {{first_name}}, {{company_name}}"
+                value={personalizationTokens}
+                onChange={(e) => setPersonalizationTokens(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <SparklesIcon className="w-4 h-4 mr-2" />
+                  Generate Email Sequence
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Results Area */}
+        <div className="mt-8">
+          {error && (
+            <div className="mb-4 bg-red-500/20 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          <div className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] ${result && slug === 'welcome-email-sequence-writer' ? '' : 'flex items-center justify-center'}`}>
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
+              <div className="w-full text-gray-800 dark:text-gray-100">
+                {slug === 'welcome-email-sequence-writer' ? (
+                  <EmailSequenceDisplay markdown={result} />
+                ) : (
+                  <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+                )}
+              </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center">
+                <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">Your email sequence will appear here</p>
               </div>
             )}
           </div>

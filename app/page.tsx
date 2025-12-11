@@ -6,6 +6,7 @@ const agentCategories = [
   'SEO',
   'Sales',
   'Content Marketing',
+  'Email Marketing',
   'Paid Ads',
   'Creator Marketing',
   'Business/Strategy',
@@ -16,6 +17,7 @@ const agentCategories = [
 const WORKING_AGENTS = [
   'on-page-seo-audit',
   'conversion-rate-optimizer',
+  'welcome-email-sequence-writer',
 ]
 
 export const metadata = {

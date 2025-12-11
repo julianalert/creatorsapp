@@ -11,7 +11,7 @@ type TemplatesBrowserProps = {
 }
 
 const VIEW_ALL = 'View All'
-const PAGE_SIZE = 9
+const PAGE_SIZE = 20
 
 export default function TemplatesBrowser({ templates, categories }: TemplatesBrowserProps) {
   const categoryOptions = useMemo(() => [VIEW_ALL, ...categories], [categories])

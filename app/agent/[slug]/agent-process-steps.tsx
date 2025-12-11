@@ -141,6 +141,20 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
     )
   }
 
+  // Welcome Email Sequence Writer
+  if (slug === 'welcome-email-sequence-writer') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Website Analysis', 'Enter your website URL and sequence settings including number of emails, timeframe, primary and secondary CTAs, email format preference, and personalization tokens needed.')}
+          {renderStep(2, 'Content Analysis', 'Agent scrapes and analyzes your website content to extract product positioning, value proposition, target audience information, key features and benefits, brand voice and tone, and onboarding goals.')}
+          {renderStep(3, 'Sequence Generation', 'Agent generates complete email sequence with subject lines, preview text, email body content, clear CTAs, personalization tokens, and sequence strategy explanation.')}
+          {renderStep(4, 'Final Output', 'Receive ready-to-use email sequence with complete emails (3-6), subject line options for each, preview text, full email body with CTAs, sequence strategy explanation, and ready to import into your email platform.')}
+        </div>
+      </div>
+    )
+  }
 
   // Default for other agents
   return (
