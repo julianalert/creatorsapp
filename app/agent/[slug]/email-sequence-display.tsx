@@ -50,7 +50,7 @@ function parseEmailSequence(markdown: string): ParsedSequence | null {
       const subjectLines: string[] = []
       const subjectSection = emailContent.match(/- Subject line options[^:]*:\s*([\s\S]+?)(?=- Preview text|$)/i)
       if (subjectSection) {
-        const subjectMatches = subjectSection[1].matchAll(/\d+\)\s*(.+?)(?:\n|$)/g)
+        const subjectMatches = Array.from(subjectSection[1].matchAll(/\d+\)\s*(.+?)(?:\n|$)/g))
         for (const match of subjectMatches) {
           if (match[1]) {
             subjectLines.push(match[1].trim())
