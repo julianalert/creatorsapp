@@ -156,6 +156,38 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
     )
   }
 
+  // Alternatives to Page Writer
+  if (slug === 'alternatives-to-page-writer') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Website Input', 'Enter your domain and competitor domain along with optional targeting information like persona, pricing model, primary CTA, and tone preference.')}
+          {renderStep(2, 'Evidence Collection', 'Agent scrapes both websites comprehensively including homepage, features, pricing, use cases, integrations, security, testimonials, and docs to build a structured evidence pack with citations.')}
+          {renderStep(3, 'Comparison Analysis', 'Agent extracts structured data from both sites, builds normalized feature comparison matrix, identifies key differentiators, decides optimal page positioning angle, and prepares objection rebuttals with evidence.')}
+          {renderStep(4, 'Page Generation', 'Agent writes complete SEO-optimized markdown page following best practices including comparison table with evidence citations, FAQ section with schema-ready Q/A, use-case recommendations, ensuring all claims are evidence-backed.')}
+          {renderStep(5, 'Final Output', 'Receive ready-to-publish comparison page with complete markdown, comparison matrix with evidence URLs, quality checklist of missing information, and all claims backed by scraped evidence.')}
+        </div>
+      </div>
+    )
+  }
+
+  // Use Case Writer
+  if (slug === 'use-case-writer') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Interview Input', 'Paste your user interview text including transcript, case study notes, Loom summary, or any customer interview content along with product name and optional targeting information.')}
+          {renderStep(2, 'Insight Extraction', 'Agent extracts structured insights from the interview including company profile, trigger event, problems, failed alternatives, job-to-be-done, constraints, workflows, features used, outcomes, and key quotes.')}
+          {renderStep(3, 'Angle Selection', 'Agent analyzes extracted insights and chooses ONE primary use case angle (role, job, industry, maturity, or constraint) that maximizes relatability, ensuring readers think "this is literally me".')}
+          {renderStep(4, 'Page Generation', 'Agent writes narrative-first use case page with before/after snapshots, step-by-step workflows, proof points, quotes, and CTA aligned with the use case, ensuring all claims map back to interview content.')}
+          {renderStep(5, 'Final Output', 'Receive ready-to-publish use case page with complete markdown, extracted structured insights, quality checklist of missing information, and all claims backed by interview evidence.')}
+        </div>
+      </div>
+    )
+  }
+
   // Default for other agents
   return (
     <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">

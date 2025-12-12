@@ -19,6 +19,8 @@ const WORKING_AGENTS = [
   'conversion-rate-optimizer',
   'welcome-email-sequence-writer',
   'image-generator',
+  'alternatives-to-page-writer',
+  'use-case-writer',
 ]
 
 export const metadata = {

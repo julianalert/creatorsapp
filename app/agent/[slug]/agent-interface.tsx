@@ -64,6 +64,19 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
   const [secondaryCtas, setSecondaryCtas] = useState('')
   const [emailFormat, setEmailFormat] = useState('HTML-friendly but simple')
   const [personalizationTokens, setPersonalizationTokens] = useState('{{first_name}}, {{company_name}}')
+  // Alternatives to Page Writer state
+  const [yourDomain, setYourDomain] = useState('')
+  const [competitorDomain, setCompetitorDomain] = useState('')
+  const [targetPersona, setTargetPersona] = useState('')
+  const [pricingModel, setPricingModel] = useState('')
+  const [alternativesPrimaryCta, setAlternativesPrimaryCta] = useState('')
+  const [alternativesTone, setAlternativesTone] = useState('confident, direct, not salesy')
+  // Use Case Writer state
+  const [interviewText, setInterviewText] = useState('')
+  const [productName, setProductName] = useState('')
+  const [useCaseTargetAudience, setUseCaseTargetAudience] = useState('')
+  const [useCasePrimaryCta, setUseCasePrimaryCta] = useState('')
+  const [useCaseTone, setUseCaseTone] = useState('clear, practical, confident (no hype)')
   const [loading, setLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState<string | null>(null)
   const [result, setResult] = useState<string | null>(null)
@@ -87,6 +100,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             if (savedResult.result_data?.imageUrl) {
               setResult(savedResult.result_data.imageUrl)
             }
+            // Alternatives to Page Writer stores result in result_data.result
+            if (savedResult.result_data?.result && !savedResult.result_data?.imageUrl) {
+              setResult(savedResult.result_data.result)
+            }
             // Populate form fields from input_params if available
             if (savedResult.input_params) {
               if (savedResult.input_params.url) setUrl(savedResult.input_params.url)
@@ -103,6 +120,19 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               if (savedResult.input_params.imageDescription) setImageDescription(savedResult.input_params.imageDescription)
               if (savedResult.input_params.imageStyle) setImageStyle(savedResult.input_params.imageStyle)
               if (savedResult.input_params.aspectRatio) setAspectRatio(savedResult.input_params.aspectRatio)
+              // Alternatives to Page Writer fields
+              if (savedResult.input_params.yourDomain) setYourDomain(savedResult.input_params.yourDomain)
+              if (savedResult.input_params.competitorDomain) setCompetitorDomain(savedResult.input_params.competitorDomain)
+              if (savedResult.input_params.targetPersona) setTargetPersona(savedResult.input_params.targetPersona)
+              if (savedResult.input_params.pricingModel) setPricingModel(savedResult.input_params.pricingModel)
+              if (savedResult.input_params.primaryCta) setAlternativesPrimaryCta(savedResult.input_params.primaryCta)
+              if (savedResult.input_params.tone) setAlternativesTone(savedResult.input_params.tone)
+              // Use Case Writer fields
+              if (savedResult.input_params.interviewText) setInterviewText(savedResult.input_params.interviewText)
+              if (savedResult.input_params.productName) setProductName(savedResult.input_params.productName)
+              if (savedResult.input_params.targetAudience) setUseCaseTargetAudience(savedResult.input_params.targetAudience)
+              if (savedResult.input_params.primaryCta) setUseCasePrimaryCta(savedResult.input_params.primaryCta)
+              if (savedResult.input_params.tone) setUseCaseTone(savedResult.input_params.tone)
             }
           } else {
             setError('Failed to load saved result')
@@ -294,6 +324,55 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
         setResult('Company research results will appear here...')
       } else if (slug === 'competitor-analyst') {
         setResult('Competitive analysis results will appear here...')
+      } else if (slug === 'use-case-writer') {
+        setCurrentStep('Extracting insights from interview...')
+        await new Promise(resolve => setTimeout(resolve, 2000))
+
+        setCurrentStep('Analyzing use case angle...')
+        await new Promise(resolve => setTimeout(resolve, 2000))
+
+        setCurrentStep('Writing use case page...')
+        const fetchPromise = fetch('/api/agents/use-case-writer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            interviewText,
+            productName,
+            targetAudience: useCaseTargetAudience,
+            primaryCta: useCasePrimaryCta,
+            tone: useCaseTone,
+          }),
+        })
+
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        setCurrentStep('Finalizing results...')
+
+        const response = await fetchPromise
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate use case page')
+        }
+
+        if (data.success && data.result) {
+          await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 1500))
+          ])
+          setResult(data.result)
+          setCurrentStep(null)
+          if (data.resultId) {
+            const url = new URL(window.location.href)
+            url.searchParams.set('resultId', data.resultId)
+            window.history.replaceState({}, '', url.toString())
+          }
+          if (data.creditsRemaining !== undefined) {
+            window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+          }
+        } else {
+          throw new Error('Invalid response from use case writer API')
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
@@ -1775,6 +1854,453 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">Your email sequence will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Alternatives to Page Writer specific interface
+  if (slug === 'alternatives-to-page-writer') {
+    return (
+      <div className="mb-8">
+        <form onSubmit={async (e) => {
+          e.preventDefault()
+          setError(null)
+          setLoading(true)
+          setResult(null)
+          setCurrentStep(null)
+
+          window.dispatchEvent(new CustomEvent('agent:start', { detail: { slug } }))
+
+          try {
+            setCurrentStep('Scraping your website...')
+            await new Promise(resolve => setTimeout(resolve, 2000))
+
+            setCurrentStep('Scraping competitor website...')
+            await new Promise(resolve => setTimeout(resolve, 2000))
+
+            setCurrentStep('Extracting structured data...')
+            const extractingDelay = new Promise(resolve => setTimeout(resolve, 3000))
+            await extractingDelay
+
+            setCurrentStep('Building comparison matrix...')
+            await new Promise(resolve => setTimeout(resolve, 2000))
+
+            setCurrentStep('Generating comparison page...')
+            const fetchPromise = fetch('/api/agents/alternatives-to-page-writer', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                yourDomain,
+                competitorDomain,
+                targetPersona,
+                pricingModel,
+                primaryCta: alternativesPrimaryCta,
+                tone: alternativesTone,
+              }),
+            })
+
+            await new Promise(resolve => setTimeout(resolve, 3000))
+            setCurrentStep('Finalizing results...')
+
+            const response = await fetchPromise
+            const data = await response.json()
+
+            if (!response.ok) {
+              throw new Error(data.error || 'Failed to generate comparison page')
+            }
+
+            if (data.success && data.result) {
+              await Promise.all([
+                new Promise(resolve => setTimeout(resolve, 1500))
+              ])
+              setResult(data.result)
+              setCurrentStep(null)
+              if (data.resultId) {
+                const url = new URL(window.location.href)
+                url.searchParams.set('resultId', data.resultId)
+                window.history.replaceState({}, '', url.toString())
+              }
+              if (data.creditsRemaining !== undefined) {
+                window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+              }
+            } else {
+              throw new Error('Invalid response from alternatives page API')
+            }
+          } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred')
+            setCurrentStep(null)
+          } finally {
+            setLoading(false)
+            window.dispatchEvent(new CustomEvent('agent:stop', { detail: { slug } }))
+          }
+        }} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="your-domain">
+                Your Website Domain <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="your-domain"
+                type="text"
+                placeholder="example.com or https://example.com"
+                value={yourDomain}
+                onChange={(e) => setYourDomain(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              />
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll scrape your site to understand your product</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="competitor-domain">
+                Competitor Website Domain <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="competitor-domain"
+                type="text"
+                placeholder="competitor.com or https://competitor.com"
+                value={competitorDomain}
+                onChange={(e) => setCompetitorDomain(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              />
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll scrape their site for comparison</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="target-persona">
+                Target Persona (optional)
+              </label>
+              <input
+                id="target-persona"
+                type="text"
+                placeholder="e.g., Marketing teams, Agencies, Enterprise"
+                value={targetPersona}
+                onChange={(e) => setTargetPersona(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="pricing-model">
+                Pricing Model (optional)
+              </label>
+              <input
+                id="pricing-model"
+                type="text"
+                placeholder="e.g., Usage-based, Per-seat, Freemium"
+                value={pricingModel}
+                onChange={(e) => setPricingModel(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="alternatives-primary-cta">
+                Primary CTA (optional)
+              </label>
+              <input
+                id="alternatives-primary-cta"
+                type="text"
+                placeholder="e.g., Try free, Book a demo, Start trial"
+                value={alternativesPrimaryCta}
+                onChange={(e) => setAlternativesPrimaryCta(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="alternatives-tone">
+                Tone (optional)
+              </label>
+              <input
+                id="alternatives-tone"
+                type="text"
+                placeholder="e.g., confident, direct, not salesy"
+                value={alternativesTone}
+                onChange={(e) => setAlternativesTone(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <SparklesIcon className="w-4 h-4 mr-2" />
+                  Generate Comparison Page
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Results Area */}
+        <div className="mt-8">
+          {error && (
+            <div className="mb-4 bg-red-500/20 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          <div className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] ${result ? '' : 'flex items-center justify-center'}`}>
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
+              <div className="w-full text-gray-800 dark:text-gray-100">
+                <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+              </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center">
+                <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">Your comparison page will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Use Case Writer specific interface
+  if (slug === 'use-case-writer') {
+    return (
+      <div className="mb-8">
+        <form onSubmit={async (e) => {
+          e.preventDefault()
+          setError(null)
+          setLoading(true)
+          setResult(null)
+          setCurrentStep(null)
+
+          window.dispatchEvent(new CustomEvent('agent:start', { detail: { slug } }))
+
+          try {
+            setCurrentStep('Extracting insights from interview...')
+            await new Promise(resolve => setTimeout(resolve, 2000))
+
+            setCurrentStep('Analyzing use case angle...')
+            await new Promise(resolve => setTimeout(resolve, 2000))
+
+            setCurrentStep('Writing use case page...')
+            const fetchPromise = fetch('/api/agents/use-case-writer', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                interviewText,
+                productName,
+                targetAudience: useCaseTargetAudience,
+                primaryCta: useCasePrimaryCta,
+                tone: useCaseTone,
+              }),
+            })
+
+            await new Promise(resolve => setTimeout(resolve, 3000))
+            setCurrentStep('Finalizing results...')
+
+            const response = await fetchPromise
+            const data = await response.json()
+
+            if (!response.ok) {
+              throw new Error(data.error || 'Failed to generate use case page')
+            }
+
+            if (data.success && data.result) {
+              await Promise.all([
+                new Promise(resolve => setTimeout(resolve, 1500))
+              ])
+              setResult(data.result)
+              setCurrentStep(null)
+              if (data.resultId) {
+                const url = new URL(window.location.href)
+                url.searchParams.set('resultId', data.resultId)
+                window.history.replaceState({}, '', url.toString())
+              }
+              if (data.creditsRemaining !== undefined) {
+                window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+              }
+            } else {
+              throw new Error('Invalid response from use case writer API')
+            }
+          } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred')
+            setCurrentStep(null)
+          } finally {
+            setLoading(false)
+            window.dispatchEvent(new CustomEvent('agent:stop', { detail: { slug } }))
+          }
+        }} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="product-name">
+              Product Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="product-name"
+              type="text"
+              placeholder="e.g., ProductX, MySaaS Tool"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              required
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="interview-text">
+              User Interview Text <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="interview-text"
+              rows={12}
+              placeholder="Paste your user interview transcript, case study notes, Loom summary, or any customer interview content here..."
+              value={interviewText}
+              onChange={(e) => setInterviewText(e.target.value)}
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              required
+              disabled={loading}
+            />
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll extract structured insights and generate a use case page from this interview</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="use-case-target-audience">
+                Target Audience (optional)
+              </label>
+              <input
+                id="use-case-target-audience"
+                type="text"
+                placeholder="e.g., Head of Growth, Marketing teams, Agencies"
+                value={useCaseTargetAudience}
+                onChange={(e) => setUseCaseTargetAudience(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="use-case-primary-cta">
+                Primary CTA (optional)
+              </label>
+              <input
+                id="use-case-primary-cta"
+                type="text"
+                placeholder="e.g., Try this workflow, Start free, Book a demo"
+                value={useCasePrimaryCta}
+                onChange={(e) => setUseCasePrimaryCta(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="use-case-tone">
+              Tone (optional)
+            </label>
+            <input
+              id="use-case-tone"
+              type="text"
+              placeholder="e.g., clear, practical, confident (no hype)"
+              value={useCaseTone}
+              onChange={(e) => setUseCaseTone(e.target.value)}
+              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              disabled={loading}
+            />
+          </div>
+          <div className="flex items-center justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <SparklesIcon className="w-4 h-4 mr-2" />
+                  Generate Use Case Page
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Results Area */}
+        <div className="mt-8">
+          {error && (
+            <div className="mb-4 bg-red-500/20 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          <div className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] ${result ? '' : 'flex items-center justify-center'}`}>
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
+              <div className="w-full text-gray-800 dark:text-gray-100">
+                <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+              </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center">
+                <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">Your use case page will appear here</p>
               </div>
             )}
           </div>
