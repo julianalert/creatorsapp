@@ -36,8 +36,6 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
   const [imageDescription, setImageDescription] = useState('')
   const [imageStyle, setImageStyle] = useState('')
   const [aspectRatio, setAspectRatio] = useState('')
-  const [numberOfImages, setNumberOfImages] = useState('1')
-  const [additionalRequirements, setAdditionalRequirements] = useState('')
   // Contact Researcher state
   const [companyName, setCompanyName] = useState('')
   const [personName, setPersonName] = useState('')
@@ -85,6 +83,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             if (savedResult.result_data?.result) {
               setResult(savedResult.result_data.result)
             }
+            // Image generator stores imageUrl in result_data
+            if (savedResult.result_data?.imageUrl) {
+              setResult(savedResult.result_data.imageUrl)
+            }
             // Populate form fields from input_params if available
             if (savedResult.input_params) {
               if (savedResult.input_params.url) setUrl(savedResult.input_params.url)
@@ -97,6 +99,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               if (savedResult.input_params.secondaryCtas) setSecondaryCtas(savedResult.input_params.secondaryCtas)
               if (savedResult.input_params.emailFormat) setEmailFormat(savedResult.input_params.emailFormat)
               if (savedResult.input_params.personalizationTokens) setPersonalizationTokens(savedResult.input_params.personalizationTokens)
+              // Image Generator fields
+              if (savedResult.input_params.imageDescription) setImageDescription(savedResult.input_params.imageDescription)
+              if (savedResult.input_params.imageStyle) setImageStyle(savedResult.input_params.imageStyle)
+              if (savedResult.input_params.aspectRatio) setAspectRatio(savedResult.input_params.aspectRatio)
             }
           } else {
             setError('Failed to load saved result')
@@ -232,7 +238,56 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
       } else if (slug === 'blog-post-writer') {
         setResult('Blog Post results will appear here...')
       } else if (slug === 'image-generator') {
-        setResult('Generated images will appear here...')
+        setCurrentStep('Preparing image generation...')
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
+        setCurrentStep('Generating image with AI...')
+        const fetchPromise = fetch('/api/agents/image-generator', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            imageDescription,
+            imageStyle,
+            aspectRatio,
+          }),
+        })
+
+        // Show generating step for at least 3 seconds
+        await new Promise(resolve => setTimeout(resolve, 3000))
+
+        setCurrentStep('Processing image...')
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        setCurrentStep('Finalizing results...')
+        const response = await fetchPromise
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate image')
+        }
+
+        if (data.success && data.imageUrl) {
+          await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 1000))
+          ])
+          // Store the image URL in result
+          setResult(data.imageUrl)
+          setCurrentStep(null)
+          if (data.resultId) {
+            const url = new URL(window.location.href)
+            url.searchParams.set('resultId', data.resultId)
+            window.history.replaceState({}, '', url.toString())
+          }
+          // Dispatch event to update credits in navbar
+          if (data.creditsRemaining !== undefined) {
+            window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+          }
+        } else {
+          throw new Error('Invalid response from image generator API')
+        }
       } else if (slug === 'contact-researcher') {
         setResult('Contact research results will appear here...')
       } else if (slug === 'company-researcher') {
@@ -892,7 +947,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="image-style">
-                Style Preferences
+                Style Preferences (optional)
               </label>
               <select
                 id="image-style"
@@ -912,7 +967,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             </div>
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="aspect-ratio">
-                Aspect Ratio
+                Aspect Ratio (optional)
               </label>
               <select
                 id="aspect-ratio"
@@ -928,38 +983,6 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 <option value="4:3">Standard (4:3)</option>
                 <option value="3:4">Vertical (3:4)</option>
               </select>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="number-of-images">
-                Number of Images
-              </label>
-              <input
-                id="number-of-images"
-                type="number"
-                min="1"
-                max="4"
-                placeholder="1"
-                value={numberOfImages}
-                onChange={(e) => setNumberOfImages(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="additional-requirements">
-                Additional Requirements (optional)
-              </label>
-              <input
-                id="additional-requirements"
-                type="text"
-                placeholder="e.g., Bright colors, Professional mood"
-                value={additionalRequirements}
-                onChange={(e) => setAdditionalRequirements(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
             </div>
           </div>
           <div className="flex items-center justify-end">
@@ -1004,12 +1027,44 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               </div>
             ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
-                <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+                <div className="flex flex-col items-center">
+                  <img
+                    src={result}
+                    alt="Generated image"
+                    className="max-w-full h-auto rounded-lg shadow-lg border border-gray-200 dark:border-gray-700/60"
+                  />
+                  <div className="mt-4 flex gap-3">
+                    <a
+                      href={result}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-sm bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer"
+                    >
+                      Open Full Size
+                    </a>
+                    <a
+                      href={`/api/image-proxy?url=${encodeURIComponent(result)}`}
+                      download="generated-image.png"
+                      className="btn-sm border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300 cursor-pointer"
+                    >
+                      Download Image
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">Your generated images will appear here</p>
+                <p className="text-gray-500 dark:text-gray-400">Your generated image will appear here</p>
               </div>
             )}
           </div>

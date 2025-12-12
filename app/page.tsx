@@ -18,6 +18,7 @@ const WORKING_AGENTS = [
   'on-page-seo-audit',
   'conversion-rate-optimizer',
   'welcome-email-sequence-writer',
+  'image-generator',
 ]
 
 export const metadata = {
