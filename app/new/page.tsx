@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, type FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 import NewHeader from './new-header'
-import NewProgress from './new-progress'
 import { createClient } from '@/lib/supabase/client'
 
 // Comprehensive Brand Profile Type
@@ -94,6 +94,7 @@ type ScrapeResult = {
 }
 
 export default function NewPage() {
+  const router = useRouter()
   const [submitted, setSubmitted] = useState(false)
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
@@ -166,6 +167,10 @@ export default function NewPage() {
       // Trigger event to refresh brands dropdown in navbar
       if (data.success && data.brandId) {
         window.dispatchEvent(new CustomEvent('brandAdded'))
+        // Redirect to homepage after successful brand creation
+        setTimeout(() => {
+          router.push('/')
+        }, 2000) // Give user 2 seconds to see the success message
       }
     } catch (err) {
       const message =
@@ -191,7 +196,7 @@ export default function NewPage() {
       <div className="relative flex justify-center">
         <div className="w-full max-w-4xl">
           <div className="min-h-[100dvh] h-full flex flex-col">
-            <div className="w-full px-4 py-8">
+            <div className="w-full px-4 pt-8 pb-2">
               <NewHeader />
             </div>
 
@@ -222,6 +227,9 @@ export default function NewPage() {
                         </svg>
                         <p className="text-base text-gray-700 dark:text-gray-300 text-center">
                           Scraping website and creating brand profile...
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                          Do not close this tab, this may take a while...
                         </p>
                         {result?.scrapedPagesCount && (
                           <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
@@ -575,22 +583,42 @@ export default function NewPage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex-1 flex flex-col items-center px-4 py-8 w-full">
-                  <div className="max-w-md w-full mx-auto mb-8">
-                    <NewProgress step={1} />
-                  </div>
+                <div className="flex-1 flex flex-col items-center px-4 pt-8 pb-8 w-full">
                   <div className="max-w-md w-full mx-auto">
                     <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6 text-center">
-                      Add your brand
+                      Connect your brand to personalize every AI agent
                     </h1>
+                    
+                    
+                    {/* Bullet points */}
+                    <ul className="space-y-3 mb-8 text-sm text-gray-700 dark:text-gray-300">
+                      <li className="flex items-start">
+                        <svg className="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>We analyze your website to learn your tone, style, and vocabulary</span>
+                      </li>
+                      <li className="flex items-start">
+                        <svg className="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>We identify your positioning, value props, and ideal customer</span>
+                      </li>
+                      <li className="flex items-start">
+                        <svg className="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Every agent uses this brand profile to generate fully on-brand outputs</span>
+                      </li>
+                    </ul>
+
                     <form onSubmit={handleSubmit}>
-                      <div className="mb-8">
+                      <div className="mb-6">
                         <label
-                          className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300 text-center"
+                          className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
                           htmlFor="website-url"
                         >
-                          Enter your website URL, <br />
-                          our engine will create a complete brand profile for you
+                          Your website URL
                         </label>
                         <input
                           id="website-url"
@@ -602,13 +630,16 @@ export default function NewPage() {
                           required
                         />
                       </div>
-                      <div className="flex items-center justify-end">
+                      <div className="flex flex-col items-center gap-3">
                         <button
                           type="submit"
-                          className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer"
+                          className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer w-full"
                         >
                           Create my brand profile
                         </button>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                          You can review and edit your brand profile at any time.
+                        </p>
                       </div>
                     </form>
                   </div>

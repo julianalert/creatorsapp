@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { SparklesIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import EmailSequenceDisplay from './email-sequence-display'
+import { createClient } from '@/lib/supabase/client'
 
 type AgentInterfaceProps = {
   slug: string
@@ -10,6 +12,7 @@ type AgentInterfaceProps = {
 }
 
 export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) {
+  const router = useRouter()
   const [url, setUrl] = useState('')
   const [conversionGoal, setConversionGoal] = useState('')
   // Keyword Research state
@@ -150,6 +153,17 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Check if user is authenticated before proceeding
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user) {
+      // Redirect to signup page if not logged in
+      router.push('/signup')
+      return
+    }
+    
     setError(null)
     setLoading(true)
     setResult(null)
@@ -1615,6 +1629,17 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
       <div className="mb-8">
         <form onSubmit={async (e) => {
           e.preventDefault()
+          
+          // Check if user is authenticated before proceeding
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (!user) {
+            // Redirect to signup page if not logged in
+            router.push('/signup')
+            return
+          }
+          
           setError(null)
           setLoading(true)
           setResult(null)
@@ -1868,6 +1893,17 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
       <div className="mb-8">
         <form onSubmit={async (e) => {
           e.preventDefault()
+          
+          // Check if user is authenticated before proceeding
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (!user) {
+            // Redirect to signup page if not logged in
+            router.push('/signup')
+            return
+          }
+          
           setError(null)
           setLoading(true)
           setResult(null)
@@ -2105,6 +2141,17 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
       <div className="mb-8">
         <form onSubmit={async (e) => {
           e.preventDefault()
+          
+          // Check if user is authenticated before proceeding
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (!user) {
+            // Redirect to signup page if not logged in
+            router.push('/signup')
+            return
+          }
+          
           setError(null)
           setLoading(true)
           setResult(null)

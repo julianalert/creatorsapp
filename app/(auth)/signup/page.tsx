@@ -142,9 +142,9 @@ export default function SignUp() {
             <AuthHeader />
 
             <div className="max-w-sm mx-auto w-full px-4 py-8">
-              <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">Create your Account</h1>
+              <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-2">Start for free now</h1>
               <div className="text-sm mb-6">
-                  Sign up to put your marketing on steroids.
+                  Sign up to get 10 free credits
                 </div>
               
               {/* Google Sign Up Button */}

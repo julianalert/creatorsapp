@@ -334,9 +334,23 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
       why_now_angle: 'string',
     },
     voice_and_tone: {
-      tone_sliders: '{playful?: 0-5, authoritative?: 0-5, friendly?: 0-5, professional?: 0-5, casual?: 0-5, formal?: 0-5}',
-      writing_style_rules: '{sentence_length: string, punctuation: string, emoji_usage: "yes"|"no"|"sparingly"}',
-      vocabulary_preferences: '{preferred_terms: string[], banned_terms: string[]}',
+      tone_sliders: {
+        playful: 'number (0-5, REQUIRED - analyze writing style)',
+        authoritative: 'number (0-5, REQUIRED - analyze writing style)',
+        friendly: 'number (0-5, REQUIRED - analyze writing style)',
+        professional: 'number (0-5, REQUIRED - analyze writing style)',
+        casual: 'number (0-5, REQUIRED - analyze writing style)',
+        formal: 'number (0-5, REQUIRED - analyze writing style)',
+      },
+      writing_style_rules: {
+        sentence_length: 'string (REQUIRED - e.g., "short", "medium", "long", "varied")',
+        punctuation: 'string (REQUIRED - e.g., "minimal", "standard", "liberal")',
+        emoji_usage: 'string (REQUIRED - one of: "yes", "no", "sparingly")',
+      },
+      vocabulary_preferences: {
+        preferred_terms: 'string[] (REQUIRED - extract commonly used terms)',
+        banned_terms: 'string[] (REQUIRED - extract terms to avoid)',
+      },
     },
     style_guide: {
       capitalization_rules: 'string',
@@ -383,7 +397,10 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
                   'Respond with strictly valid JSON only (no markdown, no code fences, no commentary).',
                   `The JSON must match this exact schema: ${JSON.stringify(brandProfileSchema, null, 2)}`,
                   'Extract real information from the content. For missing information, make reasonable inferences based on context.',
-                  'For tone_sliders, rate each dimension from 0-5 based on the actual writing style observed.',
+                  'IMPORTANT: voice_and_tone is REQUIRED. You MUST analyze the writing style and provide:',
+                  '  - tone_sliders: Rate ALL 6 dimensions (playful, authoritative, friendly, professional, casual, formal) from 0-5 based on actual writing observed. Include all 6 values.',
+                  '  - writing_style_rules: Analyze sentence length, punctuation style, and emoji usage. Provide specific values, not "N/A".',
+                  '  - vocabulary_preferences: Extract preferred terms and banned terms from the content.',
                   'For messaging_assets.ctas, extract actual CTAs found on the pages.',
                   'For messaging_assets.proof_points, extract numbers, company logos mentioned, and customer quotes/testimonials.',
                   'For compliance, identify any regulated claims, disclaimers, or legal language.',
@@ -454,6 +471,55 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
 
     try {
       const parsedProfile = JSON.parse(rawText) as BrandProfile
+      
+      // Validate and ensure voice_and_tone is properly populated
+      if (!parsedProfile.voice_and_tone) {
+        parsedProfile.voice_and_tone = {
+          tone_sliders: {},
+          writing_style_rules: {
+            sentence_length: 'medium',
+            punctuation: 'standard',
+            emoji_usage: 'no',
+          },
+          vocabulary_preferences: {
+            preferred_terms: [],
+            banned_terms: [],
+          },
+        }
+      } else {
+        // Ensure tone_sliders is an object with at least some values
+        if (!parsedProfile.voice_and_tone.tone_sliders || typeof parsedProfile.voice_and_tone.tone_sliders !== 'object') {
+          parsedProfile.voice_and_tone.tone_sliders = {}
+        }
+        
+        // Ensure writing_style_rules has all required fields
+        if (!parsedProfile.voice_and_tone.writing_style_rules) {
+          parsedProfile.voice_and_tone.writing_style_rules = {
+            sentence_length: 'medium',
+            punctuation: 'standard',
+            emoji_usage: 'no',
+          }
+        } else {
+          // Set defaults for missing fields
+          if (!parsedProfile.voice_and_tone.writing_style_rules.sentence_length) {
+            parsedProfile.voice_and_tone.writing_style_rules.sentence_length = 'medium'
+          }
+          if (!parsedProfile.voice_and_tone.writing_style_rules.punctuation) {
+            parsedProfile.voice_and_tone.writing_style_rules.punctuation = 'standard'
+          }
+          if (!parsedProfile.voice_and_tone.writing_style_rules.emoji_usage) {
+            parsedProfile.voice_and_tone.writing_style_rules.emoji_usage = 'no'
+          }
+        }
+        
+        // Ensure vocabulary_preferences exists
+        if (!parsedProfile.voice_and_tone.vocabulary_preferences) {
+          parsedProfile.voice_and_tone.vocabulary_preferences = {
+            preferred_terms: [],
+            banned_terms: [],
+          }
+        }
+      }
       
       // Add source trace
       parsedProfile.source_trace = {
