@@ -49,7 +49,7 @@ export default function SignUp() {
         email,
         password,
         options: {
-          emailRedirectTo: getRedirectUrl('/auth/callback?next=/'),
+          emailRedirectTo: getRedirectUrl('/auth/callback?next=/new'),
         },
       })
 
@@ -94,10 +94,10 @@ export default function SignUp() {
       setSuccess(true)
       setLoading(false)
       
-      // Redirect to homepage after successful signup
+      // Redirect to /new page after successful signup so users can add their brand
       // For email confirmation, you might want to show a message instead
       setTimeout(() => {
-        router.push('/')
+        router.push('/new')
         router.refresh()
       }, 2000)
     } catch (err) {
@@ -115,7 +115,7 @@ export default function SignUp() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: getRedirectUrl('/auth/callback?next=/'),
+          redirectTo: getRedirectUrl('/auth/callback?next=/new'),
         },
       })
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Logo from '@/components/ui/logo'
 import DropdownProfile from '@/components/dropdown-profile'
+import DropdownSwitchBrand from '@/components/dropdown-switch-brand'
 import ThemeToggle from '@/components/theme-toggle'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
@@ -94,6 +95,7 @@ export default function CustomHeader() {
                   Previous runs
                 </Link>
                 <DropdownProfile align="right" credits={credits} />
+                <DropdownSwitchBrand align="right" />
               </>
             ) : (
               <>

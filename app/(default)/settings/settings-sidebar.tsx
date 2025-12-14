@@ -33,7 +33,7 @@ export default function SettingsSidebar() {
               <svg className={`shrink-0 fill-current mr-2 ${pathname.includes('/settings/websites') ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} width="16" height="16" viewBox="0 0 16 16">
                 <path d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm12 0a5 5 0 1 0-8.536 3.536c.056-.152.12-.303.189-.452A3.536 3.536 0 0 1 8 9.5a3.536 3.536 0 0 1 3.347 2.338c.069.148.133.3.189.45A4.98 4.98 0 0 0 13 8Zm-7 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm5.708 5.042a1 1 0 1 1 1.884.684A6.973 6.973 0 0 1 8 15a6.973 6.973 0 0 1-5.592-2.274 1 1 0 0 1 1.884-.684C4.884 13.502 6.303 14 8 14c1.697 0 3.116-.498 3.708-.958Z" />
               </svg>
-              <span className={`text-sm font-medium ${pathname.includes('/settings/websites') ? 'text-blue-500 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200'}`}>My Websites</span>
+              <span className={`text-sm font-medium ${pathname.includes('/settings/websites') ? 'text-blue-500 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200'}`}>My Brands</span>
             </Link>
           </li>
           <li className="mr-0.5 md:mr-0 md:mb-0.5">

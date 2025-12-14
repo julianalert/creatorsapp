@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Websites Settings - Mosaic',
-  description: 'Page description',
+  title: 'My Brands - Mosaic',
+  description: 'Manage your brand profiles',
 }
 
 import WebsitesPanel from './websites-panel'
