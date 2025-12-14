@@ -77,24 +77,38 @@ export async function GET(request: Request) {
       console.log('Session exchange successful, redirecting to:', next)
       
       // Check if this is a new user (Google OAuth signup)
-      // A user is considered "new" if they were created very recently (within 10 minutes)
-      // This is reliable because OAuth callback happens immediately after user creation
+      // A user is considered "new" if:
+      // 1. They were created very recently (within 2 minutes) - OAuth callbacks happen immediately
+      // 2. OR their last_sign_in_at is null/undefined (first login)
+      // 3. OR their last_sign_in_at equals created_at (first login)
       if (data.user && data.user.email) {
         const userCreatedAt = new Date(data.user.created_at)
         const now = new Date()
         const timeSinceCreation = now.getTime() - userCreatedAt.getTime()
+        const lastSignInAt = data.user.last_sign_in_at ? new Date(data.user.last_sign_in_at) : null
         
-        // Check if user was created very recently (within 10 minutes)
-        // This window is large enough to be reliable but small enough to avoid false positives
-        const isNewUser = timeSinceCreation < 600000 // 10 minutes threshold
+        // More reliable new user detection for OAuth:
+        // OAuth callbacks happen immediately after user creation, so:
+        // - If created within last 5 minutes, treat as new user
+        // - Also check if this appears to be first login (last_sign_in_at is null or very close to created_at)
+        const isRecentlyCreated = timeSinceCreation < 300000 // 5 minutes threshold
+        const isFirstLogin = !lastSignInAt || 
+                            (Math.abs(lastSignInAt.getTime() - userCreatedAt.getTime()) < 30000) // Within 30 seconds
+        
+        // For OAuth signups, if user was created very recently (within 5 min) AND appears to be first login
+        // This is safe because OAuth flows are synchronous and immediate
+        // Loops.so will handle duplicates gracefully (returns success if contact already exists)
+        const isNewUser = isRecentlyCreated && isFirstLogin
         
         if (isNewUser) {
           console.log('Detected new OAuth user, adding to Loops.so:', {
             email: data.user.email,
             userId: data.user.id,
             created_at: data.user.created_at,
+            last_sign_in_at: data.user.last_sign_in_at,
             timeSinceCreationSeconds: Math.round(timeSinceCreation / 1000),
-            origin: origin, // Log the origin to debug redirect issues
+            isFirstLogin,
+            origin: origin,
           })
           
           // Add contact to Loops.so and trigger signedUp event
@@ -112,7 +126,7 @@ export async function GET(request: Request) {
               console.error('❌ Error adding contact to Loops.so:', err)
             })
         } else {
-          console.log('Existing user (created', Math.round(timeSinceCreation / 1000 / 60), 'minutes ago), skipping Loops.so signup:', data.user.email)
+          console.log('Existing user (created', Math.round(timeSinceCreation / 1000 / 60), 'minutes ago, firstLogin:', isFirstLogin, '), skipping Loops.so signup:', data.user.email)
         }
       }
       
