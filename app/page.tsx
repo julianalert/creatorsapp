@@ -54,10 +54,12 @@ export default async function Home() {
   const supabase = await createClient()
   
   // Fetch agents from Supabase
+  // Only show active agents that are not coming soon
   const { data: agents, error } = await supabase
     .from('agents')
     .select('*')
     .eq('is_active', true)
+    .eq('coming_soon', false)
     .order('created_at', { ascending: true })
 
   // Transform agents to match the template format
