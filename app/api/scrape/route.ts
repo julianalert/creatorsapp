@@ -268,7 +268,7 @@ function extractHighSignalPatterns(content: string): string {
   ]
   
   audiencePatterns.forEach(pattern => {
-    const matches = content.matchAll(pattern)
+    const matches = Array.from(content.matchAll(pattern))
     for (const match of matches) {
       if (match[1] || match[0]) {
         const text = (match[1] || match[0]).trim()
@@ -286,7 +286,7 @@ function extractHighSignalPatterns(content: string): string {
   ]
   
   useCasePatterns.forEach(pattern => {
-    const matches = content.matchAll(pattern)
+    const matches = Array.from(content.matchAll(pattern))
     for (const match of matches) {
       if (match[1]) {
         const text = match[1].trim()
