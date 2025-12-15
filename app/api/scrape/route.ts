@@ -257,6 +257,53 @@ async function scrapePage(
   }
 }
 
+// Extract high-signal patterns from content (audience mentions, use cases, positioning)
+function extractHighSignalPatterns(content: string): string {
+  const patterns: string[] = []
+  
+  // Look for explicit audience mentions
+  const audiencePatterns = [
+    /(?:for|built for|designed for|made for|targeting|serving)\s+([^.,!?\n]{10,80})/gi,
+    /(marketers?|developers?|sales teams?|growth teams?|product teams?|engineers?|designers?|founders?|startups?|agencies?|enterprises?|SMBs?)/gi,
+  ]
+  
+  audiencePatterns.forEach(pattern => {
+    const matches = content.matchAll(pattern)
+    for (const match of matches) {
+      if (match[1] || match[0]) {
+        const text = (match[1] || match[0]).trim()
+        if (text.length > 5 && text.length < 100) {
+          patterns.push(`AUDIENCE MENTION: "${text}"`)
+        }
+      }
+    }
+  })
+  
+  // Look for use case patterns
+  const useCasePatterns = [
+    /(?:automate|help|enable|power|streamline|simplify)\s+([^.,!?\n]{10,80})/gi,
+    /(?:AI|artificial intelligence|agents?|bots?|tools?)\s+(?:for|that|which)\s+([^.,!?\n]{10,80})/gi,
+  ]
+  
+  useCasePatterns.forEach(pattern => {
+    const matches = content.matchAll(pattern)
+    for (const match of matches) {
+      if (match[1]) {
+        const text = match[1].trim()
+        if (text.length > 5 && text.length < 100) {
+          patterns.push(`USE CASE: "${text}"`)
+        }
+      }
+    }
+  })
+  
+  // Remove duplicates and return
+  const uniquePatterns = [...new Set(patterns)]
+  return uniquePatterns.length > 0 
+    ? `\n## HIGH-SIGNAL PATTERNS EXTRACTED:\n${uniquePatterns.join('\n')}\n`
+    : ''
+}
+
 // Generate comprehensive brand profile
 async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Promise<{ profile: BrandProfile | null; error: string | null }> {
   const openaiApiKey = process.env.OPENAI_API_KEY
@@ -289,13 +336,41 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
     return priorityA - priorityB
   })
 
+  // Enhanced content extraction: prioritize high-signal sections
   const pageContents = sortedPages
     .map((page) => {
       const content = page.markdown || ''
-      // Limit each page's content to prevent one huge page from dominating
+      
+      // Extract high-signal sections first (headings, hero content, explicit mentions)
+      // Look for patterns that indicate target audience, use cases, positioning
+      let highSignalContent = ''
+      
+      // Extract headings (they often contain key positioning info)
+      if (page.headings && page.headings.length > 0) {
+        const headingText = page.headings
+          .map(h => `${'#'.repeat(h.level)} ${h.text}`)
+          .join('\n')
+        highSignalContent += `\n## HEADINGS FROM THIS PAGE:\n${headingText}\n`
+      }
+      
+      // Extract CTAs (they reveal positioning and audience)
+      if (page.ctas && page.ctas.length > 0) {
+        const ctaText = page.ctas.map(cta => `- ${cta.text}`).join('\n')
+        highSignalContent += `\n## CTAs FROM THIS PAGE:\n${ctaText}\n`
+      }
+      
+      // Prioritize first 3000 chars (usually hero/above-fold content)
+      const heroContent = content.slice(0, 3000)
+      
+      // Limit remaining content to prevent one huge page from dominating
       const maxPageLength = 15000 // ~15k chars per page
       const truncatedContent = content.slice(0, maxPageLength)
-      return `=== ${page.pageType.toUpperCase()}: ${page.url} ===\n${truncatedContent}\n`
+      
+      // Extract high-signal patterns from content
+      const extractedPatterns = extractHighSignalPatterns(content)
+      
+      // Combine: high-signal content first, then full content
+      return `=== ${page.pageType.toUpperCase()}: ${page.url} ===${highSignalContent}${extractedPatterns}\n## FULL PAGE CONTENT:\n${truncatedContent}\n`
     })
     .join('\n\n')
 
@@ -306,6 +381,10 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
   // OPTIMIZED: Reduce content sent to OpenAI to save tokens/credits
   // Keep only first 60k chars (most important pages)
   const sanitizedContent = pageContents.slice(0, 60000) // ~60k chars (reduced from 100k)
+  
+  // Log content length for debugging
+  console.log(`Sending ${sanitizedContent.length} characters of content to OpenAI`)
+  console.log(`Content preview (first 500 chars):`, sanitizedContent.slice(0, 500))
 
   const model = process.env.BRAND_PROFILE_MODEL ?? DEFAULT_BRAND_PROFILE_MODEL
   const controller = new AbortController()
@@ -393,18 +472,53 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
               {
                 type: 'input_text',
                 text: [
-                  'You are a senior brand strategist and copywriter. Analyze the provided website content from multiple pages and create a comprehensive brand profile.',
-                  'Respond with strictly valid JSON only (no markdown, no code fences, no commentary).',
-                  `The JSON must match this exact schema: ${JSON.stringify(brandProfileSchema, null, 2)}`,
-                  'Extract real information from the content. For missing information, make reasonable inferences based on context.',
-                  'IMPORTANT: voice_and_tone is REQUIRED. You MUST analyze the writing style and provide:',
-                  '  - tone_sliders: Rate ALL 6 dimensions (playful, authoritative, friendly, professional, casual, formal) from 0-5 based on actual writing observed. Include all 6 values.',
-                  '  - writing_style_rules: Analyze sentence length, punctuation style, and emoji usage. Provide specific values, not "N/A".',
-                  '  - vocabulary_preferences: Extract preferred terms and banned terms from the content.',
-                  'For messaging_assets.ctas, extract actual CTAs found on the pages.',
-                  'For messaging_assets.proof_points, extract numbers, company logos mentioned, and customer quotes/testimonials.',
-                  'For compliance, identify any regulated claims, disclaimers, or legal language.',
-                  'Include all page URLs in source_trace.page_urls and add timestamps for when each was scraped.',
+                  'You are a senior brand strategist. Analyze the website content and create a comprehensive brand profile.',
+                  'Respond with STRICTLY VALID JSON ONLY - no markdown, no code fences, no commentary.',
+                  `Schema: ${JSON.stringify(brandProfileSchema, null, 2)}`,
+                  '',
+                  'CRITICAL: Extract SPECIFIC information from the content. Avoid generic descriptions.',
+                  '',
+                  'KEY REQUIREMENTS:',
+                  '',
+                  '1. WHO is this for? Extract SPECIFIC roles/teams:',
+                  '   - Look for: "for marketers", "built for growth teams", "designed for [role]"',
+                  '   - Include job titles: marketers, developers, sales teams, growth teams, etc.',
+                  '   - Include company size if mentioned: startups, SMBs, enterprises',
+                  '   - Example: "Marketers and growth teams at startups" NOT "teams"',
+                  '',
+                  '2. WHAT does it do? Extract SPECIFIC use cases:',
+                  '   - Look for: "AI agents for marketing", "automate marketing workflows"',
+                  '   - Example: "AI agents for marketing automation" NOT "workflow automation"',
+                  '',
+                  '3. Category MUST be specific:',
+                  '   - Format: "SaaS – [Subcategory] for [Audience]" when possible',
+                  '   - Example: "SaaS – AI Marketing Automation for Growth Teams" NOT "SaaS"',
+                  '',
+                  '4. Niche MUST include target audience and use case:',
+                  '   - Example: "AI agents for marketing automation" NOT "workflow automation"',
+                  '',
+                  'FIELD REQUIREMENTS:',
+                  '- company.category: Specific category with audience if mentioned',
+                  '- audience.icp_primary: Specific roles/teams, not generic "teams"',
+                  '- audience.pains: Extract actual pain points mentioned',
+                  '- audience.desires: Extract actual desires mentioned',
+                  '- positioning.value_props: Array of {text: string, rank: number} - specific use cases',
+                  '- positioning.differentiators: What makes it unique for the target audience',
+                  '- niche: Specific market segment with audience and use case',
+                  '- keywords: Include role-specific and use-case-specific terms',
+                  '',
+                  'voice_and_tone (REQUIRED):',
+                  '- tone_sliders: ALL 6 dimensions (playful, authoritative, friendly, professional, casual, formal) rated 0-5',
+                  '- writing_style_rules: sentence_length, punctuation, emoji_usage (specific values)',
+                  '- vocabulary_preferences: preferred_terms and banned_terms arrays',
+                  '',
+                  'messaging_assets:',
+                  '- ctas.primary: Extract actual CTAs from pages',
+                  '- key_features: Extract key features mentioned',
+                  '- proof_points: Extract numbers, logos, quotes if mentioned',
+                  '',
+                  'Extract ALL information from the content. Fill every field. If information is not found, make reasonable inferences based on context.',
+                  'Include all page URLs in source_trace.page_urls.',
                 ].join('\n'),
               },
             ],
@@ -441,10 +555,14 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
       return { profile: null, error: 'Unexpected response format from model.' }
     }
 
+    // Log the response structure for debugging
+    console.log('OpenAI response structure:', JSON.stringify(responseJson, null, 2).slice(0, 1000))
+
     let rawText: string | null = null
 
     if (typeof responseJson?.output_text === 'string') {
       rawText = responseJson.output_text
+      console.log('Extracted text from output_text:', rawText.slice(0, 500))
     } else if (Array.isArray(responseJson?.output)) {
       rawText = responseJson.output
         .flatMap((item: any) => {
@@ -457,20 +575,102 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
         .map((contentItem: any) => contentItem.text)
         .join('')
         .trim()
+      console.log('Extracted text from output array:', rawText?.slice(0, 500))
     } else if (Array.isArray(responseJson?.choices)) {
       rawText = responseJson.choices
         .map((choice: any) => choice?.message?.content ?? choice?.text ?? '')
         .join('')
         .trim()
+      console.log('Extracted text from choices:', rawText?.slice(0, 500))
+    } else if (typeof responseJson?.text === 'string') {
+      rawText = responseJson.text
+      console.log('Extracted text from text field:', rawText.slice(0, 500))
+    } else if (typeof responseJson?.content === 'string') {
+      rawText = responseJson.content
+      console.log('Extracted text from content field:', rawText.slice(0, 500))
     }
 
     if (!rawText) {
-      console.error('Unexpected OpenAI response format', responseJson)
-      return { profile: null, error: 'Received empty brand profile from model.' }
+      console.error('Unexpected OpenAI response format - no text found', JSON.stringify(responseJson, null, 2).slice(0, 2000))
+      return { profile: null, error: 'Received empty brand profile from model. Check logs for response structure.' }
     }
 
     try {
-      const parsedProfile = JSON.parse(rawText) as BrandProfile
+      // Clean up the raw text - remove markdown code fences if present
+      let cleanedText = rawText.trim()
+      if (cleanedText.startsWith('```json')) {
+        cleanedText = cleanedText.replace(/^```json\s*/, '').replace(/\s*```$/, '')
+      } else if (cleanedText.startsWith('```')) {
+        cleanedText = cleanedText.replace(/^```\s*/, '').replace(/\s*```$/, '')
+      }
+      
+      const parsedProfile = JSON.parse(cleanedText) as BrandProfile
+      
+      // Validate that we got actual content
+      if (!parsedProfile.company?.name || parsedProfile.company.name.trim() === '') {
+        console.error('Brand profile missing company name', parsedProfile)
+        return { profile: null, error: 'Brand profile is missing required company information.' }
+      }
+      
+      // Check if profile is mostly empty (indicates model didn't extract information)
+      const hasContent = 
+        (parsedProfile.company?.category && parsedProfile.company.category.trim() !== '') ||
+        (parsedProfile.audience?.icp_primary && parsedProfile.audience.icp_primary.trim() !== '') ||
+        (parsedProfile.niche && parsedProfile.niche.trim() !== '') ||
+        (parsedProfile.company?.one_liner && parsedProfile.company.one_liner.trim() !== '')
+      
+      if (!hasContent) {
+        console.error('Brand profile appears to be mostly empty', {
+          category: parsedProfile.company?.category,
+          icp: parsedProfile.audience?.icp_primary,
+          niche: parsedProfile.niche,
+          oneLiner: parsedProfile.company?.one_liner,
+          rawTextPreview: rawText?.slice(0, 1000)
+        })
+        return { profile: null, error: 'Brand profile generation returned empty fields. The model may not have extracted information from the website content. Check logs for details.' }
+      }
+      
+      // Post-generation validation: Check for overly generic descriptions
+      const validationWarnings: string[] = []
+      
+      // Check if category is too generic
+      if (parsedProfile.company?.category) {
+        const category = parsedProfile.company.category.toLowerCase()
+        const genericCategories = ['saas', 'productivity', 'software', 'platform', 'tool', 'solution']
+        const isGeneric = genericCategories.some(gc => 
+          category === gc || category === `${gc} –` || category.startsWith(`${gc} `)
+        )
+        if (isGeneric && !category.includes('for ') && !category.includes('–')) {
+          validationWarnings.push('Category appears generic - consider adding specific subcategory and target audience')
+        }
+      }
+      
+      // Check if primary ICP is too generic
+      if (parsedProfile.audience?.icp_primary) {
+        const icp = parsedProfile.audience.icp_primary.toLowerCase()
+        const genericTerms = ['teams', 'users', 'businesses', 'companies', 'organizations']
+        const isGeneric = genericTerms.some(term => 
+          icp === term || icp === `${term} ` || (icp.includes(term) && !icp.includes('marketers') && !icp.includes('developers') && !icp.includes('sales') && !icp.includes('growth'))
+        )
+        if (isGeneric) {
+          validationWarnings.push('Primary ICP appears generic - consider adding specific roles or team types')
+        }
+      }
+      
+      // Check if niche is too generic
+      if (parsedProfile.niche) {
+        const niche = parsedProfile.niche.toLowerCase()
+        const genericNiches = ['workflow automation', 'productivity', 'software', 'platform', 'tool']
+        const isGeneric = genericNiches.some(gn => niche === gn || niche.startsWith(`${gn} `))
+        if (isGeneric && !niche.includes('for ') && !niche.includes('marketing') && !niche.includes('sales') && !niche.includes('development')) {
+          validationWarnings.push('Niche appears generic - consider adding target audience and specific use case')
+        }
+      }
+      
+      // Log warnings for debugging (but don't fail - the profile is still valid)
+      if (validationWarnings.length > 0) {
+        console.log('Brand profile validation warnings:', validationWarnings.join('; '))
+      }
       
       // Validate and ensure voice_and_tone is properly populated
       if (!parsedProfile.voice_and_tone) {
