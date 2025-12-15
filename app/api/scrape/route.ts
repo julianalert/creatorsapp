@@ -298,7 +298,7 @@ function extractHighSignalPatterns(content: string): string {
   })
   
   // Remove duplicates and return
-  const uniquePatterns = [...new Set(patterns)]
+  const uniquePatterns = Array.from(new Set(patterns))
   return uniquePatterns.length > 0 
     ? `\n## HIGH-SIGNAL PATTERNS EXTRACTED:\n${uniquePatterns.join('\n')}\n`
     : ''
