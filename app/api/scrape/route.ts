@@ -562,7 +562,7 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
 
     if (typeof responseJson?.output_text === 'string') {
       rawText = responseJson.output_text
-      console.log('Extracted text from output_text:', rawText.slice(0, 500))
+      console.log('Extracted text from output_text:', rawText ? rawText.slice(0, 500) : 'null')
     } else if (Array.isArray(responseJson?.output)) {
       rawText = responseJson.output
         .flatMap((item: any) => {
@@ -575,19 +575,19 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
         .map((contentItem: any) => contentItem.text)
         .join('')
         .trim()
-      console.log('Extracted text from output array:', rawText?.slice(0, 500))
+      console.log('Extracted text from output array:', rawText ? rawText.slice(0, 500) : 'null')
     } else if (Array.isArray(responseJson?.choices)) {
       rawText = responseJson.choices
         .map((choice: any) => choice?.message?.content ?? choice?.text ?? '')
         .join('')
         .trim()
-      console.log('Extracted text from choices:', rawText?.slice(0, 500))
+      console.log('Extracted text from choices:', rawText ? rawText.slice(0, 500) : 'null')
     } else if (typeof responseJson?.text === 'string') {
       rawText = responseJson.text
-      console.log('Extracted text from text field:', rawText.slice(0, 500))
+      console.log('Extracted text from text field:', rawText ? rawText.slice(0, 500) : 'null')
     } else if (typeof responseJson?.content === 'string') {
       rawText = responseJson.content
-      console.log('Extracted text from content field:', rawText.slice(0, 500))
+      console.log('Extracted text from content field:', rawText ? rawText.slice(0, 500) : 'null')
     }
 
     if (!rawText) {
@@ -595,9 +595,12 @@ async function generateBrandProfile(pages: ScrapedPage[], baseUrl: string): Prom
       return { profile: null, error: 'Received empty brand profile from model. Check logs for response structure.' }
     }
 
+    // At this point, rawText is guaranteed to be non-null
+    const textToParse = rawText
+
     try {
       // Clean up the raw text - remove markdown code fences if present
-      let cleanedText = rawText.trim()
+      let cleanedText = textToParse.trim()
       if (cleanedText.startsWith('```json')) {
         cleanedText = cleanedText.replace(/^```json\s*/, '').replace(/\s*```$/, '')
       } else if (cleanedText.startsWith('```')) {
