@@ -133,15 +133,15 @@ export default function DropdownSwitchBrand({ align }: {
         <div className="flex items-center truncate">
           {selectedBrand && (
             <>
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-500 flex items-center justify-center sm:mr-2 flex-shrink-0">
                 <span className="text-white text-xs font-semibold">
                   {getBrandInitial(selectedBrand)}
                 </span>
               </div>
-              <span className="truncate text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-800 dark:group-hover:text-white">
+              <span className="hidden sm:inline truncate text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-800 dark:group-hover:text-white">
                 {getBrandDisplayName(selectedBrand)}
               </span>
-              <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500" viewBox="0 0 12 12">
+              <svg className="hidden sm:block w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500" viewBox="0 0 12 12">
                 <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
               </svg>
             </>

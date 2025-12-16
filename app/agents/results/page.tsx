@@ -13,7 +13,7 @@ function AgentResultsContent() {
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 2
+  const itemsPerPage = 10
 
   useEffect(() => {
     fetchAllResults()
