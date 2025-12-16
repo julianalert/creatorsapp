@@ -21,7 +21,7 @@ function parseHeadlines(markdown: string): ParsedHeadlines | null {
     const versions: HeadlineVersion[] = []
 
     // Extract each version section
-    const versionPattern = /##\s*VERSION\s+(\d+):\s*(.+?)(?=##\s*VERSION|\n##\s*NOTES|$)/gis
+    const versionPattern = /##\s*VERSION\s+(\d+):\s*([\s\S]+?)(?=##\s*VERSION|\n##\s*NOTES|$)/gi
     
     let match
     while ((match = versionPattern.exec(markdown)) !== null) {
@@ -30,15 +30,15 @@ function parseHeadlines(markdown: string): ParsedHeadlines | null {
       const goal = match[2].split('\n')[0]?.trim() || ''
 
       // Extract Title
-      const titleMatch = versionContent.match(/\*\*Title:\*\*\s*\n(.+?)(?=\n\*\*Subtitle:|\n\*\*CTA:|$)/is)
+      const titleMatch = versionContent.match(/\*\*Title:\*\*\s*\n([\s\S]+?)(?=\n\*\*Subtitle:|\n\*\*CTA:|$)/i)
       const title = titleMatch?.[1]?.trim() || ''
 
       // Extract Subtitle
-      const subtitleMatch = versionContent.match(/\*\*Subtitle:\*\*\s*\n(.+?)(?=\n\*\*CTA:|$)/is)
+      const subtitleMatch = versionContent.match(/\*\*Subtitle:\*\*\s*\n([\s\S]+?)(?=\n\*\*CTA:|$)/i)
       const subtitle = subtitleMatch?.[1]?.trim() || ''
 
       // Extract CTA
-      const ctaMatch = versionContent.match(/\*\*CTA:\*\*\s*\n(.+?)(?=\n---|\n##|$)/is)
+      const ctaMatch = versionContent.match(/\*\*CTA:\*\*\s*\n([\s\S]+?)(?=\n---|\n##|$)/i)
       const cta = ctaMatch?.[1]?.trim() || ''
 
       if (versionNumber && title) {
