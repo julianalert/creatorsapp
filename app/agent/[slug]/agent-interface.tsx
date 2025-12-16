@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { SparklesIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import EmailSequenceDisplay from './email-sequence-display'
+import HeadlineDisplay from './headline-display'
 import { createClient } from '@/lib/supabase/client'
 
 type AgentInterfaceProps = {
@@ -146,9 +147,9 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
     }
   }, [resultId])
 
-  // Fetch brands for Welcome Email Sequence Writer
+  // Fetch brands for Welcome Email Sequence Writer and Headline Generator
   useEffect(() => {
-    if (slug === 'welcome-email-sequence-writer') {
+    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator') {
       const fetchBrands = async () => {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -425,6 +426,48 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           }
         } else {
           throw new Error('Invalid response from use case writer API')
+        }
+      } else if (slug === 'headline-generator') {
+        setCurrentStep('Analyzing brand profile...')
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        setCurrentStep('Generating headlines...')
+        const fetchPromise = fetch('/api/agents/headline-generator', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            brandId,
+          }),
+        })
+
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        setCurrentStep('Finalizing results...')
+
+        const response = await fetchPromise
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate headlines')
+        }
+
+        if (data.success && data.result) {
+          await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 1500))
+          ])
+          setResult(data.result)
+          setCurrentStep(null)
+          if (data.resultId) {
+            const url = new URL(window.location.href)
+            url.searchParams.set('resultId', data.resultId)
+            window.history.replaceState({}, '', url.toString())
+          }
+          if (data.creditsRemaining !== undefined) {
+            window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+          }
+        } else {
+          throw new Error('Invalid response from headline generator API')
         }
       }
     } catch (err) {
@@ -1878,6 +1921,108 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">Your email sequence will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Headline Generator specific interface
+  if (slug === 'headline-generator') {
+    return (
+      <div className="mb-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="brand-select-headline">
+              Brand Profile <span className="text-red-500">*</span>
+            </label>
+            {brands.length === 0 ? (
+              <div className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">No brand profiles found.</p>
+                <a href="/new" className="text-blue-500 hover:text-blue-600 text-sm font-medium">Create a brand profile →</a>
+              </div>
+            ) : (
+              <select
+                id="brand-select-headline"
+                value={brandId}
+                onChange={(e) => setBrandId(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              >
+                <option value="">Select a brand profile...</option>
+                {brands.map((brand) => (
+                  <option key={brand.id} value={brand.id}>
+                    {brand.name || brand.domain}
+                  </option>
+                ))}
+              </select>
+            )}
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll use your brand profile to generate headlines for your landing page hero section</p>
+          </div>
+          <div className="flex items-center justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <SparklesIcon className="w-4 h-4 mr-2" />
+                  Generate Headlines
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Results Area */}
+        <div className="mt-8">
+          {error && (
+            <div className="mb-4 bg-red-500/20 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          <div className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] ${result ? '' : 'flex items-center justify-center'}`}>
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
+              <div className="w-full text-gray-800 dark:text-gray-100">
+                {slug === 'headline-generator' ? (
+                  <HeadlineDisplay markdown={result} />
+                ) : (
+                  <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+                )}
+              </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center">
+                <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">Your headlines will appear here</p>
               </div>
             )}
           </div>

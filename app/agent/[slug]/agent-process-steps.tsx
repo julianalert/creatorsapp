@@ -188,6 +188,20 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
     )
   }
 
+  // Headline Generator
+  if (slug === 'headline-generator') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Brand Profile Selection', 'Select your brand profile from the dropdown. Agent uses brand profile to understand your product, value proposition, target audience and their objections, brand voice and tone, and positioning and niche.')}
+          {renderStep(2, 'Headline Generation', 'Agent analyzes brand profile to extract key insights, identifies customer\'s biggest objection, and generates three distinct headline versions: straightforward (explains what it does), hook (addresses objection + value), and niche ownership (positions as THE solution). Each includes optimized subtitle and value-focused or objection-handling CTA.')}
+          {renderStep(3, 'Final Output', 'Receive three complete headline versions ready to use including Version 1: Straightforward headline with subtitle and CTA, Version 2: Hook headline with subtitle and CTA, Version 3: Niche ownership headline with subtitle and CTA. All versions aligned with your brand voice and ready to implement.')}
+        </div>
+      </div>
+    )
+  }
+
   // Default for other agents
   return (
     <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">

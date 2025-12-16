@@ -21,6 +21,7 @@ const WORKING_AGENTS = [
   'image-generator',
   'alternatives-to-page-writer',
   'use-case-writer',
+  'headline-generator',
 ]
 
 export const metadata = {

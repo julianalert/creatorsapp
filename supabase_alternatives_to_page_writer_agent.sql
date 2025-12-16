@@ -71,7 +71,7 @@ VALUES
     ]'::jsonb,
     ARRAY['SEO', 'Content Marketing', 'Competitor Analysis', 'Comparison Pages'],
     true,
-    2
+    5
   )
 ON CONFLICT (slug) DO NOTHING;
 

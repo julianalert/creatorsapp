@@ -71,7 +71,7 @@ VALUES
     ]'::jsonb,
     ARRAY['Content Marketing', 'Use Cases', 'Case Studies', 'Storytelling'],
     true,
-    1
+    5
   )
 ON CONFLICT (slug) DO NOTHING;
 

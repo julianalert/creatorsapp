@@ -1,33 +1,96 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react'
+import { Cog6ToothIcon } from '@heroicons/react/24/outline'
+import { createClient } from '@/lib/supabase/client'
 
-export default function DropdownHelp({ align }: {
+export default function DropdownHelp({ align, credits: creditsProp }: {
   align?: 'left' | 'right'
+  credits?: number | null
 }) {
+  const router = useRouter()
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [credits, setCredits] = useState<number | null>(creditsProp ?? null)
+  const [loading, setLoading] = useState(true)
+
+  const fetchCredits = async () => {
+    try {
+      const response = await fetch('/api/user/credits')
+      const data = await response.json()
+      if (data.success && data.data) {
+        setCredits(data.data.credits)
+      }
+    } catch (error) {
+      console.error('Error fetching credits:', error)
+    }
+  }
+
+  // Update credits when prop changes
+  useEffect(() => {
+    if (creditsProp !== undefined) {
+      setCredits(creditsProp)
+    }
+  }, [creditsProp])
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      setUserEmail(user?.email || null)
+      // Only fetch credits if not provided as prop
+      if (user && creditsProp === undefined) {
+        await fetchCredits()
+      }
+      setLoading(false)
+    }
+
+    fetchUser()
+
+    // Listen for auth changes
+    const supabase = createClient()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUserEmail(session?.user?.email || null)
+      if (session?.user) {
+        // Only fetch credits if not provided as prop
+        if (creditsProp === undefined) {
+          fetchCredits()
+        }
+      } else {
+        setCredits(null)
+      }
+    })
+
+    return () => {
+      subscription?.unsubscribe()
+    }
+  }, [creditsProp])
+
+  const handleSignOut = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/signin')
+    router.refresh()
+  }
+
+  if (loading) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
+    )
+  }
+
   return (
     <Menu as="div" className="relative inline-flex">
       {({ open }) => (
         <>
           <MenuButton
-            className={`w-8 h-8 flex items-center justify-center hover:bg-gray-100 lg:hover:bg-gray-200 dark:hover:bg-gray-700/50 dark:lg:hover:bg-gray-800 rounded-full ${open && 'bg-gray-200 dark:bg-gray-800'
+            className={`w-8 h-8 flex items-center justify-center hover:bg-gray-100 lg:hover:bg-gray-200 dark:hover:bg-gray-700/50 dark:lg:hover:bg-gray-800 rounded-full cursor-pointer p-0 ${open && 'bg-gray-200 dark:bg-gray-800'
               }`}
           >
-            <span className="sr-only">Need help?</span>
-            <svg
-              className="fill-current text-gray-500/80 dark:text-gray-400/80"
-              width={16}
-              height={16}
-              viewBox="0 0 16 16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M9 7.5a1 1 0 1 0-2 0v4a1 1 0 1 0 2 0v-4ZM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
-              <path
-                fillRule="evenodd"
-                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm6-8A6 6 0 1 1 2 8a6 6 0 0 1 12 0Z"
-              />
-            </svg>
+            <span className="sr-only">Menu</span>
+            <Cog6ToothIcon className="w-6 h-6 text-gray-500/80 dark:text-gray-400/80" />
           </MenuButton>
           <Transition
             as="div"
@@ -40,38 +103,65 @@ export default function DropdownHelp({ align }: {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase pt-1.5 pb-2 px-3">Need help?</div>
+            <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-gray-200 dark:border-gray-700/60">
+              <div className="font-medium text-gray-800 dark:text-gray-100 truncate">{userEmail || 'User'}</div>
+              {credits !== null && (
+                <div className="flex items-center space-x-1 mt-1.5">
+                  <svg className="w-3.5 h-3.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                    {credits} credit{credits !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              )}
+            </div>
             <MenuItems as="ul" className="focus:outline-hidden">
               <MenuItem as="li">
-                {({ active }) => (
-                  <Link className={`font-medium text-sm flex items-center py-1 px-3 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-blue-500'}`} href="#0">
-                    <svg className="w-3 h-3 fill-current text-blue-500 shrink-0 mr-2" viewBox="0 0 12 12">
-                      <rect y="3" width="12" height="9" rx="1" />
-                      <path d="M2 0h8v2H2z" />
-                    </svg>
-                    <span>Documentation</span>
-                  </Link>
-                )}
+                <Link 
+                  className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
+                  href="/new"
+                >
+                  Add a brand
+                </Link>
               </MenuItem>
               <MenuItem as="li">
-                {({ active }) => (
-                  <Link className={`font-medium text-sm flex items-center py-1 px-3 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-blue-500'}`} href="#0">
-                    <svg className="w-3 h-3 fill-current text-blue-500 shrink-0 mr-2" viewBox="0 0 12 12">
-                      <path d="M10.5 0h-9A1.5 1.5 0 000 1.5v9A1.5 1.5 0 001.5 12h9a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0010.5 0zM10 7L8.207 5.207l-3 3-1.414-1.414 3-3L5 2h5v5z" />
-                    </svg>
-                    <span>Support Site</span>
-                  </Link>
-                )}
+                <Link 
+                  className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
+                  href="/settings/websites"
+                >
+                  My brands
+                </Link>
               </MenuItem>
               <MenuItem as="li">
-                {({ active }) => (
-                  <Link className={`font-medium text-sm flex items-center py-1 px-3 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-blue-500'}`} href="#0">
-                    <svg className="w-3 h-3 fill-current text-blue-500 shrink-0 mr-2" viewBox="0 0 12 12">
-                      <path d="M11.854.146a.5.5 0 00-.525-.116l-11 4a.5.5 0 00-.015.934l4.8 1.921 1.921 4.8A.5.5 0 007.5 12h.008a.5.5 0 00.462-.329l4-11a.5.5 0 00-.116-.525z" />
-                    </svg>
-                    <span>Contact us</span>
-                  </Link>
-                )}
+                <Link 
+                  className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
+                  href="/credits"
+                >
+                  Buy Credits
+                </Link>
+              </MenuItem>
+              <MenuItem as="li">
+                <Link 
+                  className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" 
+                  href="/request"
+                >
+                  Request an Agent
+                </Link>
+              </MenuItem>
+              <MenuItem as="li">
+                <Link className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" href="/settings/account">
+                  Settings
+                </Link>
+              </MenuItem>
+              <MenuItem as="li">
+                <button 
+                  onClick={handleSignOut}
+                  className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 w-full text-left cursor-pointer"
+                >
+                  Sign Out
+                </button>
               </MenuItem>
             </MenuItems>
           </Transition>

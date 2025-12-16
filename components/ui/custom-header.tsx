@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Logo from '@/components/ui/logo'
-import DropdownProfile from '@/components/dropdown-profile'
+import DropdownHelp from '@/components/dropdown-help'
 import DropdownSwitchBrand from '@/components/dropdown-switch-brand'
 import ThemeToggle from '@/components/theme-toggle'
 import Link from 'next/link'
@@ -94,7 +94,7 @@ export default function CustomHeader() {
                 >
                   Previous runs
                 </Link>
-                <DropdownProfile align="right" credits={credits} />
+                <DropdownHelp align="right" credits={credits} />
                 <DropdownSwitchBrand align="right" />
               </>
             ) : (
