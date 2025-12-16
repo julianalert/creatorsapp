@@ -258,7 +258,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const creditCost = agent.credits || 1
+  const creditCost = agent.credits || 2
 
   // Track start time
   const startedAt = new Date().toISOString()

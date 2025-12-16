@@ -60,13 +60,11 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
   const [marketSegment, setMarketSegment] = useState('')
   const [geographicScope, setGeographicScope] = useState('')
   // Welcome Email Sequence Writer state
-  const [websiteUrl, setWebsiteUrl] = useState('')
+  const [brandId, setBrandId] = useState<string>('')
+  const [brands, setBrands] = useState<Array<{ id: string; domain: string; name: string | null }>>([])
   const [numberOfEmails, setNumberOfEmails] = useState('3')
   const [timeframe, setTimeframe] = useState('within the first 7 days after signup')
   const [primaryCta, setPrimaryCta] = useState('')
-  const [secondaryCtas, setSecondaryCtas] = useState('')
-  const [emailFormat, setEmailFormat] = useState('HTML-friendly but simple')
-  const [personalizationTokens, setPersonalizationTokens] = useState('{{first_name}}, {{company_name}}')
   // Alternatives to Page Writer state
   const [yourDomain, setYourDomain] = useState('')
   const [competitorDomain, setCompetitorDomain] = useState('')
@@ -112,13 +110,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               if (savedResult.input_params.url) setUrl(savedResult.input_params.url)
               if (savedResult.input_params.conversionGoal) setConversionGoal(savedResult.input_params.conversionGoal)
               // Welcome Email Sequence Writer fields
-              if (savedResult.input_params.url) setWebsiteUrl(savedResult.input_params.url)
+              if (savedResult.input_params.brandId) setBrandId(savedResult.input_params.brandId)
               if (savedResult.input_params.numberOfEmails) setNumberOfEmails(savedResult.input_params.numberOfEmails)
               if (savedResult.input_params.timeframe) setTimeframe(savedResult.input_params.timeframe)
               if (savedResult.input_params.primaryCta) setPrimaryCta(savedResult.input_params.primaryCta)
-              if (savedResult.input_params.secondaryCtas) setSecondaryCtas(savedResult.input_params.secondaryCtas)
-              if (savedResult.input_params.emailFormat) setEmailFormat(savedResult.input_params.emailFormat)
-              if (savedResult.input_params.personalizationTokens) setPersonalizationTokens(savedResult.input_params.personalizationTokens)
               // Image Generator fields
               if (savedResult.input_params.imageDescription) setImageDescription(savedResult.input_params.imageDescription)
               if (savedResult.input_params.imageStyle) setImageStyle(savedResult.input_params.imageStyle)
@@ -150,6 +145,50 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
         })
     }
   }, [resultId])
+
+  // Fetch brands for Welcome Email Sequence Writer
+  useEffect(() => {
+    if (slug === 'welcome-email-sequence-writer') {
+      const fetchBrands = async () => {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (!user) return
+
+        const { data, error } = await supabase
+          .from('brands')
+          .select('id, domain, name')
+          .eq('user_id', user.id)
+          .eq('active', true)
+          .order('created_at', { ascending: false })
+
+        if (!error && data) {
+          setBrands(data)
+          // Set default brand if available and none selected
+          if (data.length > 0 && !brandId) {
+            const savedBrandId = localStorage.getItem('selectedBrandId')
+            const defaultBrandId = savedBrandId && data.find(b => b.id === savedBrandId) 
+              ? savedBrandId 
+              : data[0].id
+            setBrandId(defaultBrandId)
+          }
+        }
+      }
+      fetchBrands()
+
+      // Listen for brand changes
+      const handleBrandChanged = () => {
+        fetchBrands()
+      }
+      window.addEventListener('brandChanged', handleBrandChanged)
+      window.addEventListener('brandAdded', handleBrandChanged)
+      
+      return () => {
+        window.removeEventListener('brandChanged', handleBrandChanged)
+        window.removeEventListener('brandAdded', handleBrandChanged)
+      }
+    }
+  }, [slug, brandId])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -1648,12 +1687,8 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           window.dispatchEvent(new CustomEvent('agent:start', { detail: { slug } }))
 
           try {
-            setCurrentStep('Scraping website...')
+            setCurrentStep('Analyzing brand profile...')
             await new Promise(resolve => setTimeout(resolve, 1500))
-
-            setCurrentStep('Analyzing website content...')
-            const analyzingDelay = new Promise(resolve => setTimeout(resolve, 2000))
-            await analyzingDelay
 
             setCurrentStep('Generating email sequence...')
             const fetchPromise = fetch('/api/agents/welcome-email-sequence-writer', {
@@ -1662,13 +1697,10 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                url: websiteUrl,
+                brandId,
                 numberOfEmails,
                 timeframe,
                 primaryCta,
-                secondaryCtas,
-                emailFormat,
-                personalizationTokens,
               }),
             })
 
@@ -1708,20 +1740,32 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           }
         }} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="website-url">
-              Website URL <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="brand-select">
+              Brand Profile <span className="text-red-500">*</span>
             </label>
-            <input
-              id="website-url"
-              type="url"
-              placeholder="https://example.com"
-              value={websiteUrl}
-              onChange={(e) => setWebsiteUrl(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              required
-              disabled={loading}
-            />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll scrape and analyze your website to understand your product and brand</p>
+            {brands.length === 0 ? (
+              <div className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">No brand profiles found.</p>
+                <a href="/new" className="text-blue-500 hover:text-blue-600 text-sm font-medium">Create a brand profile →</a>
+              </div>
+            ) : (
+              <select
+                id="brand-select"
+                value={brandId}
+                onChange={(e) => setBrandId(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              >
+                <option value="">Select a brand profile...</option>
+                {brands.map((brand) => (
+                  <option key={brand.id} value={brand.id}>
+                    {brand.name || brand.domain}
+                  </option>
+                ))}
+              </select>
+            )}
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll use your brand profile to understand your product and brand</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -1771,52 +1815,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               disabled={loading}
             />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Leave empty to let the AI infer from your website</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="secondary-ctas">
-              Secondary CTAs (optional)
-            </label>
-            <input
-              id="secondary-ctas"
-              type="text"
-              placeholder="e.g., watch tutorial, join community, read docs"
-              value={secondaryCtas}
-              onChange={(e) => setSecondaryCtas(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              disabled={loading}
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="email-format">
-                Email Format
-              </label>
-              <select
-                id="email-format"
-                value={emailFormat}
-                onChange={(e) => setEmailFormat(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              >
-                <option value="plain text style">Plain text style</option>
-                <option value="HTML-friendly but simple">HTML-friendly but simple</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="personalization-tokens">
-                Personalization Tokens
-              </label>
-              <input
-                id="personalization-tokens"
-                type="text"
-                placeholder="e.g., {{first_name}}, {{company_name}}"
-                value={personalizationTokens}
-                onChange={(e) => setPersonalizationTokens(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
-            </div>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Leave empty to let the AI infer from your brand profile</p>
           </div>
           <div className="flex items-center justify-end">
             <button

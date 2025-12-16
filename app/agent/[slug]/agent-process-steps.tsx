@@ -49,9 +49,9 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
       <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
         <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
         <div className="space-y-4">
-          {renderStep(1, 'Funnel Mapping', 'Define your conversion funnel and goals including conversion type, funnel steps, current conversion rates, traffic sources, and user segments.')}
-          {renderStep(2, 'Behavior Analysis', 'Agent analyzes user paths and drop-off points including time spent, click patterns, form abandonment, mobile vs desktop behavior, and A/B test results.')}
-          {renderStep(3, 'Optimization Plan', 'Receive prioritized recommendations with high-impact quick wins, UX improvements, copy optimizations, trust signals, form simplifications, mobile fixes, and A/B test hypotheses.')}
+          {renderStep(1, 'URL Scraping', 'Agent scrapes the URL you provide to gather all page content, design elements, copy, forms, CTAs, and conversion elements.')}
+          {renderStep(2, 'AI Content Analysis', 'AI analyzes the scraped content to identify conversion opportunities, UX issues, copy weaknesses, trust signal gaps, form friction points, and optimization opportunities.')}
+          {renderStep(3, 'Recommendation Plan', 'Receive a comprehensive optimization plan with prioritized recommendations, specific improvement suggestions, impact predictions, and actionable next steps to improve conversion rates.')}
         </div>
       </div>
     )
@@ -147,8 +147,8 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
       <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
         <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
         <div className="space-y-4">
-          {renderStep(1, 'Website Analysis', 'Enter your website URL and sequence settings including number of emails, timeframe, primary and secondary CTAs, email format preference, and personalization tokens needed.')}
-          {renderStep(2, 'Content Analysis', 'Agent scrapes and analyzes your website content to extract product positioning, value proposition, target audience information, key features and benefits, brand voice and tone, and onboarding goals.')}
+          {renderStep(1, 'Brand Selection', 'Select your brand profile and configure sequence settings including number of emails, timeframe, and primary CTA.')}
+          {renderStep(2, 'Brand Profile Analysis', 'Agent analyzes your brand profile to extract product positioning, value proposition, target audience information, key features and benefits, brand voice and tone, and onboarding goals.')}
           {renderStep(3, 'Sequence Generation', 'Agent generates complete email sequence with subject lines, preview text, email body content, clear CTAs, personalization tokens, and sequence strategy explanation.')}
           {renderStep(4, 'Final Output', 'Receive ready-to-use email sequence with complete emails (3-6), subject line options for each, preview text, full email body with CTAs, sequence strategy explanation, and ready to import into your email platform.')}
         </div>

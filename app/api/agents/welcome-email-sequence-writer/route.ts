@@ -1,76 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { validateUrl } from '@/lib/utils/url-validation'
 import { checkRateLimit, RATE_LIMITS, getRateLimitHeaders } from '@/lib/utils/rate-limit'
 
-const SCRAPING_BEE_ENDPOINT = 'https://app.scrapingbee.com/api/v1/'
 const OPENAI_RESPONSES_ENDPOINT =
   process.env.OPENAI_RESPONSES_ENDPOINT ?? 'https://api.openai.com/v1/responses'
 const DEFAULT_MODEL = 'gpt-5-nano'
-
-function sanitizeContext(input: string, maxLength = 50000) {
-  return input.replace(/\0/g, '').slice(0, maxLength)
-}
-
-async function scrapeUrl(url: string): Promise<{ html: string | null; error: string | null }> {
-  const apiKey = process.env.SCRAPING_BEE_API_KEY
-
-  if (!apiKey) {
-    return { html: null, error: 'ScrapingBee API key missing.' }
-  }
-
-  const scrapingBeeUrl = new URL(SCRAPING_BEE_ENDPOINT)
-  scrapingBeeUrl.searchParams.set('api_key', apiKey)
-  scrapingBeeUrl.searchParams.set('url', url)
-  scrapingBeeUrl.searchParams.set('render_js', 'false')
-  scrapingBeeUrl.searchParams.set('premium_proxy', 'false')
-
-  // SECURITY: Add timeout to prevent hanging requests
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
-
-  try {
-    const response = await fetch(scrapingBeeUrl, {
-      headers: {
-        Accept: 'application/json,text/html;q=0.9,*/*;q=0.8',
-      },
-      signal: controller.signal,
-    })
-
-    clearTimeout(timeoutId)
-
-    if (!response.ok) {
-      return { html: null, error: `ScrapingBee request failed with status ${response.status}.` }
-    }
-
-    const contentType = response.headers.get('content-type') ?? ''
-
-    if (contentType.includes('application/json')) {
-      const json = await response.json()
-      const html = json?.html ?? 
-                   json?.page_source ?? 
-                   json?.body ?? 
-                   json?.data?.html ?? 
-                   json?.data?.page_source ?? 
-                   json?.data?.body ?? 
-                   null
-      return { html, error: html ? null : 'No HTML content found in response.' }
-    } else if (contentType.includes('text/html')) {
-      const html = await response.text()
-      return { html, error: null }
-    } else {
-      const html = await response.text()
-      return { html: html || null, error: html ? null : 'Unexpected content type from ScrapingBee.' }
-    }
-  } catch (error: any) {
-    clearTimeout(timeoutId)
-    if (error.name === 'AbortError') {
-      return { html: null, error: 'Request timeout while scraping the URL.' }
-    }
-    console.error('ScrapingBee request error', error)
-    return { html: null, error: 'Unexpected error while scraping the URL.' }
-  }
-}
 
 async function callOpenAI(prompt: string, systemPrompt?: string): Promise<{ result: string | null; error: string | null }> {
   const openaiApiKey = process.env.OPENAI_API_KEY
@@ -211,26 +145,14 @@ async function callOpenAI(prompt: string, systemPrompt?: string): Promise<{ resu
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}))
   const {
-    url,
+    brandId,
     numberOfEmails = '3',
     timeframe = 'within the first 7 days after signup',
     primaryCta = '',
-    secondaryCtas = '',
-    emailFormat = 'HTML-friendly but simple',
-    personalizationTokens = '{{first_name}}, {{company_name}}',
   } = body
 
-  if (!url || typeof url !== 'string') {
-    return NextResponse.json({ error: 'A valid url is required.' }, { status: 400 })
-  }
-
-  // SECURITY: Validate URL to prevent SSRF attacks
-  const parsedUrl = validateUrl(url, process.env.NODE_ENV === 'development')
-  if (!parsedUrl) {
-    return NextResponse.json(
-      { error: 'Invalid or unsafe URL provided. Only public HTTPS URLs are allowed.' },
-      { status: 400 }
-    )
+  if (!brandId || typeof brandId !== 'string') {
+    return NextResponse.json({ error: 'A valid brandId is required.' }, { status: 400 })
   }
 
   const supabase = await createClient()
@@ -277,10 +199,33 @@ export async function POST(request: Request) {
     )
   }
 
-  const creditCost = agent.credits || 1
+  const creditCost = agent.credits || 3
 
   // Track start time
   const startedAt = new Date().toISOString()
+
+  // Fetch brand profile
+  const { data: brand, error: brandError } = await supabase
+    .from('brands')
+    .select('id, brand_profile, domain, name')
+    .eq('id', brandId)
+    .eq('user_id', user.id)
+    .eq('active', true)
+    .maybeSingle()
+
+  if (brandError || !brand) {
+    return NextResponse.json(
+      { error: 'Brand profile not found or you do not have access to it.' },
+      { status: 404 }
+    )
+  }
+
+  if (!brand.brand_profile || typeof brand.brand_profile !== 'object') {
+    return NextResponse.json(
+      { error: 'Brand profile data is missing or invalid.' },
+      { status: 400 }
+    )
+  }
 
   // Check and deduct credits atomically
   const { data: newBalance, error: creditError } = await supabase.rpc('deduct_user_credits', {
@@ -306,70 +251,9 @@ export async function POST(request: Request) {
     )
   }
 
-  // Step 1: Scrape the URL
-  const { html, error: scrapeError } = await scrapeUrl(url)
-
-  if (scrapeError || !html) {
-    // Refund credits if scraping fails
-    try {
-      await supabase.rpc('add_user_credits', {
-        p_user_id: user.id,
-        p_credits_to_add: creditCost,
-      })
-    } catch (refundError) {
-      console.error('Error refunding credits after scrape failure:', refundError)
-    }
-
-    return NextResponse.json(
-      { error: scrapeError ?? 'Failed to scrape the URL.' },
-      { status: 500 }
-    )
-  }
-
-  const sanitizedHtml = sanitizeContext(html)
-
-  // Step 2: Analyze website content and extract business/product context
-  const analysisSystemPrompt = `You are a senior SaaS lifecycle & copywriting expert. Your task is to analyze website content and extract structured information about a business and product.
-
-Extract the following information from the website content:
-- Business/product name
-- One-line description
-- Main product category (e.g. SaaS, app, course, service)
-- Target audience (who they are, role, industry, level, etc.)
-- Main problems it solves
-- Main value proposition / key benefits
-- Pricing model (if relevant)
-- Key features to highlight
-- Primary onboarding goal (e.g. complete setup, publish first project, invite a teammate, install script, connect integration)
-- Secondary goals (optional)
-- Brand voice & tone (e.g. playful, friendly, expert, bold, minimalist, etc.)
-
-Return your analysis in a structured format that can be used to generate onboarding email sequences. Be specific and extract actual information from the website content. If information is missing, make reasonable inferences based on the content.`
-
-  const analysisPrompt = `Analyze the following website content and extract the business and product information as requested:
-
-${sanitizedHtml}
-
-Provide a comprehensive analysis of the business, product, audience, and positioning.`
-
-  const { result: analysisResult, error: analysisError } = await callOpenAI(analysisPrompt, analysisSystemPrompt)
-
-  if (analysisError) {
-    // If analysis fails, refund the credits
-    try {
-      await supabase.rpc('add_user_credits', {
-        p_user_id: user.id,
-        p_credits_to_add: creditCost,
-      })
-    } catch (refundError) {
-      console.error('Error refunding credits:', refundError)
-    }
-
-    return NextResponse.json(
-      { error: `Website analysis failed: ${analysisError}` },
-      { status: 500 }
-    )
-  }
+  // Prepare brand profile context for the AI
+  const brandProfile = brand.brand_profile as any
+  const brandContext = JSON.stringify(brandProfile, null, 2)
 
   // Step 3: Generate the email sequence
   const systemPrompt = `You are a senior SaaS lifecycle & copywriting expert. 
@@ -419,31 +303,17 @@ Return your answer in clean Markdown, using this structure:
 
   const emailSequencePrompt = `You are helping me create a complete onboarding **welcome email sequence** for a digital product.
 
-Below is everything you need to know about the business and product. 
+Below is the complete brand profile for this business and product. 
 
 Use this information as your single source of truth.
 
 ================================================
 
-BUSINESS & PRODUCT CONTEXT
+BRAND PROFILE
 
 ================================================
 
-${analysisResult}
-
-================================================
-
-SCRAPED WEBSITE CONTENT
-
-================================================
-
-The following text comes from the product's website (homepage, features, pricing, docs, etc.).
-
-Use it to deeply understand the product, audience, positioning and language style.
-
-${sanitizedHtml}
-
-When there is a conflict between my short description above and the scraped content, prioritize the SCRAPED CONTENT.
+${brandContext}
 
 ================================================
 
@@ -455,17 +325,7 @@ SEQUENCE SETTINGS
 
 - Timeframe: ${timeframe}  (e.g. "within the first 7 days after signup")
 
-- Call to action hierarchy:
-
-  1) Primary CTA: ${primaryCta || 'Not specified - infer from product context'}   (e.g. "create first project", "book a demo", "install the script")
-
-  2) Secondary CTA(s): ${secondaryCtas || 'Not specified'} (optional)
-
-- Email format: ${emailFormat}  (e.g. "plain text style", "HTML-friendly but simple")
-
-- Personalization tokens available: ${personalizationTokens} 
-
-  (e.g. {{first_name}}, {{company_name}}, {{role}}, {{plan_name}} – write them exactly like this so I can replace them later.)
+- Primary CTA: ${primaryCta || 'Not specified - infer from brand profile'}   (e.g. "create first project", "book a demo", "install the script")
 
 ================================================
 
@@ -473,7 +333,7 @@ YOUR TASK
 
 ================================================
 
-1. Analyze the SCRAPED WEBSITE CONTENT and the context above.
+1. Analyze the BRAND PROFILE above.
 
    - Extract: core value proposition, positioning, main benefits, key use cases, and typical user journey.
 
@@ -487,7 +347,7 @@ YOUR TASK
 
    - Help them experience value as fast as possible (reach the first "aha moment").
 
-   - Overcome common objections or friction points inferred from the website content.
+   - Overcome common objections or friction points inferred from the brand profile.
 
    - Encourage replies (where relevant) to collect feedback and deepen engagement.
 
@@ -509,7 +369,11 @@ WRITING GUIDELINES
 
 - Avoid generic lines like "we're excited to have you on board" unless you add something concrete.
 
-- Do NOT invent features, pricing, or promises that do not exist in the scraped content.
+- Do NOT invent features, pricing, or promises that do not exist in the brand profile.
+
+- Use the brand voice and tone specified in the brand profile.
+
+- Include appropriate personalization tokens like {{first_name}}, {{company_name}} where natural.
 
 - If some info is missing, make reasonable assumptions and clearly state them in the [ASSUMPTIONS] section at the very end.`
 
@@ -546,24 +410,17 @@ WRITING GUIDELINES
       agent_id: agent.id,
       agent_slug: 'welcome-email-sequence-writer', // Keep for backward compatibility
       input_params: {
-        url,
+        brandId,
         numberOfEmails,
         timeframe,
         primaryCta,
-        secondaryCtas,
-        emailFormat,
-        personalizationTokens,
       },
       result_data: {
         result: emailSequence,
-        analysis: analysisResult,
-        url,
+        brandId,
         numberOfEmails,
         timeframe,
         primaryCta,
-        secondaryCtas,
-        emailFormat,
-        personalizationTokens,
       },
       started_at: startedAt,
       ended_at: endedAt,
@@ -580,7 +437,7 @@ WRITING GUIDELINES
   return NextResponse.json({
     success: true,
     result: emailSequence,
-    url,
+    brandId,
     resultId: savedResult?.id || null,
     creditsRemaining: newBalance,
   })
