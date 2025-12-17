@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { SparklesIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import EmailSequenceDisplay from './email-sequence-display'
 import HeadlineDisplay from './headline-display'
+import AlternativesDisplay from './alternatives-display'
+import Banner02 from '@/components/banner-02'
 import { createClient } from '@/lib/supabase/client'
 
 type AgentInterfaceProps = {
@@ -73,6 +75,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
   const [pricingModel, setPricingModel] = useState('')
   const [alternativesPrimaryCta, setAlternativesPrimaryCta] = useState('')
   const [alternativesTone, setAlternativesTone] = useState('confident, direct, not salesy')
+  const [warningBannerOpen, setWarningBannerOpen] = useState(true)
   // Use Case Writer state
   const [interviewText, setInterviewText] = useState('')
   const [productName, setProductName] = useState('')
@@ -147,9 +150,9 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
     }
   }, [resultId])
 
-  // Fetch brands for Welcome Email Sequence Writer and Headline Generator
+  // Fetch brands for Welcome Email Sequence Writer, Headline Generator, and Alternatives to Page Writer
   useEffect(() => {
-    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator') {
+    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator' || slug === 'alternatives-to-page-writer') {
       const fetchBrands = async () => {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -190,6 +193,62 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
       }
     }
   }, [slug, brandId])
+
+  // Pre-fill domain from brand profile for Alternatives to Page Writer
+  useEffect(() => {
+    if (slug === 'alternatives-to-page-writer' && brands.length > 0) {
+      // Get selected brand from localStorage or use first brand
+      const savedBrandId = localStorage.getItem('selectedBrandId')
+      const selectedBrand = savedBrandId
+        ? brands.find(b => b.id === savedBrandId) || brands[0]
+        : brands[0]
+      
+      // Only pre-fill if domain field is empty
+      if (selectedBrand && selectedBrand.domain && !yourDomain) {
+        // Remove protocol if present, we'll add it when needed
+        const domain = selectedBrand.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')
+        setYourDomain(domain)
+      }
+    }
+  }, [slug, brands, yourDomain])
+
+  // Listen for brand changes to update domain field
+  useEffect(() => {
+    if (slug === 'alternatives-to-page-writer') {
+      const handleBrandChanged = () => {
+        // Re-fetch brands and update domain if field is empty
+        const supabase = createClient()
+        supabase.auth.getUser().then(({ data: { user } }) => {
+          if (user) {
+            supabase
+              .from('brands')
+              .select('id, domain, name')
+              .eq('user_id', user.id)
+              .eq('active', true)
+              .order('created_at', { ascending: false })
+              .then(({ data }) => {
+                if (data && data.length > 0 && !yourDomain) {
+                  const savedBrandId = localStorage.getItem('selectedBrandId')
+                  const selectedBrand = savedBrandId
+                    ? data.find(b => b.id === savedBrandId) || data[0]
+                    : data[0]
+                  
+                  if (selectedBrand && selectedBrand.domain) {
+                    const domain = selectedBrand.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')
+                    setYourDomain(domain)
+                  }
+                }
+              })
+          }
+        })
+      }
+      
+      window.addEventListener('brandChanged', handleBrandChanged)
+      return () => {
+        window.removeEventListener('brandChanged', handleBrandChanged)
+      }
+    }
+  }, [slug, yourDomain])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -2052,6 +2111,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           setLoading(true)
           setResult(null)
           setCurrentStep(null)
+          setWarningBannerOpen(true) // Ensure warning banner is visible when loading starts
 
           window.dispatchEvent(new CustomEvent('agent:start', { detail: { slug } }))
 
@@ -2154,66 +2214,6 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll scrape their site for comparison</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="target-persona">
-                Target Persona (optional)
-              </label>
-              <input
-                id="target-persona"
-                type="text"
-                placeholder="e.g., Marketing teams, Agencies, Enterprise"
-                value={targetPersona}
-                onChange={(e) => setTargetPersona(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="pricing-model">
-                Pricing Model (optional)
-              </label>
-              <input
-                id="pricing-model"
-                type="text"
-                placeholder="e.g., Usage-based, Per-seat, Freemium"
-                value={pricingModel}
-                onChange={(e) => setPricingModel(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="alternatives-primary-cta">
-                Primary CTA (optional)
-              </label>
-              <input
-                id="alternatives-primary-cta"
-                type="text"
-                placeholder="e.g., Try free, Book a demo, Start trial"
-                value={alternativesPrimaryCta}
-                onChange={(e) => setAlternativesPrimaryCta(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="alternatives-tone">
-                Tone (optional)
-              </label>
-              <input
-                id="alternatives-tone"
-                type="text"
-                placeholder="e.g., confident, direct, not salesy"
-                value={alternativesTone}
-                onChange={(e) => setAlternativesTone(e.target.value)}
-                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                disabled={loading}
-              />
-            </div>
-          </div>
           <div className="flex items-center justify-end">
             <button
               type="submit"
@@ -2256,7 +2256,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               </div>
             ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
-                <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+                <AlternativesDisplay markdown={result} />
               </div>
             ) : loading && currentStep ? (
               <div className="flex flex-col items-center justify-center text-center">
@@ -2264,8 +2264,24 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
                 </svg>
-                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-4">{currentStep}</p>
+                <div className="w-full max-w-md">
+                  <Banner02 
+                    type="error" 
+                    open={loading && currentStep ? true : warningBannerOpen} 
+                    setOpen={(open) => {
+                      // Keep banner open while loading, allow closing only when not loading
+                      if (!loading || !currentStep) {
+                        setWarningBannerOpen(open)
+                      }
+                    }}
+                  >
+                    <div>
+                      <p className="font-semibold">Do not close this tab while the agent is running</p>
+                      <p className="text-xs mt-1 opacity-90">Closing the tab will cancel the process and you may lose your credits</p>
+                    </div>
+                  </Banner02>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center text-center">

@@ -418,58 +418,103 @@ Include source_url for each fact where possible.`
   }
 
   // Step 3: Generate the comparison page
-  const pageGenerationSystemPrompt = `You are an expert product marketer + SEO copywriter.
+  const pageGenerationSystemPrompt = `You are an expert product marketer + SEO copywriter specializing in comparison pages.
 
-Goal: Write a high-converting, SEO-optimized "Alternatives to {COMPETITOR_NAME}" landing page for {MY_PRODUCT_NAME}, using ONLY the information provided in the Evidence Pack. Do not invent features, pricing, customers, metrics, or integrations.
+Goal: Write a clear, focused comparison page between two products, using ONLY the information provided in the Evidence Pack. Focus on a direct side-by-side comparison like alternatives.to - clean, scannable, and evidence-backed. The page should help readers quickly understand the differences and make an informed decision.
 
 Hard rules:
-1) Every non-trivial claim must be supported by the Evidence Pack. If not supported, write "Not publicly stated" or omit.
-2) Be fair: include 2–4 areas where the competitor is strong (if supported).
-3) Prioritize clarity: short sentences, concrete benefits, avoid jargon.
-4) Optimize for search intent: the reader is evaluating switching from competitor to us.
-5) Output must be ready to publish in Markdown.
+1) Every claim must be supported by the Evidence Pack. If not supported, write "Not publicly stated" or omit.
+2) Be fair and balanced: acknowledge where the competitor is strong (2-3 areas minimum if evidence supports).
+3) Keep it scannable: use short sentences, bullet points, clear headings, and visual hierarchy.
+4) Focus on the comparison: prioritize clarity over length. Less is more.
+5) Output must be clean Markdown with proper structure.
 
-Process:
-Step 1 — Build a Comparison Matrix:
-- Create a table with 10–15 rows max, grouped by category (Core, Integrations, Security, Support, Pricing).
-- Columns: Feature/Concern | {MY_PRODUCT_NAME} (Yes/Partial/No + short note) | {COMPETITOR_NAME} (Yes/Partial/No + short note) | Evidence URLs
-- Use only evidence-backed rows.
+Required Structure (follow exactly):
+# Best Alternatives to {COMPETITOR_NAME} (2025)
 
-Step 2 — Decide the Page Angle:
-- Choose ONE primary positioning angle (e.g., "best for agencies", "simpler setup", "more flexible workflows", "better pricing clarity", "enterprise security").
-- Justify the choice in 3 bullets, each citing evidence_url.
+[2-3 paragraph intro explaining the comparison context]
 
-Step 3 — Write the Page (Markdown):
-Use this exact structure:
-- H1: Best Alternatives to {COMPETITOR_NAME} (2025)
-- Intro (2 short paragraphs)
-- TL;DR verdict (Who should choose us vs them)
-- Comparison table (from Step 1)
-- Why people look for alternatives to {COMPETITOR_NAME} (4–8 bullets, evidence-backed)
-- {MY_PRODUCT_NAME} vs {COMPETITOR_NAME}: 5 section deep dive
-  (Ease of use, Core capabilities, Integrations, Security/Compliance, Pricing/Packaging)
-- Top alternatives to {COMPETITOR_NAME} (include {MY_PRODUCT_NAME} + 4–9 others)
-  For each: Best for, Strengths, Tradeoffs, Starting price (if known), Source
-  If other tools are not in Evidence Pack, mark them as "Not evaluated in this scrape" and keep it brief.
-- Switching guide (3–6 steps) ONLY if evidence supports migration/export/import; otherwise omit.
-- FAQ (5–8 questions)
-- Final CTA
+## TL;DR Verdict
+[Clear 2-3 sentence verdict: Who should choose {MY_PRODUCT_NAME} vs {COMPETITOR_NAME}]
 
-Step 4 — Quality checklist (at end):
-- List any missing information that would improve accuracy
-- List any statements you intentionally avoided because evidence was insufficient.
+## Feature Comparison
 
-Output:
-Return ONLY:
-1) Comparison Matrix table
-2) The final Markdown page
-3) The Quality checklist`
+| Feature | {MY_PRODUCT_NAME} | {COMPETITOR_NAME} | Evidence |
+|---------|-------------------|-------------------|----------|
+| [Feature 1] | [Yes/Partial/No + brief note] | [Yes/Partial/No + brief note] | [URL if available] |
+| [Feature 2] | ... | ... | ... |
+[Create 10-15 rows covering: Core features, Integrations, Security, Support, Pricing, Ease of use]
 
-  const pageGenerationPrompt = `Create an "Alternatives to {COMPETITOR_NAME}" page for {MY_PRODUCT_NAME}.
+## Why People Look for Alternatives to {COMPETITOR_NAME}
+
+- [Reason 1 - evidence-backed]
+- [Reason 2 - evidence-backed]
+- [Reason 3 - evidence-backed]
+[4-6 reasons maximum, each must be evidence-backed]
+
+## {MY_PRODUCT_NAME} vs {COMPETITOR_NAME}: Detailed Comparison
+
+### Ease of Use
+[2-3 paragraphs comparing setup, learning curve, user experience]
+
+### Core Capabilities
+[2-3 paragraphs comparing main features and functionality]
+
+### Integrations & Ecosystem
+[2-3 paragraphs comparing available integrations]
+
+### Security & Compliance
+[2-3 paragraphs comparing security features and compliance]
+
+### Pricing & Value
+[2-3 paragraphs comparing pricing models and value proposition]
+
+## Top Alternatives to {COMPETITOR_NAME}
+
+### {MY_PRODUCT_NAME}
+**Best for:** [target audience]
+**Strengths:**
+- [Strength 1]
+- [Strength 2]
+- [Strength 3]
+**Tradeoffs:**
+- [Tradeoff 1 if any]
+**Starting price:** [if available from evidence]
+
+[Include 3-5 other well-known alternatives, but keep brief if not in evidence pack]
+
+## FAQ
+
+### Q: [Question 1]
+[Answer - 2-3 sentences]
+
+### Q: [Question 2]
+[Answer - 2-3 sentences]
+
+[5-7 questions total covering common concerns]
+
+## Quality Checklist
+
+- [Missing information that would improve accuracy]
+- [Statements avoided due to insufficient evidence]
+
+Output format:
+- Use clean Markdown syntax
+- Tables must use proper markdown table format with pipes
+- Headings use ## for H2, ### for H3
+- Keep paragraphs short (2-3 sentences max)
+- Use bullet points for lists
+- Be concise and scannable`
+
+  // Extract product names from URLs for better context
+  const myProductName = yourUrl.hostname.replace('www.', '').split('.')[0]
+  const competitorName = competitorUrl.hostname.replace('www.', '').split('.')[0]
+
+  const pageGenerationPrompt = `Create an "Alternatives to ${competitorName}" comparison page for ${myProductName}.
 
 Inputs:
-- My product: ${yourUrl.hostname}
-- Competitor: ${competitorUrl.hostname}
+- My product: ${yourUrl.hostname} (${myProductName})
+- Competitor: ${competitorUrl.hostname} (${competitorName})
 - Target audience: ${targetPersona || 'Not specified'}
 - Desired CTA: ${primaryCta || 'Not specified (infer from evidence)'}
 - Tone: ${tone}
@@ -481,7 +526,13 @@ Scraped Content Summary:
 Your Site Pages Scraped: ${Object.keys(yourSiteContent).join(', ')}
 Competitor Site Pages Scraped: ${Object.keys(competitorSiteContent).join(', ')}
 
-Follow the process exactly as described in the system prompt. Generate the complete page with comparison matrix and quality checklist.`
+IMPORTANT: 
+- Replace {MY_PRODUCT_NAME} with "${myProductName}" throughout
+- Replace {COMPETITOR_NAME} with "${competitorName}" throughout
+- Follow the exact structure provided in the system prompt
+- Keep the comparison focused, clear, and scannable
+- Use proper Markdown table syntax for the comparison table
+- Be concise - prioritize clarity over length`
 
   const { result: comparisonPage, error: pageError } = await callOpenAI(pageGenerationPrompt, pageGenerationSystemPrompt)
 
