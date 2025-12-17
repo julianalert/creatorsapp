@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { CurrencyDollarIcon } from '@heroicons/react/24/outline'
 import CategoryBadge from '@/components/category-badge'
 
@@ -10,6 +11,7 @@ type TemplateCardsProps = {
     ratingAverage?: number
     ratingCount?: number
     hasInterface?: boolean
+    tools?: string[]
   })[]
   columns?: 2 | 3 | 4
 }
@@ -54,9 +56,21 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
             )}
 
             <div className="grow p-5 flex flex-col">
-              {/* Category Badge - Above Title */}
-              <div className="mb-2">
+              {/* Category Badge and Rating - Same Line */}
+              <div className="flex items-center justify-between mb-2">
                 <CategoryBadge category={template.category} />
+                {/* Rating - Right Aligned */}
+                {template.ratingAverage && template.ratingAverage > 0 && template.ratingCount && template.ratingCount > 0 ? (
+                  <div className="flex items-center space-x-1.5">
+                    <StarIcon filled={true} />
+                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {template.ratingAverage.toFixed(1)}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-gray-500">
+                      ({template.ratingCount})
+                    </span>
+                  </div>
+                ) : null}
               </div>
 
               {/* Title */}
@@ -67,9 +81,9 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
               {/* Summary */}
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 grow">{template.summary}</p>
               
-              {/* Bottom Section: Cost (left) and Rating (right) */}
+              {/* Bottom Section: Credits (left) and Tools (right) */}
               <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/40">
-                {/* Cost - Bottom Left */}
+                {/* Credits - Bottom Left */}
                 <div className="flex items-center space-x-1.5">
                   <CurrencyDollarIcon className="w-4 h-4 text-blue-500" />
                   <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
@@ -77,20 +91,31 @@ export default function TemplateCards({ templates, columns = 4 }: TemplateCardsP
                   </span>
                 </div>
 
-                {/* Rating - Bottom Right */}
-                {template.ratingAverage && template.ratingAverage > 0 ? (
+                {/* Tools - Bottom Right */}
+                {template.tools && template.tools.length > 0 && (
                   <div className="flex items-center space-x-1.5">
-                    <StarIcon filled={true} />
-                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                      {template.ratingAverage.toFixed(1)}
-                    </span>
-                    {template.ratingCount && template.ratingCount > 0 && (
-                      <span className="text-xs text-gray-500 dark:text-gray-500">
-                        ({template.ratingCount})
-                      </span>
-                    )}
+                    {template.tools.map((tool) => {
+                      const toolIconMap: Record<string, string> = {
+                        openai: '/images/tools/openai.png',
+                        google: '/images/tools/google.png',
+                        mail: '/images/tools/mail.png',
+                      }
+                      const iconPath = toolIconMap[tool.toLowerCase()]
+                      if (!iconPath) return null
+                      
+                      return (
+                        <Image
+                          key={tool}
+                          src={iconPath}
+                          alt={tool}
+                          width={20}
+                          height={20}
+                          className="w-5 h-5 object-contain"
+                        />
+                      )
+                    })}
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
           </>

@@ -140,7 +140,7 @@ export default function DropdownHelp({ align, credits: creditsProp }: {
                   href="/credits"
                 >
                   Buy Credits
-                </Link>
+                  </Link>
               </MenuItem>
               <MenuItem as="li">
                 <Link 
@@ -148,12 +148,12 @@ export default function DropdownHelp({ align, credits: creditsProp }: {
                   href="/request"
                 >
                   Request an Agent
-                </Link>
+                  </Link>
               </MenuItem>
               <MenuItem as="li">
                 <Link className="font-medium text-sm flex items-center py-1 px-3 text-blue-500 cursor-pointer" href="/settings/account">
                   Settings
-                </Link>
+                  </Link>
               </MenuItem>
               <MenuItem as="li">
                 <button 

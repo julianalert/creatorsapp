@@ -69,7 +69,7 @@ export default function DropdownProfile() {
 
   return (
     <div className="inline-flex justify-center items-center">
-      <Avatar email={userEmail} size={32} />
-    </div>
+        <Avatar email={userEmail} size={32} />
+        </div>
   )
 }

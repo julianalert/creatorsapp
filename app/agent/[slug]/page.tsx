@@ -93,6 +93,17 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
     .eq('is_active', true)
     .limit(2)
 
+  // Agents that have working API routes
+  const WORKING_AGENTS = [
+    'on-page-seo-audit',
+    'conversion-rate-optimizer',
+    'welcome-email-sequence-writer',
+    'image-generator',
+    'alternatives-to-page-writer',
+    'use-case-writer',
+    'headline-generator',
+  ]
+
   const relatedTemplates = (relatedAgents || []).map((a) => ({
     slug: a.slug,
     title: a.title,
@@ -107,6 +118,11 @@ export default async function TemplateDetailPage({ params, searchParams }: Templ
     samples: a.samples || [],
     insights: a.insights || [],
     tags: a.tags || [],
+    credits: a.credits || 1,
+    ratingAverage: Number(a.rating_average) || 0,
+    ratingCount: a.rating_count || 0,
+    tools: a.tools || [],
+    hasInterface: WORKING_AGENTS.includes(a.slug),
   }))
 
   // Get total count of active agents

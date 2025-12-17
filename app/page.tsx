@@ -82,6 +82,7 @@ export default async function Home() {
       credits: agent.credits || 1,
       ratingAverage: Number(agent.rating_average) || 0,
       ratingCount: agent.rating_count || 0,
+      tools: agent.tools || [],
       hasInterface: WORKING_AGENTS.includes(agent.slug),
     }))
     // Sort: working agents first, then by created_at

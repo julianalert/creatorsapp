@@ -77,19 +77,19 @@ export default function CustomHeader() {
                   <>
                     {/* Desktop credits toast */}
                     <div className="hidden sm:block">
-                      <Toast02 
-                        open={toastOpen} 
-                        setOpen={setToastOpen} 
-                        type="" 
-                        className="min-w-0"
-                        closeButton={
+                  <Toast02 
+                    open={toastOpen} 
+                    setOpen={setToastOpen} 
+                    type="" 
+                    className="min-w-0"
+                    closeButton={
                           <Link href="/credits" className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 whitespace-nowrap">
-                            Buy credits
-                          </Link>
-                        }
-                      >
+                        Buy credits
+                      </Link>
+                    }
+                  >
                         <span className="whitespace-nowrap">{credits} credit{credits !== 1 ? 's' : ''} left</span>
-                      </Toast02>
+                  </Toast02>
                     </div>
                     {/* Mobile compact credits indicator */}
                     <Link
