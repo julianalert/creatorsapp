@@ -202,6 +202,20 @@ export default function AgentProcessSteps({ slug }: AgentProcessStepsProps) {
     )
   }
 
+  // Google Ads Generator
+  if (slug === 'google-ads-generator') {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">
+        <div className="text-sm text-gray-800 dark:text-gray-100 font-semibold mb-4">How it works</div>
+        <div className="space-y-4">
+          {renderStep(1, 'Brand Profile Selection', 'Select your brand profile from the dropdown. Agent uses brand profile to understand your product, value proposition, target audience, key benefits, and brand voice to create ads that align with your brand.')}
+          {renderStep(2, 'Ad Generation', 'Agent analyzes brand profile to extract key insights, identifies compelling value propositions and differentiators, and generates 10 distinct Google Ads. Each ad includes a headline (30 characters max) and description (90 characters max), testing different messaging angles like benefits, features, urgency, and problem-solving.')}
+          {renderStep(3, 'Final Output', 'Receive 10 ready-to-use Google Ads optimized for AdWords, each with a headline and description that strictly adheres to character limits. All ads are aligned with your brand voice, test different value propositions, and are ready to import into your Google Ads account.')}
+        </div>
+      </div>
+    )
+  }
+
   // Default for other agents
   return (
     <div className="bg-white dark:bg-gray-800 p-5 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700/40">

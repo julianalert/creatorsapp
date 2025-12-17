@@ -22,6 +22,7 @@ const WORKING_AGENTS = [
   'alternatives-to-page-writer',
   'use-case-writer',
   'headline-generator',
+  'google-ads-generator',
 ]
 
 export const metadata = {

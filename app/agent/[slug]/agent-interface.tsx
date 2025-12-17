@@ -6,6 +6,7 @@ import { SparklesIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import EmailSequenceDisplay from './email-sequence-display'
 import HeadlineDisplay from './headline-display'
 import AlternativesDisplay from './alternatives-display'
+import GoogleAdsDisplay from './google-ads-display'
 import Banner02 from '@/components/banner-02'
 import { createClient } from '@/lib/supabase/client'
 
@@ -113,10 +114,12 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
             if (savedResult.input_params) {
               if (savedResult.input_params.url) setUrl(savedResult.input_params.url)
               if (savedResult.input_params.conversionGoal) setConversionGoal(savedResult.input_params.conversionGoal)
-              // Welcome Email Sequence Writer fields
-              if (savedResult.input_params.brandId) setBrandId(savedResult.input_params.brandId)
-              if (savedResult.input_params.numberOfEmails) setNumberOfEmails(savedResult.input_params.numberOfEmails)
-              if (savedResult.input_params.timeframe) setTimeframe(savedResult.input_params.timeframe)
+            // Welcome Email Sequence Writer fields
+            if (savedResult.input_params.brandId) setBrandId(savedResult.input_params.brandId)
+            if (savedResult.input_params.numberOfEmails) setNumberOfEmails(savedResult.input_params.numberOfEmails)
+            if (savedResult.input_params.timeframe) setTimeframe(savedResult.input_params.timeframe)
+            // Google Ads Generator fields
+            if (savedResult.input_params.brandId && slug === 'google-ads-generator') setBrandId(savedResult.input_params.brandId)
               if (savedResult.input_params.primaryCta) setPrimaryCta(savedResult.input_params.primaryCta)
               // Image Generator fields
               if (savedResult.input_params.imageDescription) setImageDescription(savedResult.input_params.imageDescription)
@@ -150,9 +153,9 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
     }
   }, [resultId])
 
-  // Fetch brands for Welcome Email Sequence Writer, Headline Generator, and Alternatives to Page Writer
+  // Fetch brands for Welcome Email Sequence Writer, Headline Generator, Google Ads Generator, and Alternatives to Page Writer
   useEffect(() => {
-    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator' || slug === 'alternatives-to-page-writer') {
+    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator' || slug === 'google-ads-generator' || slug === 'alternatives-to-page-writer') {
       const fetchBrands = async () => {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -527,6 +530,48 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           }
         } else {
           throw new Error('Invalid response from headline generator API')
+        }
+      } else if (slug === 'google-ads-generator') {
+        setCurrentStep('Analyzing brand profile...')
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        setCurrentStep('Generating Google Ads...')
+        const fetchPromise = fetch('/api/agents/google-ads-generator', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            brandId,
+          }),
+        })
+
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        setCurrentStep('Finalizing results...')
+
+        const response = await fetchPromise
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate Google Ads')
+        }
+
+        if (data.success && data.result) {
+          await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 1500))
+          ])
+          setResult(data.result)
+          setCurrentStep(null)
+          if (data.resultId) {
+            const url = new URL(window.location.href)
+            url.searchParams.set('resultId', data.resultId)
+            window.history.replaceState({}, '', url.toString())
+          }
+          if (data.creditsRemaining !== undefined) {
+            window.dispatchEvent(new CustomEvent('agent:credits-updated'))
+          }
+        } else {
+          throw new Error('Invalid response from Google Ads generator API')
         }
       }
     } catch (err) {
@@ -2065,6 +2110,8 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               <div className="w-full text-gray-800 dark:text-gray-100">
                 {slug === 'headline-generator' ? (
                   <HeadlineDisplay markdown={result} />
+                ) : slug === 'google-ads-generator' ? (
+                  <GoogleAdsDisplay markdown={result} />
                 ) : (
                   <pre className="whitespace-pre-wrap text-sm">{result}</pre>
                 )}
@@ -2082,6 +2129,104 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               <div className="flex flex-col items-center justify-center text-center">
                 <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">Your headlines will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Google Ads Generator specific interface
+  if (slug === 'google-ads-generator') {
+    return (
+      <div className="mb-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="brand-select-google-ads">
+              Brand Profile <span className="text-red-500">*</span>
+            </label>
+            {brands.length === 0 ? (
+              <div className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">No brand profiles found.</p>
+                <a href="/new" className="text-blue-500 hover:text-blue-600 text-sm font-medium">Create a brand profile →</a>
+              </div>
+            ) : (
+              <select
+                id="brand-select-google-ads"
+                value={brandId}
+                onChange={(e) => setBrandId(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              >
+                <option value="">Select a brand profile...</option>
+                {brands.map((brand) => (
+                  <option key={brand.id} value={brand.id}>
+                    {brand.name || brand.domain}
+                  </option>
+                ))}
+              </select>
+            )}
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll use your brand profile to generate 10 Google Ads optimized for AdWords</p>
+          </div>
+          <div className="flex items-center justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <SparklesIcon className="w-4 h-4 mr-2" />
+                  Generate Google Ads
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Results Area */}
+        <div className="mt-8">
+          {error && (
+            <div className="mb-4 bg-red-500/20 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          <div className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] ${result ? '' : 'flex items-center justify-center'}`}>
+            {isLoadingSavedResult ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">Loading saved result...</p>
+              </div>
+            ) : result ? (
+              <div className="w-full text-gray-800 dark:text-gray-100">
+                <GoogleAdsDisplay markdown={result} />
+              </div>
+            ) : loading && currentStep ? (
+              <div className="flex flex-col items-center justify-center text-center">
+                <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"></path>
+                </svg>
+                <p className="text-gray-800 dark:text-gray-100 font-medium mb-2">{currentStep}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">This may take a while, do not close this tab</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center">
+                <DocumentTextIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">Your Google Ads will appear here</p>
               </div>
             )}
           </div>
