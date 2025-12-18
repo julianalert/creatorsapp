@@ -736,7 +736,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               {error}
             </div>
           )}
-          <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] flex items-center justify-center">
+          <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px]">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
                 <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -747,7 +747,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               </div>
             ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
-                <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+                <SeoAuditDisplay markdown={result} />
               </div>
             ) : loading && currentStep ? (
               <div className="flex flex-col items-center justify-center text-center">
@@ -2639,7 +2639,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               </div>
             ) : result ? (
               <div className="w-full text-gray-800 dark:text-gray-100">
-                <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+                <SeoAuditDisplay markdown={result} />
               </div>
             ) : loading && currentStep ? (
               <div className="flex flex-col items-center justify-center text-center">
