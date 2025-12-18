@@ -44,7 +44,7 @@ export default function SeoAuditDisplay({ markdown }: SeoAuditDisplayProps) {
             const isIssueDetail = /^(Issue|Why it matters|How to fix|Evidence):/i.test(text.trim())
             
             if (isIssueDetail) {
-              const match = text.match(/^([^:]+):\s*(.*)/s)
+              const match = text.match(/^([^:]+):\s*([\s\S]*)/)
               if (match) {
                 const label = match[1].trim()
                 const value = match[2].trim()
