@@ -149,7 +149,7 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}))
   const {
     interviewText,
-    productName,
+    brandId,
     targetAudience = '',
     primaryCta = '',
     tone = 'clear, practical, confident (no hype)',
@@ -159,8 +159,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Interview text is required.' }, { status: 400 })
   }
 
-  if (!productName || typeof productName !== 'string' || productName.trim().length === 0) {
-    return NextResponse.json({ error: 'Product name is required.' }, { status: 400 })
+  if (!brandId || typeof brandId !== 'string' || brandId.trim().length === 0) {
+    return NextResponse.json({ error: 'Brand profile is required.' }, { status: 400 })
   }
 
   // Validate interview text length
@@ -184,6 +184,24 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json({ error: 'You must signup or log in to use this ai agent' }, { status: 401 })
   }
+
+  // Fetch brand profile
+  const { data: brand, error: brandError } = await supabase
+    .from('brands')
+    .select('id, name, domain, brand_profile')
+    .eq('id', brandId)
+    .eq('user_id', user.id)
+    .eq('active', true)
+    .maybeSingle()
+
+  if (brandError || !brand) {
+    return NextResponse.json(
+      { error: 'Brand profile not found or you do not have access to it.' },
+      { status: 404 }
+    )
+  }
+
+  const productName = brand.name || brand.domain
 
   // SECURITY: Rate limiting
   const rateLimit = checkRateLimit(user.id, RATE_LIMITS.EXPENSIVE)
@@ -347,13 +365,14 @@ Follow the process exactly as described in the system prompt. Extract structured
       agent_slug: 'use-case-writer',
       input_params: {
         interviewText: sanitizedInterview.substring(0, 1000), // Store truncated version
-        productName,
+        brandId,
         targetAudience,
         primaryCta,
         tone,
       },
       result_data: {
         result: useCasePage,
+        brandId,
         productName,
         targetAudience,
         primaryCta,
@@ -373,7 +392,7 @@ Follow the process exactly as described in the system prompt. Extract structured
   return NextResponse.json({
     success: true,
     result: useCasePage,
-    productName,
+    brandId,
     resultId: savedResult?.id || null,
     creditsRemaining: newBalance,
   })

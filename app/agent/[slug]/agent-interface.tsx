@@ -80,7 +80,6 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
   const [warningBannerOpen, setWarningBannerOpen] = useState(true)
   // Use Case Writer state
   const [interviewText, setInterviewText] = useState('')
-  const [productName, setProductName] = useState('')
   const [useCaseTargetAudience, setUseCaseTargetAudience] = useState('')
   const [useCasePrimaryCta, setUseCasePrimaryCta] = useState('')
   const [useCaseTone, setUseCaseTone] = useState('clear, practical, confident (no hype)')
@@ -135,7 +134,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               if (savedResult.input_params.tone) setAlternativesTone(savedResult.input_params.tone)
               // Use Case Writer fields
               if (savedResult.input_params.interviewText) setInterviewText(savedResult.input_params.interviewText)
-              if (savedResult.input_params.productName) setProductName(savedResult.input_params.productName)
+              if (savedResult.input_params.brandId) setBrandId(savedResult.input_params.brandId)
               if (savedResult.input_params.targetAudience) setUseCaseTargetAudience(savedResult.input_params.targetAudience)
               if (savedResult.input_params.primaryCta) setUseCasePrimaryCta(savedResult.input_params.primaryCta)
               if (savedResult.input_params.tone) setUseCaseTone(savedResult.input_params.tone)
@@ -154,9 +153,9 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
     }
   }, [resultId])
 
-  // Fetch brands for Welcome Email Sequence Writer, Headline Generator, Google Ads Generator, and Alternatives to Page Writer
+  // Fetch brands for Welcome Email Sequence Writer, Headline Generator, Google Ads Generator, Alternatives to Page Writer, and Use Case Writer
   useEffect(() => {
-    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator' || slug === 'google-ads-generator' || slug === 'alternatives-to-page-writer') {
+    if (slug === 'welcome-email-sequence-writer' || slug === 'headline-generator' || slug === 'google-ads-generator' || slug === 'alternatives-to-page-writer' || slug === 'use-case-writer') {
       const fetchBrands = async () => {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -2480,7 +2479,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               },
               body: JSON.stringify({
                 interviewText,
-                productName,
+                brandId,
                 targetAudience: useCaseTargetAudience,
                 primaryCta: useCasePrimaryCta,
                 tone: useCaseTone,
@@ -2523,19 +2522,32 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
           }
         }} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="product-name">
-              Product Name <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="brand-select-use-case">
+              Brand Profile <span className="text-red-500">*</span>
             </label>
-            <input
-              id="product-name"
-              type="text"
-              placeholder="e.g., ProductX, MySaaS Tool"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-              className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              required
-              disabled={loading}
-            />
+            {brands.length === 0 ? (
+              <div className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">No brand profiles found.</p>
+                <a href="/new" className="text-blue-500 hover:text-blue-600 text-sm font-medium">Create a brand profile →</a>
+              </div>
+            ) : (
+              <select
+                id="brand-select-use-case"
+                value={brandId}
+                onChange={(e) => setBrandId(e.target.value)}
+                className="form-input w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 rounded-lg text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+                disabled={loading}
+              >
+                <option value="">Select a brand profile...</option>
+                {brands.map((brand) => (
+                  <option key={brand.id} value={brand.id}>
+                    {brand.name || brand.domain}
+                  </option>
+                ))}
+              </select>
+            )}
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll use your brand profile to generate a use case page</p>
           </div>
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" htmlFor="interview-text">
@@ -2628,7 +2640,7 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
               {error}
             </div>
           )}
-          <div className={`bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px] ${result ? '' : 'flex items-center justify-center'}`}>
+          <div className="bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700/60 rounded-xl p-8 min-h-[400px]">
             {isLoadingSavedResult ? (
               <div className="flex flex-col items-center justify-center text-center">
                 <svg className="animate-spin h-12 w-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
