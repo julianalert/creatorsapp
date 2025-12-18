@@ -194,27 +194,6 @@ export default function DropdownSwitchBrand({ align }: {
             </MenuItem>
           ))}
         </MenuItems>
-        <div className="border-t border-gray-200 dark:border-gray-700/60 pt-1.5">
-          <MenuItem as="li">
-            {({ active }) => (
-              <Link
-                href="/new"
-                className={`w-full flex items-center py-2 px-4 cursor-pointer ${
-                  active && 'bg-gray-50 dark:bg-gray-700/20'
-                }`}
-              >
-                <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mr-3">
-                  <svg className="w-4 h-4 fill-current text-gray-500 dark:text-gray-400" viewBox="0 0 12 12">
-                    <path d="M6 0v12M0 6h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <div className="text-sm font-medium text-gray-800 dark:text-gray-100">
-                  Add New Brand
-                </div>
-              </Link>
-            )}
-          </MenuItem>
-        </div>
       </Transition>
     </Menu>
   )
