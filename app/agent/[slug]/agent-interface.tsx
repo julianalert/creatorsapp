@@ -448,19 +448,19 @@ export default function AgentInterface({ slug, resultId }: AgentInterfaceProps) 
         await new Promise(resolve => setTimeout(resolve, 2000))
 
         setCurrentStep('Writing use case page...')
-        const fetchPromise = fetch('/api/agents/use-case-writer', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            interviewText,
-            productName,
-            targetAudience: useCaseTargetAudience,
-            primaryCta: useCasePrimaryCta,
-            tone: useCaseTone,
-          }),
-        })
+            const fetchPromise = fetch('/api/agents/use-case-writer', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                interviewText,
+                brandId,
+                targetAudience: useCaseTargetAudience,
+                primaryCta: useCasePrimaryCta,
+                tone: useCaseTone,
+              }),
+            })
 
         await new Promise(resolve => setTimeout(resolve, 3000))
         setCurrentStep('Finalizing results...')
