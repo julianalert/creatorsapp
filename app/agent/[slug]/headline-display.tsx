@@ -83,27 +83,19 @@ function HeadlineCard({ version, isExpanded, onToggle }: { version: HeadlineVers
   const getVersionLabel = (num: number) => {
     switch (num) {
       case 1:
-        return 'Straightforward'
+        return 'Straightforward explanation'
       case 2:
-        return 'Hook'
+        return 'Objection-handling hook'
       case 3:
-        return 'Own Your Niche'
+        return 'Own your niche'
       default:
         return `Version ${num}`
     }
   }
 
   const getVersionColor = (num: number) => {
-    switch (num) {
-      case 1:
-        return 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800'
-      case 2:
-        return 'bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800'
-      case 3:
-        return 'bg-green-500/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800'
-      default:
-        return 'bg-gray-500/20 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-800'
-    }
+    // All numbers have blue text and purple border
+    return 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border-purple-200 dark:border-purple-800'
   }
 
   return (
@@ -122,9 +114,6 @@ function HeadlineCard({ version, isExpanded, onToggle }: { version: HeadlineVers
               <div>
                 <div className="text-sm font-semibold text-gray-800 dark:text-gray-100">
                   {getVersionLabel(version.versionNumber)}
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  {version.goal}
                 </div>
               </div>
             </div>
@@ -167,7 +156,7 @@ function HeadlineCard({ version, isExpanded, onToggle }: { version: HeadlineVers
                   {copied === 'title' ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/40 dark:to-gray-800/40 rounded-lg border border-gray-200 dark:border-gray-700/40">
+              <div className="p-4 bg-gray-50 dark:bg-gray-900/40 rounded-lg border border-gray-200 dark:border-gray-700/40">
                 <div className="text-xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
                   {version.title}
                 </div>
@@ -219,33 +208,14 @@ function HeadlineCard({ version, isExpanded, onToggle }: { version: HeadlineVers
                   {copied === 'cta' ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800/40">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                    {version.cta}
-                  </div>
-                  <div className="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow-sm">
-                    Button
-                  </div>
-                </div>
+              <div className="p-4 bg-gray-50 dark:bg-gray-900/40 rounded-lg border border-gray-200 dark:border-gray-700/40">
+                <button className="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-600 transition-colors">
+                  {version.cta}
+                </button>
               </div>
             </div>
           )}
 
-          {/* Copy All Button */}
-          <div className="pt-2 border-t border-gray-200 dark:border-gray-700/60">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                const fullText = `Title: ${version.title}\n\nSubtitle: ${version.subtitle}\n\nCTA: ${version.cta}`
-                copyToClipboard(fullText, 'all')
-              }}
-              className="w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-900/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
-              <DocumentDuplicateIcon className="w-4 h-4" />
-              {copied === 'all' ? 'Copied All!' : 'Copy All (Title + Subtitle + CTA)'}
-            </button>
-          </div>
         </div>
       )}
     </div>
@@ -253,7 +223,7 @@ function HeadlineCard({ version, isExpanded, onToggle }: { version: HeadlineVers
 }
 
 export default function HeadlineDisplay({ markdown }: { markdown: string }) {
-  const [expandedVersions, setExpandedVersions] = useState<Set<number>>(new Set([1])) // Expand first version by default
+  const [expandedVersions, setExpandedVersions] = useState<Set<number>>(new Set([1, 2, 3])) // Expand all versions by default
   const [showNotes, setShowNotes] = useState(false)
 
   const parsed = parseHeadlines(markdown)

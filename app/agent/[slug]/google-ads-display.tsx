@@ -226,7 +226,7 @@ function AdCard({ ad, isExpanded, onToggle }: { ad: GoogleAd; isExpanded: boolea
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-purple-200 dark:border-purple-800">
                 {ad.adNumber}
               </span>
               <div>
@@ -341,20 +341,6 @@ function AdCard({ ad, isExpanded, onToggle }: { ad: GoogleAd; isExpanded: boolea
             </div>
           )}
 
-          {/* Copy All Button */}
-          <div className="pt-2 border-t border-gray-200 dark:border-gray-700/60">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                const fullText = `Headline: ${ad.headline}\n\nDescription: ${ad.description}`
-                copyToClipboard(fullText, 'all')
-              }}
-              className="w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-900/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
-              <DocumentDuplicateIcon className="w-4 h-4" />
-              {copied === 'all' ? 'Copied All!' : 'Copy All (Headline + Description)'}
-            </button>
-          </div>
         </div>
       )}
     </div>
