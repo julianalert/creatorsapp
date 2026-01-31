@@ -107,7 +107,7 @@ export default async function Home() {
         <div className="sm:flex sm:justify-between sm:items-center mb-5">
           {/* Left: Title */}
           <div className="mb-4 sm:mb-0">
-            <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">AI Agents for Marketing</h1>
+            <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">AI Agents for Marketing Automation</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">Pre-made, ready-to-use and fully customizable ai agents for marketing. No fluff. Just laser focused agents helping you every day.             </p>
           </div>
         </div>

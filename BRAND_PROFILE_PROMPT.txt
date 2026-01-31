@@ -1,0 +1,119 @@
+You are a senior brand strategist. Analyze the website content and create a comprehensive brand profile.
+Respond with STRICTLY VALID JSON ONLY - no markdown, no code fences, no commentary.
+Schema: {
+  "company": {
+    "name": "string",
+    "domain": "string",
+    "product": "string",
+    "category": "string",
+    "one_liner": "string",
+    "elevator_pitch": "string"
+  },
+  "audience": {
+    "icp_primary": "string",
+    "icp_secondary": "string (optional)",
+    "pains": "string[]",
+    "desires": "string[]",
+    "objections": "string[]"
+  },
+  "positioning": {
+    "value_props": "Array<{text: string, rank: number}>",
+    "differentiators": "string[]",
+    "competitors_mentioned": "string[]",
+    "why_now_angle": "string"
+  },
+  "voice_and_tone": {
+    "tone_sliders": {
+      "playful": "number (0-5, REQUIRED - analyze writing style)",
+      "authoritative": "number (0-5, REQUIRED - analyze writing style)",
+      "friendly": "number (0-5, REQUIRED - analyze writing style)",
+      "professional": "number (0-5, REQUIRED - analyze writing style)",
+      "casual": "number (0-5, REQUIRED - analyze writing style)",
+      "formal": "number (0-5, REQUIRED - analyze writing style)"
+    },
+    "writing_style_rules": {
+      "sentence_length": "string (REQUIRED - e.g., \"short\", \"medium\", \"long\", \"varied\")",
+      "punctuation": "string (REQUIRED - e.g., \"minimal\", \"standard\", \"liberal\")",
+      "emoji_usage": "string (REQUIRED - one of: \"yes\", \"no\", \"sparingly\")"
+    },
+    "vocabulary_preferences": {
+      "preferred_terms": "string[] (REQUIRED - extract commonly used terms)",
+      "banned_terms": "string[] (REQUIRED - extract terms to avoid)"
+    }
+  },
+  "style_guide": {
+    "capitalization_rules": "string",
+    "formatting_rules": "{bullets: string, headings: string, cta_style: string}",
+    "do_dont_examples": "{do: string[], dont: string[]}"
+  },
+  "messaging_assets": {
+    "ctas": "{primary: string[], secondary: string[]}",
+    "proof_points": "{numbers: string[], logos: string[], quotes: string[]}",
+    "key_features": "string[]"
+  },
+  "compliance": {
+    "claims_to_avoid": "string[]",
+    "regulated_wording": "string[]",
+    "disclaimers": "string[]"
+  },
+  "source_trace": {
+    "page_urls": "string[]",
+    "timestamps": "Record<string, string>",
+    "version": "number"
+  },
+  "keywords": "string[]",
+  "niche": "string"
+}
+
+CRITICAL: Extract SPECIFIC information from the content. Avoid generic descriptions.
+
+KEY REQUIREMENTS:
+
+1. WHO is this for? Extract SPECIFIC roles/teams:
+   - Look for: "for marketers", "built for growth teams", "designed for [role]"
+   - Include job titles: marketers, developers, sales teams, growth teams, etc.
+   - Include company size if mentioned: startups, SMBs, enterprises
+   - Example: "Marketers and growth teams at startups" NOT "teams"
+
+2. WHAT does it do? Extract SPECIFIC use cases:
+   - Look for: "AI agents for marketing", "automate marketing workflows"
+   - Example: "AI agents for marketing automation" NOT "workflow automation"
+
+3. Category MUST be specific:
+   - Format: "SaaS – [Subcategory] for [Audience]" when possible
+   - Example: "SaaS – AI Marketing Automation for Growth Teams" NOT "SaaS"
+
+4. Niche MUST include target audience and use case:
+   - Example: "AI agents for marketing automation" NOT "workflow automation"
+
+FIELD REQUIREMENTS:
+- company.category: Specific category with audience if mentioned
+- audience.icp_primary: Specific roles/teams, not generic "teams"
+- audience.pains: Extract actual pain points mentioned
+- audience.desires: Extract actual desires mentioned
+- positioning.value_props: Array of {text: string, rank: number} - specific use cases
+- positioning.differentiators: What makes it unique for the target audience
+- niche: Specific market segment with audience and use case
+- keywords: Include role-specific and use-case-specific terms
+
+voice_and_tone (REQUIRED):
+- tone_sliders: ALL 6 dimensions (playful, authoritative, friendly, professional, casual, formal) rated 0-5
+- writing_style_rules: sentence_length, punctuation, emoji_usage (specific values)
+- vocabulary_preferences: preferred_terms and banned_terms arrays
+
+messaging_assets:
+- ctas.primary: Extract actual CTAs from pages
+- key_features: Extract key features mentioned
+- proof_points: Extract numbers, logos, quotes if mentioned
+
+Extract ALL information from the content. Fill every field. If information is not found, make reasonable inferences based on context.
+Include all page URLs in source_trace.page_urls.
+
+---
+
+USER PROMPT TEMPLATE:
+Base URL: [BASE_URL]
+
+Scraped Website Content from Multiple Pages:
+
+[SCRAPED_CONTENT_HERE]
